@@ -11,17 +11,17 @@ const watch = () => {
     persistent: true,
   });
 
-  watcher.on('change', path => {
+  watcher.on('change', (path) => {
     // console.log(`File ${path} has been changed`);
     runBuild();
   });
 
-  watcher.on('add', path => {
+  watcher.on('add', (path) => {
     // console.log(`File ${path} has been added`);
     runBuild();
   });
 
-  watcher.on('unlink', path => {
+  watcher.on('unlink', (path) => {
     // console.log(`File ${path} has been removed`);
     runBuild();
   });

@@ -1,7 +1,7 @@
 import { readdir } from 'fs/promises';
 import { extname, join } from 'path';
 
-const sourceDir = './src';
+const sourceDir = './src/';
 
 /**
  * Recursively get all .ts and .js entrypoints from the directory
@@ -25,7 +25,7 @@ async function getFiles(dir: string): Promise<string[]> {
   // Flatten the array and filter only .ts and .js files
   return Array.prototype
     .concat(...files)
-    .filter((file) => ['.ts', '.js', '.html', '.css'].includes(extname(file)));
+    .filter((file) => ['.ts', '.js'].includes(extname(file)));
 }
 
 /**

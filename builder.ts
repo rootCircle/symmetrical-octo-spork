@@ -3,14 +3,17 @@ import entryPoints from './entrypoints';
 
 const build = async () => {
   const entrypoints = await entryPoints();
-
-  await Bun.build({
+  const buildStatus = await Bun.build({
     entrypoints: entrypoints,
     outdir: './build',
     minify: true,
   });
 
   await copyContents('./public', './build');
+
+  if (!buildStatus.success) {
+    throw new Error('Error building the ts files!');
+  }
 };
 
 const runBuild = async () => {
