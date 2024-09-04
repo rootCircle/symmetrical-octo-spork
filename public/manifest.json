@@ -9,30 +9,26 @@
     "64": "assets/icons/icon-form-64.png",
     "96": "assets/icons/icon-form-96.png"
   },
-  "permissions": [
-    "activeTab",
-    "scripting"
-  ],
+  "permissions": ["activeTab", "scripting"],
   "host_permissions": [
     "http://*.docs.google.com/*",
     "https://*.docs.google.com/*"
   ],
   "background": {
-    "scripts": ["background/index.js"]
+    "scripts": ["src/background/index.js"]
   },
   "content_scripts": [
     {
       "matches": ["*://*.docs.google.com/*"],
-      "js": ["contentScript/index.js"]
+      "js": ["src/contentScript/index.js"]
     }
   ],
   "action": {
-    "default_popup": "popup/index.html",
+    "default_popup": "src/popup/index.html",
     "default_title": "Home"
   },
   "options_ui": {
-    "page": "options/index.html",
+    "page": "src/options/index.html",
     "open_in_tab": true
   }
 }
-

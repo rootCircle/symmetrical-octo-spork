@@ -3,8 +3,15 @@
     "types": [
       "bun-types", // add Bun type definitions
       "./types.d.ts", // add your own type definitions
-      "@types/chrome"
+      "@types/chrome",
+      "@types/firefox-webext-browser"
     ],
+    "baseUrl": "src",
+    "paths": {
+      "@docFillerCore/*": ["docFillerCore/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"]
+    },
 
     // enable latest features
     "lib": ["esnext"],

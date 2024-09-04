@@ -1,3 +1,3 @@
-import runBuild from "./builder.ts";
+import runBuild from './builder.ts';
 
 runBuild();
