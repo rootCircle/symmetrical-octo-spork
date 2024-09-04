@@ -2,6 +2,10 @@
 
 build
 
+# Secrets
+
+.env
+
 # Logs
 
 logs

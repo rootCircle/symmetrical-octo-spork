@@ -1,0 +1,39 @@
+name: Health Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: oven-sh/setup-bun@v2
+
+    - name: Install dependencies
+      run: |
+        bun install
+
+    - name: Build
+      run: |
+        bun run build
+    - name: eslint Lint check
+      run: |
+        bun run lint
+ 
+    - name: Prettier Check
+      run: |
+        bun run format
+
+    - name: web-ext Lint
+      run: |
+          bun run webext:lint
