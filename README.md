@@ -1,101 +1,72 @@
-<img src="https://raw.githubusercontent.com/AminoffZ/bun-browser-extension-builder/main/public/images/icon256.png" align="right" width="128" title="hover text">
+# 🚀 docFiller
 
-# Browser extension builder with Bun
+[![Discord](https://img.shields.io/discord/1129752670287184022?logo=discord)](https://discord.gg/aExAhPd64X)
 
-Quickstart your extension development by using this repository!
+> The extension is built using manifest v2 and currently supports the following browsers: Mozilla Firefox only.
 
-## Features
+Automated Google Docs Filling Web Extension written in JS. Filling boring google form done easy!
 
-- Typescript for type safe development
-- Bun for blazing fast development
-- Manifest version 3 for faster publishing on Chrome
+## Project Overview
 
-## Develop
+### Features
 
-### Setup
+- **Automated Google Docs Filling**: Fill Google Docs forms automatically with predefined data using AI.
+- **Cross-Browser Compatibility**: Supports major browsers including Mozilla Firefox, Google Chrome, and Microsoft Edge.
+- **Customizable**: Easily configurable to adapt to different use cases and requirements.
 
-Clone the project, navigate into folder using terminal and run:
-```bash
-bun install
-```
+### How It Works
 
-### Adding behaviour
+The Web Extension simplifies the process of filling Google Docs forms by automating repetitive tasks. Users can configure the extension with predefined data and settings, allowing them to quickly populate Google Docs without manual input.
 
-#### 0. Before starting
+### Use Cases
 
-Make sure you have some understanding of extension development. Here are some resources:
+- **Form Filling**: Ideal for individuals or organizations that frequently fill out standardized forms or templates in Google Docs.
+- **Data Entry Automation**: Streamline data entry processes by automating the input of common information into Google Docs.
 
-- [Chrome](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
-- [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension)
+## Installation
 
-#### 1. Manifest
+For detailed installation instructions, please refer to the [INSTALL.md](docs/INSTALL.md) file.
 
-The manifest is a JSON file that defines the extension's name, version, functionality, permissions, and other details. It is required for all browser extensions and must be carefully constructed to ensure the extension is secure and efficient (and works).
+## Usage
 
-For additional information visit the [Chrome](https://developer.chrome.com/docs/extensions/mv3/manifest/) manifest documentation page. Please note that some browsers, like [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings), require specific information for extensions to work.
+Once the extension is installed, you can start using it immediately. Simply click on the extension icon in your browser toolbar to access its features. For usage instructions and additional details, please refer to the [documentation](docs).
 
-#### 2. JavaScript
+## Contributing
 
-To add/modify code, modify the files in the _src/scripts/_ folder. They will be compiled to JavaScript when you build the extension. Look at **Build** for more information.
+We welcome contributions! If you would like to contribute to the development of this web extension, please follow the guidelines outlined in the [CONTRIBUTING.md](docs/CONTRIBUTING.md) file.
 
-#### What is a _content.ts_/_script.ts_?
+## Security
 
-TLDR: I mainly use content.js/ts to add other scripts or files to the DOM when loaded. I use script.js/ts for almost everything else.
+For information about our security policy, please refer to the [SECURITY.md](docs/SECURITY.md) file.
 
-A content script is a JavaScript file that runs in the context of a web page and can modify its content and behavior. The content script can read and modify the HTML, CSS, and JavaScript of the web page, and can be used to add new functionality, modify existing functionality, or manipulate the content of the page in various ways.
+## Support
 
-The name "content.js" is often used as a convention to indicate that the file contains the code for a content script. However, developers are free to use any filename they like for their content script.
+For support, bug reports, and feature requests, please refer to the [SUPPORT.md](docs/SUPPORT.md) file.
 
-On the other hand, "script.js" is a generic name that could be used for any JavaScript file used in an extension, including background scripts, popup scripts, options page scripts, or any other script file that the extension may use.
+## Governance
 
-In summary, "content.js" specifically refers to the file that contains the code for a content script, while "script.js" is a more generic name that could refer to any JavaScript file used in an extension.
+To understand the governance model and decision-making processes for our project, please refer to the [GOVERNANCE.md](docs/GOVERNANCE.md) file.
 
-#### 3. CSS
+## Roadmap
 
-To add CSS, create or modify files in the _public/styles/_ folder and make sure they are referenced in the manifest.
+For our project roadmap, please refer to the [roadmap.pdf](docs/roadmap.pdf) file.
 
-#### 4. HTML
+## License
 
-HTML can be added [programmatically](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement) using JavaScript.
+This project is licensed under the [GNU GPL 3.0](LICENSE).
 
-#### 5. Changing the icon
+## Resources 🔍
 
-_public/images/icon256.png_
+- [Google Chrome Developer Documentation](https://developer.chrome.com/docs/extensions/)
+- [Mozilla Firefox Extension Workshop](https://extensionworkshop.com/)
+- [Microsoft Edge Extension Documentation](https://docs.microsoft.com/en-us/microsoft-edge/extensions-chromium/)
+- [Mozilla Extension Documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
+- [Microsoft Edge Getting Started](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/)
+- [Google Forms API](https://developers.google.com/forms/api/guides)
 
-#### 6. Testing your extension
+## ✨ Contributors
 
-Thankfully you don't have to get your extension published before being able to test it. Refer to **0. Before starting** for information about testing an extension, also referred to as loading unpacked extensions. You do however need to build the extension to be able to test it, refer to the next section for this step.
-
-## Build
-
-To build the extension, run:
-```bash	
-bun run build
-```
-This will create a new folder called _build/_ with the extension files. The folder will contain the following files by default:
-- Anything in _public/_ (images, styles, manifest etc.)
-- .js and .ts files in _src/scripts/_
-This folder can be loaded as an unpacked extension in your browser.
-The files that end up in the build folder _build/_ are configured in _bundler.ts_.
-
-## Other items
-
-### Formatting
-
-I added a .prettierrc for contributing. If building for your own purposes, feel free to remove it.
-To format with the provided configuration, run:
-```bash
-bun run format
-```
-
-# License
-
-MIT License
-
-Copyright (c) 2023 AminoffZ
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+<a href="https://github.com/rootCircle/docFiller/graphs/contributors">
+  <img alt="Grid of profile icons of the contributors" src="https://contrib.rocks/image?repo=rootCircle/docFiller" />
+</a>
+<!--  https://contrib.rocks -->

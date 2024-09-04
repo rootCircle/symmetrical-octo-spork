@@ -1,17 +1,63 @@
 {
-  "name": "webpack-browser-extension-template",
+  "name": "docfiller",
+  "version": "0.2.0",
+  "description": " Automated Google Docs Filling Web Extension written in JS",
+  "homepage": "https://github.com/rootCircle/docFiller",
+  "keywords": [
+    "extension",
+    "google form",
+    "webpack",
+    "web-ext",
+    "automation",
+    "gpt"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rootCircle/docFiller.git"
+  },
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/rootCircle/docFiller/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "bun": ">=1.0.0"
+  },
   "module": "bundler.ts",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.25.1",
+    "@eslint/compat": "^1.1.1",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.9.1",
+    "@types/bun": "^1.1.8",
     "@types/chrome": "^0.0.246",
+    "eslint": "^9.9.1",
+    "eslint-plugin-async-await": "^0.0.0",
+    "eslint-plugin-import": "^2.30.0",
     "bun-types": "latest",
-    "prettier": "^3.0.3"
+    "chokidar": "^3.6.0",
+    "concurrently": "^8.2.2",
+    "globals": "^15.9.0",
+    "prettier": "^3.0.3",
+    "web-ext": "^8.2.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "scripts": {
+    "watch": "bun watcher.ts",
     "build": "bun bundler.ts",
-    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'"
+    "dev:firefox": "bun bundler.ts && concurrently --kill-others \"bun watcher.ts\" \"web-ext run --source-dir=build\"",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
+    "webext:lint": "web-ext lint --source-dir=build",
+    "lint": "eslint . --cache --cache-strategy content",
+    "lint:fix": "eslint . --cache --cache-strategy content --fix"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "libphonenumber-js": "^1.11.7",
+    "openai": "^4.57.1",
+    "process": "^0.11.10"
+  }
 }

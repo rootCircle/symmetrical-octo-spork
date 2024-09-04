@@ -1,28 +1,38 @@
 {
   "manifest_version": 3,
-  "name": "Your Extension Name",
-  "version": "0.1.0",
-  "web_accessible_resources": [
-    {
-      "resources": ["script.js"],
+  "name": "docFiller",
+  "version": "0.2.0",
 
-      "matches": ["http://*/*"]
-    }
+  "description": "Automatically fills Google Docs entries, powered by ChatGPT.",
+
+  "icons": {
+    "64": "assets/icons/icon-form-64.png",
+    "96": "assets/icons/icon-form-96.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
   ],
+  "host_permissions": [
+    "http://*.docs.google.com/*",
+    "https://*.docs.google.com/*"
+  ],
+  "background": {
+    "scripts": ["background/index.js"]
+  },
   "content_scripts": [
     {
-      "matches": ["http://*/*"],
-      "js": ["content.js"],
-      "css": ["style.css"]
+      "matches": ["*://*.docs.google.com/*"],
+      "js": ["contentScript/index.js"]
     }
   ],
   "action": {
-    "default_icon": "./images/icon256.png"
+    "default_popup": "popup/index.html",
+    "default_title": "Home"
   },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "yourcustom@token.io",
-      "strict_min_version": "42.0"
-    }
+  "options_ui": {
+    "page": "options/index.html",
+    "open_in_tab": true
   }
 }
+
