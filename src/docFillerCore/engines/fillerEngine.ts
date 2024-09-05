@@ -16,13 +16,16 @@ export class FillerEngine {
 
     switch (fieldType) {
       case QType.TEXT:
-        return this.fillText(fieldValue, 'this is text');
+        return this.fillText(fieldValue, '1000');
 
       case QType.TEXT_EMAIL:
         return this.fillEmail(fieldValue, 'harshit123@gmail.com');
 
+      case QType.TEXT_URL:
+        return this.fillTextURL(fieldValue, 'https://google.com');
+
       case QType.PARAGRAPH:
-        return this.fillParagraph(fieldValue, 'this is a paragraph \newww');
+        return this.fillParagraph(fieldValue, 'this is a paragraph \new');
 
       case QType.LINEAR_SCALE:
         return await this.fillLinearScale(fieldValue, '1');
@@ -96,6 +99,10 @@ export class FillerEngine {
   }
 
   private fillEmail(fieldValue: ExtractedValue, value: string): boolean {
+    return this.fillText(fieldValue, value);
+  }
+
+  private fillTextURL(fieldValue: ExtractedValue, value: string): boolean {
     return this.fillText(fieldValue, value);
   }
 
