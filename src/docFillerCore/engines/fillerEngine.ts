@@ -30,8 +30,8 @@ export class FillerEngine {
       case QType.LINEAR_SCALE:
         return await this.fillLinearScale(fieldValue, '1');
 
-      // case QType.DROPDOWN:
-      //   return await this.fillDropDown(fieldValue, 'Option 2');
+      case QType.DROPDOWN:
+        return await this.fillDropDown(fieldValue, 'Option 3');
 
       case QType.CHECKBOX_GRID:
         return await this.fillCheckboxGrid(fieldValue, [
@@ -439,59 +439,37 @@ export class FillerEngine {
     return true;
   }
 
-  // private async fillDropDown(
-  //   fieldValue: ExtractedValue,
-  //   value: string
-  // ): Promise<boolean> {
-  //   await sleep(SLEEP_DURATION);
+  private async fillDropDown(
+    fieldValue: ExtractedValue,
+    value: string
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
 
-  //   for (const option of fieldValue.options || []) {
-  //     if (option.data === value) {
-  //       const dropdown = option.dom;
-  //       await sleep(500);
-  //       fieldValue.dom?.querySelector('div[role=presentation]')?.dispatchEvent(new Event('click', {bubbles: true}));
-  //       // await sleep(SLEEP_DURATION);
-  //       const optionToBeSelected = fieldValue.dom?.querySelector(`div[data-value="${value}"][role=option]`) as HTMLElement;
+    for (const option of fieldValue.options || []) {
+      if (option.data === value) {
+        const dropdown = option.dom;
+        if (fieldValue.dom) {
+          if (fieldValue.dom?.getAttribute('aria-expanded') !== 'true') {
+            fieldValue.dom
+              ?.querySelector('div[role=presentation]')
+              ?.dispatchEvent(new Event('click', { bubbles: true }));
+            await sleep(SLEEP_DURATION);
+          }
+          const allOptions =
+            fieldValue.dom.querySelectorAll(`div[role=option]`);
+          allOptions.forEach((possibleOption) => {
+            if (possibleOption.querySelector('span')?.textContent === value) {
+              possibleOption.dispatchEvent(
+                new Event('click', { bubbles: true })
+              );
+              return;
+            }
+          });
 
-  //       console.log("Meow" + optionToBeSelected)
-  //       optionToBeSelected.dispatchEvent(new Event('click', {bubbles: true}));
-  //       return true;
-  //     }
-  //   }
-
-  //   const dropdown = fieldValue.dom as HTMLSelectElement;
-  //   if (dropdown) {
-  //     dropdown.value = value;
-  //     dropdown.dispatchEvent(new Event('change', { bubbles: true }));
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  //   private async fillDropDown(
-  //     element: HTMLElement,
-  //     fieldValue: DropdownResult,
-  //     value: string,
-  //     sleepDuration: number
-  // ): Promise<boolean> {
-  //     await sleep(sleepDuration);
-
-  //     let foundFlag = false;
-
-  //     fieldValue.options.forEach((option) => {
-  //         if (option.data === value) {
-  //             foundFlag = true;
-  //             setTimeout(() => {
-  //                 option.dom?.click();
-  //             }, 1);
-  //             setTimeout(() => {
-  //                 element
-  //                     .querySelector(`div[data-value="${value}"][role=option]`)
-  //                     ?.click();
-  //             }, sleepDuration);
-  //         }
-  //     });
-
-  //     return foundFlag;
-  // }
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
