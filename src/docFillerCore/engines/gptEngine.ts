@@ -5,15 +5,12 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import LLMEngineType from '@utils/llmEngineTypes';
 
 export class LLMEngine {
-  private modelLock: boolean;
   private engine: LLMEngineType;
   private openai?: ChatOpenAI;
   private ollama?: Ollama;
   private gemini?: ChatGoogleGenerativeAI;
 
   constructor(engine?: LLMEngineType) {
-    this.modelLock = false;
-
     if (engine) {
       this.engine = engine;
     } else {

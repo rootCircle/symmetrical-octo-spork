@@ -11,9 +11,11 @@ interface ExtractedValue {
   description?: string | null;
   dom?: HTMLElement;
   options?: Option[];
+  other?: OtherOption[];
   rowColumnOption?: RowColumnOption[];
   rowArray?: string[];
   columnArray?: string[];
+  bounds?: LowerUpperBound;
   date?: HTMLInputElement | null;
   month?: HTMLInputElement | null;
   year?: HTMLInputElement | null;

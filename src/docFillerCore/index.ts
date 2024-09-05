@@ -3,6 +3,7 @@ import { FieldExtractorEngine } from '@docFillerCore/engines/fieldExtractorEngin
 // import { FillerEngine } from '@docFillerCore/engines/filler-engine';
 import { ParserEngine } from '@docFillerCore/engines/parserEngine';
 import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtractorEngine';
+import { PromptEngine } from '@docFillerCore/engines/promptEngine';
 
 function runDocFillerEngine() {
   console.clear(); // Temporary code, while debugging
@@ -12,6 +13,7 @@ function runDocFillerEngine() {
 
   const checker = new DetectBoxType();
   const fields = new FieldExtractorEngine();
+  const prompts = new PromptEngine();
   const parser = new ParserEngine();
 
   questions.forEach((question) => {
@@ -31,6 +33,9 @@ function runDocFillerEngine() {
 
       console.log(`Parsed Response : ${parsed_response}`);
       console.log();
+
+      console.log('Prompt ↴');
+      console.log(prompts.getPrompt(fieldType, fieldValue));
     }
   });
 }
