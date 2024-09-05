@@ -31,3 +31,36 @@ This document provides instructions for installing the Web Extension on various 
 ## Usage Instructions
 
 Once the extension is installed, you can start using it immediately. Open any google form link in the browser and check the magic of docFiller auto-filling all forms by default. The specific functionality of the extension will depend on its purpose, so please refer to its documentation for more information.
+
+## Implementation Status
+
+| **QType**                            | **detectBoxType** | **questionExtractorEngine** | **FieldExtractorEngine** | **promptEngine** | **gptEngine** | **parserEngine** | **fillerEngine** |
+| ------------------------------------ | ----------------- | --------------------------- | ------------------------ | ---------------- | ------------- | ---------------- | ---------------- |
+| DROPDOWN                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| TEXT                                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| PARAGRAPH                            | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| TEXT_EMAIL                           | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| TEXT_NUMERIC                         | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| TEXT_TEL                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| TEXT_URL                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| MULTI_CORRECT                        | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| MULTI_CORRECT_WITH_OTHER             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| MULTIPLE_CHOICE                      | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| MULTIPLE_CHOICE_WITH_OTHER           | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| MULTIPLE_CHOICE_GRID                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| CHECKBOX_GRID                        | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DATE                                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DATE_AND_TIME                        | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| TIME                                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DURATION                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DATE_WITHOUT_YEAR                    | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DATE_TIME_WITHOUT_YEAR               | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DATE_TIME_WITH_MERIDIEM              | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| TIME_WITH_MERIDIEM                   | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| LINEAR_SCALE                         | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+
+**Legend:**
+
+- ✅ = Supported
+- ❌ = Not Implemented yet

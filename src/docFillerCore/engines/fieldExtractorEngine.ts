@@ -361,9 +361,9 @@ export class FieldExtractorEngine {
     // Determine lowerBound and upperBound
     elementsWithHierarchy.forEach((elm, index) => {
       const textContent = elm.textContent?.trim() || EMPTY_STRING;
-      if (lowerBound === null && textContent !== EMPTY_STRING) {
+      if (lowerBound === EMPTY_STRING && textContent !== EMPTY_STRING) {
         lowerBound = textContent;
-      } else if (lowerBound !== null && textContent !== EMPTY_STRING) {
+      } else if (lowerBound !== EMPTY_STRING && textContent !== EMPTY_STRING) {
         upperBound = textContent;
       }
     });
@@ -426,9 +426,10 @@ export class FieldExtractorEngine {
     }
 
     const rowColDom: RowColumnOption[] = [];
+    let q = 0;
     for (let i = 0; i < rowsArray.length; i++) {
       const cols = [];
-      for (let p = 0; p < columnsArray.length * (i + 1); p++) {
+      for (let p = q; p < columnsArray.length * (i + 1); p++, q++) {
         cols.push(optionDom[p]);
       }
       rowColDom.push({ row: rowsArray[i], cols });
@@ -481,15 +482,16 @@ export class FieldExtractorEngine {
     }
 
     const rowColDom: RowColumnOption[] = [];
+    let checkboxNumber = 0;
 
     for (let rowIndex = 0; rowIndex < rowsArray.length; rowIndex++) {
       const arr: Option[] = [];
       for (
-        let checkboxNumber = 0;
-        checkboxNumber < columnsArray.length * (rowIndex + 1);
-        checkboxNumber++
+        let p = checkboxNumber;
+        p < columnsArray.length * (rowIndex + 1);
+        p++, checkboxNumber++
       ) {
-        arr.push(optionDom[checkboxNumber]);
+        arr.push(optionDom[p]);
       }
       rowColDom.push({ row: rowsArray[rowIndex], cols: arr });
     }
@@ -572,7 +574,6 @@ export class FieldExtractorEngine {
     const inputField = element.querySelectorAll(
       'input[type=text], input[type=date]'
     );
-    const meridiem = element.querySelector('div[role=option]');
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
     let yearDom: HTMLInputElement | null = null;
@@ -607,7 +608,6 @@ export class FieldExtractorEngine {
       year: yearDom,
       hour: hourDom,
       minute: minuteDom,
-      meridiem: meridiem as HTMLElement,
     };
   }
 
@@ -667,7 +667,6 @@ export class FieldExtractorEngine {
     const inputField = element.querySelectorAll(
       'input[type=text], input[type=date]'
     );
-    const meridiem = element.querySelector('div[role=option]');
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
     let hourDom: HTMLInputElement | null = null;
@@ -697,7 +696,6 @@ export class FieldExtractorEngine {
       month: monthDom,
       hour: hourDom,
       minute: minuteDom,
-      meridiem: meridiem as HTMLElement,
     };
   }
 
