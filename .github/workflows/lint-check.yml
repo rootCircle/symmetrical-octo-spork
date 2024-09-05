@@ -1,14 +1,12 @@
-name: Lint Check
+name: Health Check
 
 on:
   workflow_dispatch:
   push:
-    branches: [ "dev" ]
+    branches: [ "bun_tsc", "main", "dev" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "bun_tsc", "main", "dev" ]
   
-    
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,21 +16,29 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+    - uses: actions/checkout@v4
+    - uses: oven-sh/setup-bun@v2
 
     - name: Install dependencies
       run: |
-        npm install
-        
-    - name: Lint Check
+        bun install
+
+    - name: eslint Lint check
       run: |
-        npm run lint
-    
-    - name: Prettier Format Check
-      run: | 
-        npm run format:check
+        bun run lint
+ 
+    - name: Prettier Check
+      run: |
+        bun run format
+
+    - name: web-ext Lint
+      run: |
+          bun run webext:lint
+
+    - name: tsc
+      run: |
+          bun run tsc
+
+    - name: Build
+      run: |
+        bun run build

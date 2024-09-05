@@ -1,4 +1,0 @@
-const DEFAULT_TEL_COUNTRY = 'IN';
-const SLEEP_DURATION = 2000;
-export default DEFAULT_TEL_COUNTRY;
-export { SLEEP_DURATION };

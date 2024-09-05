@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "docFiller",
+  "version": "0.2.0",
+
+  "description": "Automatically fills Google Docs entries, powered by ChatGPT.",
+
+  "icons": {
+    "64": "assets/icons/icon-form-64.png",
+    "96": "assets/icons/icon-form-96.png"
+  },
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "http://*.docs.google.com/*",
+    "https://*.docs.google.com/*"
+  ],
+  "background": {
+    "scripts": ["src/background/index.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.docs.google.com/*"],
+      "js": ["src/contentScript/index.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_title": "Home"
+  },
+  "options_ui": {
+    "page": "src/options/index.html",
+    "open_in_tab": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "addon@docfiller.com",
+      "strict_min_version": "56.0"
+    }
+  }
+}
