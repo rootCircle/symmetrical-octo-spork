@@ -13,6 +13,6 @@ build:
 webext:
 	bun run webext:lint
 
-precommit: tsccheck lint webext format build
+precommit: tsccheck lint format build webext
  
 .PHONY: lint format tsccheck build webext
