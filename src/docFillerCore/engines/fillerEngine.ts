@@ -1,5 +1,5 @@
 import { QType } from '@utils/questionTypes.ts';
-import { SLEEP_DURATION } from '@utils/constant';
+import { EMPTY_STRING, SLEEP_DURATION } from '@utils/constant';
 
 // Sleep utility function
 function sleep(milliseconds: number): Promise<void> {
@@ -25,32 +25,32 @@ export class FillerEngine {
         return this.fillParagraph(fieldValue, 'this is a paragraph \newww');
 
       case QType.LINEAR_SCALE:
-        return this.fillLinearScale(fieldValue, '1');
+        return await this.fillLinearScale(fieldValue, '1');
 
       // case QType.DROPDOWN:
       //   return await this.fillDropDown(fieldValue, 'Option 2');
 
-      // case QType.CHECKBOX_GRID:
-      //   return await this.fillCheckboxGrid(fieldValue, [
-      //     {
-      //       row: 'Row 1',
-      //       cols: [{ data: 'Column 1' }, { data: 'Column 2' }],
-      //     },
-      //     { row: 'Row 2', cols: [{ data: 'Column 2' }] },
-      //   ]);
+      case QType.CHECKBOX_GRID:
+        return await this.fillCheckboxGrid(fieldValue, [
+          {
+            row: 'Row 1',
+            cols: [{ data: 'Column 1' }, { data: 'Column 2' }],
+          },
+          { row: 'Row 2', cols: [{ data: 'Column 2' }] },
+        ] as RowColumnOption[]);
 
-      // case QType.MULTIPLE_CHOICE_GRID:
-      //   return await this.fillMultipleChoiceGrid(fieldValue, [
-      //     { row: 'Row 1', cols: [{ data: 'Column 1' }] },
-      //     { row: 'Row 2', cols: [{ data: 'Column 2' }] },
-      //     { row: 'Brooooo', cols: [{ data: 'Column 2' }] },
-      //   ]);
+      case QType.MULTIPLE_CHOICE_GRID:
+        return await this.fillMultipleChoiceGrid(fieldValue, [
+          { row: 'Row 1', selectedColumn: 'Column 1' },
+          { row: 'Row 2', selectedColumn: 'Column 2' },
+          { row: 'Brooooo', selectedColumn: 'Column 2' },
+        ]);
 
       case QType.DATE:
         return this.fillDate(fieldValue, '11-11-2111');
 
       case QType.DATE_AND_TIME:
-        return this.fillDateAndTime(fieldValue, '01-01-2003-01-01');
+        return await this.fillDateAndTime(fieldValue, '01-01-2003-01-01');
 
       case QType.TIME:
         return this.fillTime(fieldValue, '02-02');
@@ -62,15 +62,15 @@ export class FillerEngine {
         return this.fillDateWithoutYear(fieldValue, '11-11');
 
       case QType.DATE_TIME_WITHOUT_YEAR:
-        return this.fillDateTimeWithoutYear(fieldValue, '22-01-01-01');
+        return await this.fillDateTimeWithoutYear(fieldValue, '22-01-01-01');
 
-      // case QType.MULTI_CORRECT_WITH_OTHER:
-      // case QType.MULTI_CORRECT:
-      //   return this.fillCheckBox(fieldValue, [
-      //     'Sightseeing',
-      //     'Day 2',
-      //     { optionTitle: 'Other:', optionText: 'My name is Monark Jain' },
-      //   ]);
+      case QType.MULTI_CORRECT_WITH_OTHER:
+      case QType.MULTI_CORRECT:
+        return await this.fillMultiCorrectWithOther(fieldValue, [
+          { optionText: 'Sightseeing' },
+          { optionText: 'Day 2' },
+          { isOther: true, otherOptionValue: 'My name is Andrew!' },
+        ] as MultiCorrectOrMultipleOption[]);
 
       default:
         return false;
@@ -270,36 +270,124 @@ export class FillerEngine {
     return true;
   }
 
-  // private async fillCheckBox(
-  //   fieldValue: ExtractedValue,
-  //   value: Array<string | { optionTitle: string; optionText: string }>
-  // ): Promise<boolean> {
-  //   await sleep(SLEEP_DURATION);
+  private async fillMultiCorrectWithOther(
+    fieldValue: ExtractedValue,
+    value: MultiCorrectOrMultipleOption[]
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
 
-  //   if (!Array.isArray(value)) return false;
+    for (const element of fieldValue.options || []) {
+      for (const option of value) {
+        // For checkbox
+        if (option.optionText && !option.isOther) {
+          if (element.data.toLowerCase() === option.optionText.toLowerCase()) {
+            if (element.dom?.getAttribute('aria-checked') !== 'true') {
+              element.dom?.dispatchEvent(new Event('click', { bubbles: true }));
+            }
+          }
+        }
+        // For Other option
+        else if (option.isOther && option.otherOptionValue) {
+          if (fieldValue.other?.dom?.getAttribute('aria-checked') !== 'true') {
+            fieldValue.other?.dom?.dispatchEvent(
+              new Event('click', { bubbles: true })
+            );
+          }
 
-  //   for (const val of value) {
-  //     if (typeof val === 'string') {
-  //       const option = fieldValue.options?.find((opt) => opt.data === val);
-  //       if (option) {
-  //         (option.dom as HTMLInputElement).click();
-  //       }
-  //     } else if (val.optionTitle === 'Other:') {
-  //       const otherOption = fieldValue.other?.find(
-  //         (opt) => opt.data === val.optionText
-  //       );
-  //       if (otherOption) {
-  //         otherOption.dom?.click();
-  //         otherOption.inputBoxDom.value = val.optionText;
-  //         (otherOption.inputBoxDom as HTMLInputElement).dispatchEvent(
-  //           new Event('input', { bubbles: true })
-  //         );
-  //       }
-  //     }
-  //   }
+          fieldValue.other?.inputBoxDom.setAttribute(
+            'value',
+            option.otherOptionValue
+          );
+          fieldValue.other?.inputBoxDom.dispatchEvent(
+            new Event('input', { bubbles: true })
+          );
+        }
+      }
+    }
+    return true;
+  }
 
-  //   return true;
-  // }
+  private async fillLinearScale(
+    fieldValue: ExtractedValue,
+    value: string
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
+
+    fieldValue.options?.forEach((scale) => {
+      if (scale.data === value) {
+        if (scale.dom?.getAttribute('aria-checked') !== 'true') {
+          (scale.dom as HTMLInputElement)?.dispatchEvent(
+            new Event('click', { bubbles: true })
+          );
+          return true;
+        }
+      }
+    });
+
+    return false;
+  }
+
+  private async fillCheckboxGrid(
+    fieldValue: ExtractedValue,
+    options: RowColumnOption[]
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
+
+    fieldValue.rowColumnOption?.forEach((row) => {
+      const matchingOptionRow = options.find(
+        (option) => option.row === row.row
+      );
+      if (matchingOptionRow) {
+        matchingOptionRow.cols.forEach((optionValue) => {
+          const checkboxObj = row.cols.find(
+            (col) => col.data === optionValue.data
+          );
+          if (checkboxObj) {
+            // Check if already marked
+            if (
+              !checkboxObj.dom?.querySelector(
+                'div[role=checkbox][aria-checked=true]'
+              )
+            ) {
+              checkboxObj.dom?.dispatchEvent(
+                new Event('click', { bubbles: true })
+              );
+            }
+          }
+        });
+      }
+    });
+    return true;
+  }
+
+  private async fillMultipleChoiceGrid(
+    fieldValue: ExtractedValue,
+    options: RowColumn[]
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
+
+    fieldValue.rowColumnOption?.forEach((row) => {
+      const matchingOptionRow = options.find(
+        (option) => option.row === row.row
+      );
+      if (matchingOptionRow) {
+        const matchingOptionRowCol = row.cols.find(
+          (box) => box.data === matchingOptionRow.selectedColumn
+        );
+        if (matchingOptionRowCol) {
+          if (
+            matchingOptionRowCol.dom?.getAttribute('aria-checked') !== 'true'
+          ) {
+            matchingOptionRowCol.dom?.dispatchEvent(
+              new Event('click', { bubbles: true })
+            );
+          }
+        }
+      }
+    });
+
+    return true;
+  }
 
   // private async fillDropDown(
   //   fieldValue: ExtractedValue,
@@ -314,7 +402,7 @@ export class FillerEngine {
   //       fieldValue.dom?.querySelector('div[role=presentation]')?.dispatchEvent(new Event('click', {bubbles: true}));
   //       // await sleep(SLEEP_DURATION);
   //       const optionToBeSelected = fieldValue.dom?.querySelector(`div[data-value="${value}"][role=option]`) as HTMLElement;
-        
+
   //       console.log("Meow" + optionToBeSelected)
   //       optionToBeSelected.dispatchEvent(new Event('click', {bubbles: true}));
   //       return true;
@@ -330,58 +418,30 @@ export class FillerEngine {
   //   return false;
   // }
 
-  private async fillLinearScale(
-    fieldValue: ExtractedValue,
-    value: string
-  ): Promise<boolean> {
-    await sleep(SLEEP_DURATION);
-
-    fieldValue.options?.forEach((scale) => {
-      if (scale.data === value) {
-        (scale.dom as HTMLInputElement)?.dispatchEvent(
-          new Event('click', { bubbles: true })
-        );
-        return true;
-      }
-    });
-
-    return false;
-  }
-
-  // private fillCheckboxGrid(
-  //   fieldValue: ExtractedValue,
-  //   options: RowColumnOption[]
-  // ): boolean {
-  //   fieldValue.rowColumnOption?.forEach((col) => {
-  //     const row = options.find((option) => option.row === col.row);
-  //     if (row) {
-  //       row.cols.forEach((optionValue) => {
-  //         const checkbox = fieldValue.dom?.querySelector(
-  //           `input[value="${optionValue.data}"]`
-  //         ) as HTMLInputElement;
-  //         if (checkbox) {
-  //           checkbox.click();
-  //         }
-  //       });
-  //     }
-  //   });
-  //   return true;
-  // }
-
-  // private async fillMultipleChoiceGrid(
-  //   fieldValue: ExtractedValue,
-  //   options: RowColumnOption[]
+  //   private async fillDropDown(
+  //     element: HTMLElement,
+  //     fieldValue: DropdownResult,
+  //     value: string,
+  //     sleepDuration: number
   // ): Promise<boolean> {
-  //   await sleep(SLEEP_DURATION);
+  //     await sleep(sleepDuration);
 
-  //   options.forEach((option) => {
-  //     const checkbox = fieldValue.dom?.querySelector(
-  //       `input[value="${option.row}"]`
-  //     ) as HTMLInputElement;
-  //     if (checkbox) {
-  //       checkbox.click();
-  //     }
-  //   });
-  //   return true;
+  //     let foundFlag = false;
+
+  //     fieldValue.options.forEach((option) => {
+  //         if (option.data === value) {
+  //             foundFlag = true;
+  //             setTimeout(() => {
+  //                 option.dom?.click();
+  //             }, 1);
+  //             setTimeout(() => {
+  //                 element
+  //                     .querySelector(`div[data-value="${value}"][role=option]`)
+  //                     ?.click();
+  //             }, sleepDuration);
+  //         }
+  //     });
+
+  //     return foundFlag;
   // }
 }

@@ -9,7 +9,7 @@ export class PromptEngine {
     const bounds = (value.bounds as LowerUpperBound) || null;
     const rowOptions = value.rowArray?.join('\n') ?? EMPTY_STRING;
     const columnOptions = value.columnArray?.join(', ') ?? EMPTY_STRING;
-    const otherOption = value.other?.[0].data ?? EMPTY_STRING;
+    const otherOption = value.other?.data ?? EMPTY_STRING;
 
     switch (fieldType) {
       case QType.TEXT:

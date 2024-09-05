@@ -374,7 +374,7 @@ export class DetectBoxType {
     ] = this.timeCacher.getTimeParams(element);
 
     return Boolean(
-      inputFieldCount === 3 &&
+      inputFieldCount === 2 &&
         !hasYear &&
         !hasMonth &&
         !hasDate &&
