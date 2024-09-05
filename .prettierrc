@@ -1,18 +1,16 @@
 {
-	"bracketSameLine": false,
-	"printWidth": 80,
-	"semi": true,
-	"singleQuote": true,
-	"tabWidth": 2,
-	"trailingComma": "all",
-	"useTabs": true,
-	"overrides": [
-		{
-			"files": "*.md",
-			"options": {
-				"printWidth": 70,
-				"proseWrap": "never"
-			}
-		}
-	]
+  "arrowParens": "always",
+  "singleQuote": true,
+  "proseWrap": "never",
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": true,
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "preserve"
+      }
+    }
+  ]
 }

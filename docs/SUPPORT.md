@@ -13,6 +13,7 @@ If you need help or have questions about how to use our project, you have severa
 ### Documentation
 
 Make sure to check out our documentation in `docs/` directory.
+
 ### Community Discussions
 
 Join our community discussions on Discord where you can ask questions, share experiences, and interact with other users and contributors. (Invite link in the README)

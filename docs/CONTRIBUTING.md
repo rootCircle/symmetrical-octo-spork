@@ -3,16 +3,17 @@
 Thank you for considering contributing to docFiller! We welcome contributions from the community to help improve our project. Before you start, please take a moment to read and understand these guidelines to ensure a smooth collaboration.
 
 ## Table of Contents
+
 1. [Code of Conduct](#code-of-conduct)
 2. [How Can I Contribute?](#how-can-i-contribute)
-    - [Reporting Bugs](#reporting-bugs)
-    - [Suggesting Enhancements](#suggesting-enhancements)
-    - [Code Contributions](#code-contributions)
+   - [Reporting Bugs](#reporting-bugs)
+   - [Suggesting Enhancements](#suggesting-enhancements)
+   - [Code Contributions](#code-contributions)
 3. [Getting Started](#getting-started)
-    - [Setting Up the Development Environment](#setting-up-the-development-environment)
-    - [Forking the Repository](#forking-the-repository)
-    - [Creating a Branch](#creating-a-branch)
-    - [Making Changes](#making-changes)
+   - [Setting Up the Development Environment](#setting-up-the-development-environment)
+   - [Forking the Repository](#forking-the-repository)
+   - [Creating a Branch](#creating-a-branch)
+   - [Making Changes](#making-changes)
 4. [Submitting a Pull Request](#submitting-a-pull-request)
 5. [Code Review](#code-review)
 6. [License](#license)
@@ -85,7 +86,6 @@ in which case force pushing is okay for that request.
 Note that squashing at the end of the review process should also not be done,
 that can be done when the pull request is integrated via GitHub.
 
-
 #### Commit message guidelines
 
 ```text
@@ -94,8 +94,8 @@ that can be done when the pull request is integrated via GitHub.
 │             └── Summary in present tense.
 |                 Not capitalized.
 |                 No period at the end.
-│         
-│         
+│
+│
 └── Commit Type: build | chore | ci | docs | feat | fix | perf | refactor | test
 ```
 
@@ -120,7 +120,6 @@ Use the `<summary>` field to provide a succinct description of the change:
 - Don't capitalize the first letter.
 - No period (.) at the end.
 
-
 ### Documentation
 
 If you make changes that affect the project's documentation, please update the documentation accordingly in the `/docs` directory.
@@ -139,34 +138,38 @@ Then, open a Pull Request (PR) on the main repository. Be sure to provide a clea
 
 If you're planning to contribute to the development of this web extension, here are some guidelines:
 
-- Use `pnpm` instead of `npm`, `bun` or `yarn` while installing the packages, the project default package manager. You can install pnpm by using `npm i -g pnpm@latest`.
+- Use `bun` instead of `npm`, `pnpm` or `yarn` while installing the packages, the project default package manager. You can install bun from [official website](https://bun.sh/).
+
 - To get started, follow these steps:
+
   1. Clone the repository:
-      ```bash
-      git clone https://github.com/your-username/docFiller.git
-      ```
+     ```bash
+     git clone https://github.com/your-username/docFiller.git
+     ```
   2. Install the required dependencies:
-      ```bash
-      pnpm i
-      ```
+     ```bash
+     bun i
+     ```
   3. Test the extension:
-      ```bash
-      pnpm run dev
-      ```
-      This will open a new Firefox window with the extension loaded.
 
-    4. **Make your changes**: Make the changes you want in your local copy of the repository.
+     ```bash
+     bun run dev
+     ```
 
-    5. **Test your changes**: Ensure that your changes work as expected. Test thoroughly before proceeding. Run lint checks before proceeding.
+     This will open a new Firefox window with the extension loaded.
 
-        ```bash
-        pnpm run lint
-        pnpm run format:check
-        ```
+  4. **Make your changes**: Make the changes you want in your local copy of the repository.
 
-        To fix a set of lint issues simply run `pnpm run format:fix`.
+  5. **Test your changes**: Ensure that your changes work as expected. Test thoroughly before proceeding. Run lint checks before proceeding.
 
-    5. **Submit a Pull Request**: Once you've made your changes and tested them, submit a pull request (PR) to the original repository. Make sure to explain the changes you've made in the PR description.
+     ```bash
+     bun run lint
+     bun run format
+     ```
+
+     To fix a set of lint issues simply run `bun run lint:fix`.
+
+  6. **Submit a Pull Request**: Once you've made your changes and tested them, submit a pull request (PR) to the original repository. Make sure to explain the changes you've made in the PR description.
 
 ## Code Review
 
