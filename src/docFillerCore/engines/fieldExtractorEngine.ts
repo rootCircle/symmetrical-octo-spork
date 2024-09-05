@@ -59,12 +59,6 @@ export class FieldExtractorEngine {
       case QType.TEXT_EMAIL:
         return this.getDomTextEmail(element) as ExtractedValue;
 
-      case QType.TEXT_NUMERIC:
-        return this.getDomTextNumeric(element) as ExtractedValue;
-
-      case QType.TEXT_TEL:
-        return this.getDomTextTel(element) as ExtractedValue;
-
       case QType.TEXT_URL:
         return this.getDomTextUrl(element) as ExtractedValue;
 
@@ -667,20 +661,6 @@ export class FieldExtractorEngine {
       hour: hourDom,
       minute: minuteDom,
     };
-  }
-
-  private getDomTextNumeric(element: HTMLElement): DOMPointer {
-    const inputField = element.querySelector(
-      'input[type=text]'
-    ) as HTMLInputElement;
-    return { dom: inputField };
-  }
-
-  private getDomTextTel(element: HTMLElement): DOMPointer {
-    const inputField = element.querySelector(
-      'input[type=text]'
-    ) as HTMLInputElement;
-    return { dom: inputField };
   }
 
   private getDomTextUrl(element: HTMLElement): DOMPointer {

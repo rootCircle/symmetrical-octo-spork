@@ -17,8 +17,6 @@ export class DetectBoxType {
       [QType.TEXT]: this.isText(element),
       [QType.PARAGRAPH]: this.isParagraph(element),
       [QType.TEXT_EMAIL]: this.isTextEmail(element),
-      [QType.TEXT_NUMERIC]: this.isTextNumeric(element),
-      [QType.TEXT_TEL]: this.isTextTelephone(element),
       [QType.TEXT_URL]: this.isTextURL(element),
       [QType.MULTI_CORRECT]: this.isMultiCorrect(element),
       [QType.MULTI_CORRECT_WITH_OTHER]: this.isMultiCorrectWithOther(element),
@@ -73,14 +71,6 @@ export class DetectBoxType {
 
   private isTextEmail(element: HTMLElement): boolean {
     return Boolean(element.querySelector('input[type=email]'));
-  }
-
-  private isTextNumeric(element: HTMLElement): boolean {
-    return Boolean(element.querySelector('input[type=number]'));
-  }
-
-  private isTextTelephone(element: HTMLElement): boolean {
-    return Boolean(element.querySelector('input[type=tel]'));
   }
 
   private isTextURL(element: HTMLElement): boolean {

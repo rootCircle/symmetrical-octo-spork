@@ -1,6 +1,4 @@
-import { isValidPhoneNumber } from 'libphonenumber-js';
 import { QType } from '@utils/questionTypes';
-import { DEFAULT_TEL_COUNTRY } from '@utils/constant';
 import ValidationUtils from '@utils/validationUtils';
 
 export class ParserEngine {
@@ -21,8 +19,6 @@ export class ParserEngine {
       EMAIL: 'abc@gmail.com',
       PARAGRAPH:
         "Please enjoy these great stories, fairy-tales, fables, and nursery rhymes for children. They help kids learn to read and make excellent bedtime stories! We have hundreds of great children's stories for you to share.",
-      TEXT_NUMERIC: '1234',
-      TEXT_TEL: '9111421028',
       MULTI_CORRECT: 'Swimming\nHiking',
       MULTI_CORRECT_WITH_OTHER: 'Day 1\nDay 2',
       DATE: '22-12-2022',
@@ -64,10 +60,6 @@ export class ParserEngine {
           );
         case QType.PARAGRAPH:
           return this.validateParagraph(testResponse.PARAGRAPH);
-        case QType.TEXT_NUMERIC:
-          return this.validateTextNumeric(testResponse.TEXT_NUMERIC);
-        case QType.TEXT_TEL:
-          return this.validateTextTel(testResponse.TEXT_TEL);
         case QType.DATE:
           return this.validateDate(testResponse.DATE);
         case QType.DATE_AND_TIME:
@@ -127,17 +119,6 @@ export class ParserEngine {
 
   private validateParagraph(response: string): boolean {
     return response.trim().length > 0;
-  }
-
-  private validateTextNumeric(response: string): boolean {
-    return !isNaN(Number(response.trim()));
-  }
-
-  private validateTextTel(response: string): boolean {
-    // let PhoneRegex = "^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
-    // Alternatively can use regex, if package size becomes an constraint
-
-    return isValidPhoneNumber(response, DEFAULT_TEL_COUNTRY);
   }
 
   private validateEmail(response: string): boolean {
