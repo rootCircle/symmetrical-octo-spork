@@ -9,44 +9,45 @@ export class DetectBoxType {
     this.timeCacher = new DetectBoxTypeTimeCacher();
   }
 
-  public detectType(element: HTMLElement): QType | null {
+  public detectType = (element: HTMLElement): QType | null => {
     const possibleBoxesMethod: {
-      [key in QType]: (element: HTMLElement) => boolean;
+      [key in QType]: boolean;
     } = {
-      [QType.DROPDOWN]: this.isDropdown,
-      [QType.TEXT]: this.isText,
-      [QType.PARAGRAPH]: this.isParagraph,
-      [QType.TEXT_EMAIL]: this.isTextEmail,
-      [QType.TEXT_NUMERIC]: this.isTextNumeric,
-      [QType.TEXT_TEL]: this.isTextTelephone,
-      [QType.TEXT_URL]: this.isTextURL,
-      [QType.MULTI_CORRECT]: this.isMultiCorrect,
-      [QType.MULTI_CORRECT_WITH_OTHER]: this.isMultiCorrectWithOther,
-      [QType.LINEAR_SCALE]: this.isLinearScale,
-      [QType.MULTIPLE_CHOICE]: this.isMultipleChoice,
-      [QType.MULTIPLE_CHOICE_WITH_OTHER]: this.isMultipleChoiceWithOther,
-      [QType.MULTIPLE_CHOICE_GRID]: this.isMultipleChoiceGrid,
-      [QType.CHECKBOX_GRID]: this.isCheckboxGrid,
-      [QType.DATE]: this.isDate,
-      [QType.DATE_AND_TIME]: this.isDateAndTime,
-      [QType.TIME]: this.isTime,
-      [QType.DURATION]: this.isDuration,
-      [QType.DATE_WITHOUT_YEAR]: this.isDateWithoutYear,
-      [QType.DATE_TIME_WITHOUT_YEAR]: this.isDateWithoutYearWithTime,
-      [QType.DATE_TIME_WITH_MERIDIEM]: this.isDateAndTimeWithMeridiem,
-      [QType.TIME_WITH_MERIDIEM]: this.isTimeWithMeridiem,
+      [QType.DROPDOWN]: this.isDropdown(element),
+      [QType.TEXT]: this.isText(element),
+      [QType.PARAGRAPH]: this.isParagraph(element),
+      [QType.TEXT_EMAIL]: this.isTextEmail(element),
+      [QType.TEXT_NUMERIC]: this.isTextNumeric(element),
+      [QType.TEXT_TEL]: this.isTextTelephone(element),
+      [QType.TEXT_URL]: this.isTextURL(element),
+      [QType.MULTI_CORRECT]: this.isMultiCorrect(element),
+      [QType.MULTI_CORRECT_WITH_OTHER]: this.isMultiCorrectWithOther(element),
+      [QType.LINEAR_SCALE]: this.isLinearScale(element),
+      [QType.MULTIPLE_CHOICE]: this.isMultipleChoice(element),
+      [QType.MULTIPLE_CHOICE_WITH_OTHER]:
+        this.isMultipleChoiceWithOther(element),
+      [QType.MULTIPLE_CHOICE_GRID]: this.isMultipleChoiceGrid(element),
+      [QType.CHECKBOX_GRID]: this.isCheckboxGrid(element),
+      [QType.DATE]: this.isDate(element),
+      [QType.DATE_AND_TIME]: this.isDateAndTime(element),
+      [QType.TIME]: this.isTime(element),
+      [QType.DURATION]: this.isDuration(element),
+      [QType.DATE_WITHOUT_YEAR]: this.isDateWithoutYear(element),
+      [QType.DATE_TIME_WITHOUT_YEAR]: this.isDateWithoutYearWithTime(element),
+      [QType.DATE_TIME_WITH_MERIDIEM]: this.isDateAndTimeWithMeridiem(element),
+      [QType.TIME_WITH_MERIDIEM]: this.isTimeWithMeridiem(element),
       [QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR]:
-        this.isDateWithoutYearWithTimeAndMeridiem,
+        this.isDateWithoutYearWithTimeAndMeridiem(element),
     };
 
     for (const key in possibleBoxesMethod) {
-      if (possibleBoxesMethod[key as QType](element)) {
+      if (possibleBoxesMethod[key as QType]) {
         return key as QType;
       }
     }
 
     return null;
-  }
+  };
 
   public isDropdown(element: HTMLElement): boolean {
     return Boolean(

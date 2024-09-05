@@ -5,10 +5,11 @@ import { ParserEngine } from '@docFillerCore/engines/parserEngine';
 import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtractorEngine';
 
 function runDocFillerEngine() {
+  console.clear(); // Temporary code, while debugging
   console.log('in main run() function');
   const questions = new QuestionExtractorEngine().getValidQuestions();
+  console.log(questions);
 
-  console.clear(); // Temporary code, while debugging
   const checker = new DetectBoxType();
   const fields = new FieldExtractorEngine();
   const parser = new ParserEngine();

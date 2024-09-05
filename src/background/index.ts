@@ -1,12 +1,12 @@
 import { runDocFillerEngine } from '@docFillerCore/index';
 
-browser.runtime.onMessage.addListener((message) => {
-  // if message is FILL_FORM
-  if (message.data === 'FILL_FORM') {
-    // ----------------------------
-    // execute the main() function
-    runDocFillerEngine();
-    // to prevent code from simultaneous multiple execution
-    message.data = null;
-  }
-});
+console.log('Hello from background script!');
+
+// TODO:  Fix not working!
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   if (message.data === 'FILL_FORM') {
+//     runDocFillerEngine();
+//     message.data = null;
+//     console.log('FILL_FORM message received');
+//   }
+// });
