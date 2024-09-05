@@ -30,11 +30,7 @@ jobs:
     - name: Prettier Check
       run: |
         bun run format
-
-    - name: web-ext Lint
-      run: |
-          bun run webext:lint
-
+    
     - name: tsc
       run: |
           bun run tsc
@@ -42,3 +38,7 @@ jobs:
     - name: Build
       run: |
         bun run build
+
+    - name: web-ext Lint
+      run: |
+          bun run webext:lint

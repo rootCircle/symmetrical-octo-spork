@@ -34,7 +34,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "addon@docfiller.com",
-      "strict_min_version": "56.0"
+      "strict_min_version": "109.0"
     }
   }
 }
