@@ -31,12 +31,12 @@
     "@eslint/js": "^9.9.1",
     "@types/bun": "^1.1.8",
     "@types/chrome": "^0.0.246",
-    "eslint": "^9.9.1",
-    "eslint-plugin-async-await": "^0.0.0",
-    "eslint-plugin-import": "^2.30.0",
     "bun-types": "latest",
     "chokidar": "^3.6.0",
     "concurrently": "^8.2.2",
+    "eslint": "^9.9.1",
+    "eslint-plugin-async-await": "^0.0.0",
+    "eslint-plugin-import": "^2.30.0",
     "globals": "^15.9.0",
     "prettier": "^3.0.3",
     "web-ext": "^8.2.0"
@@ -62,8 +62,6 @@
     "@types/node": "^22.5.3",
     "dotenv": "^16.4.5",
     "langchain": "^0.2.17",
-    "libphonenumber-js": "^1.11.7",
-    "openai": "^4.57.1",
     "process": "^0.11.10"
   }
 }

@@ -18,12 +18,6 @@ export class PromptEngine {
       case QType.TEXT_EMAIL:
         return this.getTextEmailPrompt(title, description);
 
-      case QType.TEXT_NUMERIC:
-        return this.getTextNumericPrompt(title, description);
-
-      case QType.TEXT_TEL:
-        return this.getTextTelephonePrompt(title, description);
-
       case QType.TEXT_URL:
         return this.getTextURLPrompt(title, description);
 
@@ -114,22 +108,6 @@ export class PromptEngine {
       `Please provide the email address in text form for the following ` +
       `question: ${description} ${title}\n` +
       `If you don't have a response, you can provide dummy@email.com`
-    );
-  }
-
-  private getTextNumericPrompt(title: string, description: string): string {
-    return (
-      `Please provide a numeric response in text form for the following ` +
-      `question: ${description} ${title}\n` +
-      `Give JUST THE NUMBER and nothing else!`
-    );
-  }
-
-  private getTextTelephonePrompt(title: string, description: string): string {
-    return (
-      `Please provide the telephone number in text form for the following ` +
-      `question: ${description} ${title}\n` +
-      `If you don't have a response, you can provide +91-1234567890`
     );
   }
 
