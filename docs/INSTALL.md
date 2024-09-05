@@ -36,29 +36,29 @@ Once the extension is installed, you can start using it immediately. Open any go
 
 | **QType**                            | **detectBoxType** | **questionExtractorEngine** | **FieldExtractorEngine** | **promptEngine** | **gptEngine** | **parserEngine** | **fillerEngine** |
 | ------------------------------------ | ----------------- | --------------------------- | ------------------------ | ---------------- | ------------- | ---------------- | ---------------- |
-| DROPDOWN                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| TEXT                                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| PARAGRAPH                            | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| TEXT_EMAIL                           | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| TEXT_NUMERIC                         | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| TEXT_TEL                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| TEXT_URL                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| MULTI_CORRECT                        | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| MULTI_CORRECT_WITH_OTHER             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| MULTIPLE_CHOICE                      | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| MULTIPLE_CHOICE_WITH_OTHER           | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| MULTIPLE_CHOICE_GRID                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| CHECKBOX_GRID                        | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| DATE                                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| DATE_AND_TIME                        | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| TIME                                 | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| DURATION                             | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| DATE_WITHOUT_YEAR                    | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| DATE_TIME_WITHOUT_YEAR               | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| DATE_TIME_WITH_MERIDIEM              | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| TIME_WITH_MERIDIEM                   | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
-| LINEAR_SCALE                         | ✅                | ✅                          | ✅                       | ❌               | ❌            | ❌               | ❌               |
+| DROPDOWN                             | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| TEXT                                 | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| PARAGRAPH                            | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| TEXT_EMAIL                           | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| TEXT_NUMERIC                         | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| TEXT_TEL                             | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| TEXT_URL                             | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| MULTI_CORRECT                        | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| MULTI_CORRECT_WITH_OTHER             | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| MULTIPLE_CHOICE                      | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| MULTIPLE_CHOICE_WITH_OTHER           | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| MULTIPLE_CHOICE_GRID                 | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| CHECKBOX_GRID                        | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DATE                                 | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DATE_AND_TIME                        | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| TIME                                 | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DURATION                             | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DATE_WITHOUT_YEAR                    | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DATE_TIME_WITHOUT_YEAR               | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DATE_TIME_WITH_MERIDIEM              | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| TIME_WITH_MERIDIEM                   | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| LINEAR_SCALE                         | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
 
 **Legend:**
 

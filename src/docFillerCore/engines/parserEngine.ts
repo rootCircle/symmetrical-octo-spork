@@ -14,7 +14,7 @@ export class ParserEngine {
     fieldType: QType,
     extractedValue: ExtractedValue,
     response: string
-  ): boolean {
+  ): boolean | null {
     // TODO: Just for testing, remove this later
     const testResponse = {
       TEXT: 'Andrew',
@@ -107,7 +107,7 @@ export class ParserEngine {
         case QType.DROPDOWN:
           return this.validateDropdown(extractedValue, testResponse.DROPDOWN);
         default:
-          return false;
+          return null;
       }
     } else {
       return false;
