@@ -523,7 +523,10 @@ export class FieldExtractorEngine {
       }
     }
 
-    return { options };
+    return {
+      dom: element.querySelector('div[role=listbox]') as HTMLElement,
+      options,
+    };
   }
 
   private getDomText(element: HTMLElement): DOMPointer {
