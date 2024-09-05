@@ -36,7 +36,7 @@ Once the extension is installed, you can start using it immediately. Open any go
 
 | **QType**                            | **detectBoxType** | **questionExtractorEngine** | **FieldExtractorEngine** | **promptEngine** | **gptEngine** | **parserEngine** | **fillerEngine** |
 | ------------------------------------ | ----------------- | --------------------------- | ------------------------ | ---------------- | ------------- | ---------------- | ---------------- |
-| DROPDOWN                             | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ❌               |
+| DROPDOWN                             | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ✅               |
 | TEXT                                 | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ✅               |
 | PARAGRAPH                            | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ✅               |
 | TEXT_EMAIL                           | ✅                | ✅                          | ✅                       | ✅               | ❌            | ❌               | ✅               |
