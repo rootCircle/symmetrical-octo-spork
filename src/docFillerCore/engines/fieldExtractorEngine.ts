@@ -157,16 +157,9 @@ export class FieldExtractorEngine {
       return { options: [] };
     }
 
-    const superDivs = element.querySelectorAll('div[role="checkbox"]');
-    const clickElements: HTMLElement[] = [];
-
-    superDivs.forEach((optionDiv) => {
-      const thirdDiv = optionDiv.children[2] as HTMLElement;
-      const clickDiv = thirdDiv.firstElementChild as HTMLElement;
-      if (clickDiv) {
-        clickElements.push(clickDiv.firstElementChild as HTMLElement);
-      }
-    });
+    const clickElements = element.querySelectorAll(
+      'div[role="checkbox"]'
+    ) as NodeListOf<HTMLElement>;
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
@@ -193,19 +186,12 @@ export class FieldExtractorEngine {
     const optionLabels = element.querySelectorAll('span[dir="auto"]');
 
     if (optionLabels.length === 0) {
-      return { options: [], other: [] };
+      return { options: [] };
     }
 
-    const superDivs = element.querySelectorAll('div[role="checkbox"]');
-    const clickElements: HTMLElement[] = [];
-
-    superDivs.forEach((optionDiv) => {
-      const thirdDiv = optionDiv.children[2] as HTMLElement;
-      const clickDiv = thirdDiv.firstElementChild as HTMLElement;
-      if (clickDiv) {
-        clickElements.push(clickDiv.firstElementChild as HTMLElement);
-      }
-    });
+    const clickElements = element.querySelectorAll(
+      'div[role="checkbox"]'
+    ) as NodeListOf<HTMLElement>;
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
@@ -215,7 +201,6 @@ export class FieldExtractorEngine {
     });
 
     const options: Option[] = [];
-    const otherOption: OtherOption[] = [];
 
     // Remove the last option and add 'other_option' field in the object
     const lastOptionIndex = optionData.length - 1;
@@ -228,17 +213,21 @@ export class FieldExtractorEngine {
       for (let i = 0; i < clickElements.length - 1; i++) {
         options.push({ data: optionData[i], dom: clickElements[i] });
       }
+
       const inputInMultiCorrectWithOther = element.querySelector(
         'input[dir="auto"]'
       ) as HTMLInputElement;
-      otherOption.push({
+
+      const otherOption: OtherOption = {
         data: otherOptionData,
         dom: clickElements[clickElements.length - 1],
         inputBoxDom: inputInMultiCorrectWithOther,
-      });
+      } as OtherOption;
+
+      return { options, other: otherOption };
     }
 
-    return { options, other: otherOption };
+    return { options };
   }
 
   private getParamsMultipleChoice(
@@ -250,16 +239,9 @@ export class FieldExtractorEngine {
       return { options: [] };
     }
 
-    const superDivs = element.querySelectorAll('div[role="radio"]');
-    const clickElements: HTMLElement[] = [];
-
-    superDivs.forEach((optionDiv) => {
-      const thirdDiv = optionDiv.children[2] as HTMLElement;
-      const clickDiv = thirdDiv.firstElementChild as HTMLElement;
-      if (clickDiv) {
-        clickElements.push(clickDiv);
-      }
-    });
+    const clickElements = element.querySelectorAll(
+      'div[role="checkbox"]'
+    ) as NodeListOf<HTMLElement>;
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
@@ -289,19 +271,12 @@ export class FieldExtractorEngine {
 
     if (optionLabels.length === 0) {
       // Return an empty options array if no option labels are found
-      return { options: [], other: [] };
+      return { options: [] };
     }
 
-    const superDivs = element.querySelectorAll('div[role="radio"]');
-    const clickElements: HTMLElement[] = [];
-
-    superDivs.forEach((optionDiv) => {
-      const thirdDiv = optionDiv.children[2] as HTMLElement;
-      const clickDiv = thirdDiv.firstElementChild as HTMLElement;
-      if (clickDiv) {
-        clickElements.push(clickDiv.firstElementChild as HTMLElement);
-      }
-    });
+    const clickElements = element.querySelectorAll(
+      'div[role="checkbox"]'
+    ) as NodeListOf<HTMLElement>;
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
@@ -311,7 +286,6 @@ export class FieldExtractorEngine {
     });
 
     const options: Option[] = [];
-    const otherDom: OtherOption[] = [];
 
     // Remove the last option and add 'Other' field in the object
     const lastOptionIndex = optionData.length - 1;
@@ -327,14 +301,16 @@ export class FieldExtractorEngine {
       const inputInMultipleChoiceWithOther = element.querySelector(
         'input[dir="auto"]'
       ) as HTMLInputElement;
-      otherDom.push({
+
+      const otherDom: OtherOption = {
         data: otherOptionData,
         dom: clickElements[clickElements.length - 1],
         inputBoxDom: inputInMultipleChoiceWithOther,
-      });
-    }
+      } as OtherOption;
 
-    return { options, other: otherDom };
+      return { options, other: otherDom };
+    }
+    return { options };
   }
 
   private getParamsLinearScale(element: HTMLElement): ParamsLinearScaleResult {
@@ -346,17 +322,9 @@ export class FieldExtractorEngine {
     let lowerBound: string = EMPTY_STRING;
     let upperBound: string = EMPTY_STRING;
 
-    const superDivs = element.querySelectorAll('div[role="radio"]');
-    const domsArray: HTMLElement[] = [];
-
-    superDivs.forEach((optionDiv) => {
-      const thirdDiv = optionDiv.children[2] as HTMLElement;
-      const clickDiv = thirdDiv.firstElementChild as HTMLElement;
-      const targetDom = clickDiv.firstElementChild as HTMLElement;
-      if (targetDom) {
-        domsArray.push(targetDom);
-      }
-    });
+    const domsArray = element.querySelectorAll(
+      'div[role=radio]'
+    ) as NodeListOf<HTMLElement>;
 
     // Determine lowerBound and upperBound
     elementsWithHierarchy.forEach((elm, index) => {
@@ -411,8 +379,7 @@ export class FieldExtractorEngine {
       const rowColumns: HTMLElement[] = [];
 
       childColumns.forEach((column) => {
-        const targetDom = column;
-        rowColumns.push(targetDom as HTMLElement);
+        rowColumns.push(column as HTMLElement);
       });
 
       optionsArray.push(rowColumns);

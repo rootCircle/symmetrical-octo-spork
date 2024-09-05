@@ -11,7 +11,7 @@ interface ExtractedValue {
   description?: string | null;
   dom?: HTMLElement;
   options?: Option[];
-  other?: OtherOption[];
+  other?: OtherOption;
   rowColumnOption?: RowColumnOption[];
   rowArray?: string[];
   columnArray?: string[];
@@ -40,7 +40,7 @@ interface OtherOption extends Option {
 
 interface ParamsMultiChoiceOrCorrectResult {
   options: Option[];
-  other?: OtherOption[];
+  other?: OtherOption;
 }
 
 interface LowerUpperBound {
@@ -83,4 +83,15 @@ interface DateTimeDomFields {
   minute?: HTMLInputElement | null;
   second?: HTMLInputElement | null;
   meridiem?: HTMLElement;
+}
+
+interface MultiCorrectOrMultipleOption {
+  isOther?: boolean;
+  optionText?: string;
+  otherOptionValue?: string;
+}
+
+interface RowColumn {
+  row: string;
+  selectedColumn: string;
 }

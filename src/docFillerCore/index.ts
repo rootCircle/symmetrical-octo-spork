@@ -34,7 +34,6 @@ async function runDocFillerEngine() {
 
       console.log('Prompt ↴');
       console.log(prompts.getPrompt(fieldType, fieldValue));
-      
       const fillerStatus = await filler.fill(fieldType, fieldValue, 'response');
       console.log(`Filler Status ${fillerStatus}`);
 
