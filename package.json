@@ -38,30 +38,31 @@
     "eslint-plugin-async-await": "^0.0.0",
     "eslint-plugin-import": "^2.30.0",
     "globals": "^15.9.0",
-    "prettier": "^3.0.3",
+    "prettier": "^3.3.3",
     "web-ext": "^8.2.0"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.5.4"
   },
   "scripts": {
-    "watch": "bun watcher.ts",
-    "build": "bun bundler.ts",
+    "watch": "bun tsc && bun watcher.ts",
+    "build": "bun tsc && bun bundler.ts",
     "dev:firefox": "bun bundler.ts && concurrently --kill-others \"bun watcher.ts\" \"web-ext run --source-dir=build\"",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
     "webext:lint": "web-ext lint --source-dir=build",
     "lint": "eslint . --cache --cache-strategy content",
-    "lint:fix": "eslint . --cache --cache-strategy content --fix"
+    "lint:fix": "eslint . --cache --cache-strategy content --fix",
+    "tsc": "tsc --noEmit"
   },
   "type": "module",
   "dependencies": {
     "@langchain/google-genai": "^0.0.26",
     "@langchain/ollama": "^0.0.4",
-    "@langchain/openai": "^0.2.8",
+    "@langchain/openai": "^0.2.10",
     "@types/firefox-webext-browser": "^120.0.4",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "dotenv": "^16.4.5",
-    "langchain": "^0.2.17",
+    "langchain": "^0.2.18",
     "process": "^0.11.10"
   }
 }

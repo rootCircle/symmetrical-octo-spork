@@ -3,9 +3,9 @@ name: Health Check
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "bun_tsc", "main", "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "bun_tsc", "main", "dev" ]
   
 jobs:
   build:
@@ -23,9 +23,6 @@ jobs:
       run: |
         bun install
 
-    - name: Build
-      run: |
-        bun run build
     - name: eslint Lint check
       run: |
         bun run lint
@@ -37,3 +34,11 @@ jobs:
     - name: web-ext Lint
       run: |
           bun run webext:lint
+
+    - name: tsc
+      run: |
+          bun run tsc
+
+    - name: Build
+      run: |
+        bun run build
