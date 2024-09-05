@@ -71,6 +71,7 @@ interface CheckboxGridResult {
 }
 
 interface DropdownResult {
+  dom?: HTMLElement;
   options: Option[];
 }
 

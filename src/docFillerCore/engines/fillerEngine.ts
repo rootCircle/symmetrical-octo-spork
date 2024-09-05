@@ -7,7 +7,6 @@ function sleep(milliseconds: number): Promise<void> {
 }
 
 export class FillerEngine {
-
   public async fill(
     fieldType: QType,
     fieldValue: ExtractedValue,
@@ -25,11 +24,11 @@ export class FillerEngine {
       case QType.PARAGRAPH:
         return this.fillParagraph(fieldValue, 'this is a paragraph \newww');
 
-      // case QType.LINEAR_SCALE:
-      //   return this.fillLinearScale(fieldValue, '1');
+      case QType.LINEAR_SCALE:
+        return this.fillLinearScale(fieldValue, '1');
 
       // case QType.DROPDOWN:
-      //   return await this.fillDropDown(element, fieldValue, 'Option 2');
+      //   return await this.fillDropDown(fieldValue, 'Option 2');
 
       // case QType.CHECKBOX_GRID:
       //   return await this.fillCheckboxGrid(fieldValue, [
@@ -65,7 +64,7 @@ export class FillerEngine {
       case QType.DATE_TIME_WITHOUT_YEAR:
         return this.fillDateTimeWithoutYear(fieldValue, '22-01-01-01');
 
-      case QType.MULTI_CORRECT_WITH_OTHER:
+      // case QType.MULTI_CORRECT_WITH_OTHER:
       // case QType.MULTI_CORRECT:
       //   return this.fillCheckBox(fieldValue, [
       //     'Sightseeing',
@@ -303,11 +302,24 @@ export class FillerEngine {
   // }
 
   // private async fillDropDown(
-  //   element: HTMLElement,
   //   fieldValue: ExtractedValue,
   //   value: string
   // ): Promise<boolean> {
   //   await sleep(SLEEP_DURATION);
+
+  //   for (const option of fieldValue.options || []) {
+  //     if (option.data === value) {
+  //       const dropdown = option.dom;
+  //       await sleep(500);
+  //       fieldValue.dom?.querySelector('div[role=presentation]')?.dispatchEvent(new Event('click', {bubbles: true}));
+  //       // await sleep(SLEEP_DURATION);
+  //       const optionToBeSelected = fieldValue.dom?.querySelector(`div[data-value="${value}"][role=option]`) as HTMLElement;
+        
+  //       console.log("Meow" + optionToBeSelected)
+  //       optionToBeSelected.dispatchEvent(new Event('click', {bubbles: true}));
+  //       return true;
+  //     }
+  //   }
 
   //   const dropdown = fieldValue.dom as HTMLSelectElement;
   //   if (dropdown) {
@@ -318,20 +330,23 @@ export class FillerEngine {
   //   return false;
   // }
 
-  // private async fillLinearScale(
-  //   fieldValue: ExtractedValue,
-  //   value: string
-  // ): Promise<boolean> {
-  //   await sleep(SLEEP_DURATION);
+  private async fillLinearScale(
+    fieldValue: ExtractedValue,
+    value: string
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
 
-  //   const scale = fieldValue.dom as HTMLInputElement;
-  //   if (scale) {
-  //     scale.value = value;
-  //     scale.dispatchEvent(new Event('input', { bubbles: true }));
-  //     return true;
-  //   }
-  //   return false;
-  // }
+    fieldValue.options?.forEach((scale) => {
+      if (scale.data === value) {
+        (scale.dom as HTMLInputElement)?.dispatchEvent(
+          new Event('click', { bubbles: true })
+        );
+        return true;
+      }
+    });
+
+    return false;
+  }
 
   // private fillCheckboxGrid(
   //   fieldValue: ExtractedValue,
