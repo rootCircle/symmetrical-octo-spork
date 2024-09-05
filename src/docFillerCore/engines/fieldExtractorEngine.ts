@@ -240,7 +240,7 @@ export class FieldExtractorEngine {
     }
 
     const clickElements = element.querySelectorAll(
-      'div[role="checkbox"]'
+      'div[role="radio"]'
     ) as NodeListOf<HTMLElement>;
 
     const optionData: string[] = [];
@@ -275,7 +275,7 @@ export class FieldExtractorEngine {
     }
 
     const clickElements = element.querySelectorAll(
-      'div[role="checkbox"]'
+      'div[role="radio"]'
     ) as NodeListOf<HTMLElement>;
 
     const optionData: string[] = [];

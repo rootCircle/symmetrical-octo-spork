@@ -72,6 +72,13 @@ export class FillerEngine {
           { isOther: true, otherOptionValue: 'My name is Andrew!' },
         ] as MultiCorrectOrMultipleOption[]);
 
+      case QType.MULTIPLE_CHOICE_WITH_OTHER:
+      case QType.MULTIPLE_CHOICE:
+        return await this.fillMultipleChoiceWithOther(fieldValue, {
+          // optionText: 'Option 2',
+          isOther: true, otherOptionValue: 'Random'
+        } as MultiCorrectOrMultipleOption);
+
       default:
         return false;
     }
@@ -302,6 +309,41 @@ export class FillerEngine {
             new Event('input', { bubbles: true })
           );
         }
+      }
+    }
+    return true;
+  }
+
+  private async fillMultipleChoiceWithOther(
+    fieldValue: ExtractedValue,
+    value: MultiCorrectOrMultipleOption
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
+
+    for (const element of fieldValue.options || []) {
+      // For checkbox
+      if (value.optionText && !value.isOther) {
+        if (element.data.toLowerCase() === value.optionText.toLowerCase()) {
+          if (element.dom?.getAttribute('aria-checked') !== 'true') {
+            element.dom?.dispatchEvent(new Event('click', { bubbles: true }));
+          }
+        }
+      }
+      // For Other option
+      else if (value.isOther && value.otherOptionValue) {
+        if (fieldValue.other?.dom?.getAttribute('aria-checked') !== 'true') {
+          fieldValue.other?.dom?.dispatchEvent(
+            new Event('click', { bubbles: true })
+          );
+        }
+
+        fieldValue.other?.inputBoxDom.setAttribute(
+          'value',
+          value.otherOptionValue
+        );
+        fieldValue.other?.inputBoxDom.dispatchEvent(
+          new Event('input', { bubbles: true })
+        );
       }
     }
     return true;
