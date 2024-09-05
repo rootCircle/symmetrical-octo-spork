@@ -29,7 +29,8 @@ interface DOMPointer {
   dom: HTMLElement;
 }
 
-interface Option extends DOMPointer {
+interface Option {
+  dom?: HTMLElement;
   data: string;
 }
 
