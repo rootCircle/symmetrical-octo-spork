@@ -1,24 +1,23 @@
 import { DetectBoxType } from '@docFillerCore/detectors/detectBoxType';
 import { FieldExtractorEngine } from '@docFillerCore/engines/fieldExtractorEngine';
-// import { FillerEngine } from '@docFillerCore/engines/filler-engine';
 import { ParserEngine } from '@docFillerCore/engines/parserEngine';
 import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtractorEngine';
 import { PromptEngine } from '@docFillerCore/engines/promptEngine';
+import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
 
-function runDocFillerEngine() {
+async function runDocFillerEngine() {
   console.clear(); // Temporary code, while debugging
-  console.log('in main run() function');
   const questions = new QuestionExtractorEngine().getValidQuestions();
-  console.log(questions);
 
   const checker = new DetectBoxType();
   const fields = new FieldExtractorEngine();
   const prompts = new PromptEngine();
   const parser = new ParserEngine();
+  const filler = new FillerEngine();
 
-  questions.forEach((question) => {
+  for (const question of questions) {
     const fieldType = checker.detectType(question);
-    runDocFillerEngine;
+
     if (fieldType !== null) {
       const fieldValue = fields.getFields(question, fieldType);
       const parsed_response = parser.parse(fieldType, fieldValue, 'response');
@@ -32,12 +31,16 @@ function runDocFillerEngine() {
       console.log(fieldValue);
 
       console.log(`Parsed Response : ${parsed_response}`);
-      console.log();
 
       console.log('Prompt ↴');
       console.log(prompts.getPrompt(fieldType, fieldValue));
+      
+      const fillerStatus = await filler.fill(fieldType, fieldValue, 'response');
+      console.log(`Filler Status ${fillerStatus}`);
+
+      console.log();
     }
-  });
+  }
 }
 
 export { runDocFillerEngine };
