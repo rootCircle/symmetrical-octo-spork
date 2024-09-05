@@ -76,7 +76,8 @@ export class FillerEngine {
       case QType.MULTIPLE_CHOICE:
         return await this.fillMultipleChoiceWithOther(fieldValue, {
           // optionText: 'Option 2',
-          isOther: true, otherOptionValue: 'Random'
+          isOther: true,
+          otherOptionValue: 'Random',
         } as MultiCorrectOrMultipleOption);
 
       default:

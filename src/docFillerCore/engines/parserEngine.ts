@@ -201,11 +201,10 @@ export class ParserEngine {
       option.data.trim()
     );
 
-    return responseOptions.every(
-      (option) =>
-        actualOptions?.some(
-          (actualOption) => option.toLowerCase() === actualOption.toLowerCase()
-        )
+    return responseOptions.every((option) =>
+      actualOptions?.some(
+        (actualOption) => option.toLowerCase() === actualOption.toLowerCase()
+      )
     );
   }
 
