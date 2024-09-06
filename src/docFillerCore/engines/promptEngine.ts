@@ -301,8 +301,8 @@ export class PromptEngine {
     description: string
   ): string {
     return (
-      `Please provide the time (in format hh-mm (am or pm)) - (only return ` +
-      `hh:mm (am or pm) time, nothing else, don't include any other text) that ` +
+      `Please provide the time (in format hh-mm (AM or PM)) - (only return ` +
+      `hh:mm (AM or PM) time, nothing else, don't include any other text) that ` +
       `best corresponds to your response for the following question: ` +
       `${description} ${title}`
     );
@@ -313,7 +313,7 @@ export class PromptEngine {
     description: string
   ): string {
     return (
-      `Please strictly provide the date and time (in format dd-MM-yyyy-hh-mm (am or pm)) - ` +
+      `Please strictly provide the date and time (in format dd-MM-yyyy-hh-mm (AM or PM)) - ` +
       `(only return dd-MM-yyyy-hh-mm date and time, nothing else and please don't give any prompt, ` +
       `just give the exact answer, include no string in answer) that best corresponds to your response ` +
       `for the following question: ${description} ${title}`
@@ -361,7 +361,7 @@ export class PromptEngine {
     description: string
   ): string {
     return (
-      `Please strictly provide the date without year and time (in format dd-MM-hh-mm (am or pm)) - ` +
+      `Please strictly provide the date without year and time (in format dd-MM-hh-mm (AM or PM)) - ` +
       `(only return dd-MM-hh-mm date without year and time, nothing else and please don't give any ` +
       `prompt, just give the exact answer, include no string in answer) that best corresponds to ` +
       `your response for the following question: ${description} ${title}`
