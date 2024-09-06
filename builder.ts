@@ -7,11 +7,16 @@ const build = async () => {
     entrypoints: entrypoints,
     outdir: './build',
     minify: true,
+    target: 'browser',
   });
 
   await copyContents('./public', './build');
 
   if (!buildStatus.success) {
+    console.error('Build failed');
+    for (const message of buildStatus.logs) {
+      console.error(message);
+    }
     throw new Error('Error building the ts files!');
   }
 };
