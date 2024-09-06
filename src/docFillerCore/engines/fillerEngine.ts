@@ -1,5 +1,5 @@
 import { QType } from '@utils/questionTypes.ts';
-import { EMPTY_STRING, SLEEP_DURATION } from '@utils/constant';
+import { SLEEP_DURATION } from '@utils/constant';
 
 // Sleep utility function
 function sleep(milliseconds: number): Promise<void> {
@@ -101,8 +101,6 @@ export class FillerEngine {
           otherOptionValue: 'Random',
         } as MultiCorrectOrMultipleOption);
 
-      default:
-        return false;
     }
   }
 
