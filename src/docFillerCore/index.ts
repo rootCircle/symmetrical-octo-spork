@@ -4,6 +4,8 @@ import { ParserEngine } from '@docFillerCore/engines/parserEngine';
 import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtractorEngine';
 import { PromptEngine } from '@docFillerCore/engines/promptEngine';
 import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
+import { LLMEngine } from '@docFillerCore/engines/gptEngine';
+import LLMEngineType from '@utils/llmEngineTypes';
 
 async function runDocFillerEngine() {
   console.clear(); // Temporary code, while debugging
@@ -12,6 +14,7 @@ async function runDocFillerEngine() {
   const checker = new DetectBoxType();
   const fields = new FieldExtractorEngine();
   const prompts = new PromptEngine();
+  const llm = new LLMEngine(LLMEngineType.Gemini);
   const parser = new ParserEngine();
   const filler = new FillerEngine();
 
@@ -20,20 +23,26 @@ async function runDocFillerEngine() {
 
     if (fieldType !== null) {
       const fieldValue = fields.getFields(question, fieldType);
-      const parsed_response = parser.parse(fieldType, fieldValue, 'response');
-
+      const promptString = prompts.getPrompt(fieldType, fieldValue);
+      
       console.log(question);
-
+      
       console.log(`Field Type : ${fieldType}`);
       console.log('Fields ↴');
-
+      
       console.log('Field Value ↴');
       console.log(fieldValue);
-
-      console.log(`Parsed Response : ${parsed_response}`);
-
+      
       console.log('Prompt ↴');
-      console.log(prompts.getPrompt(fieldType, fieldValue));
+      console.log(promptString);
+      
+      const response = await llm.getResponse(promptString);
+      console.log('LLM Response ↴');
+      console.log(response);
+
+      const parsed_response = parser.parse(fieldType, fieldValue, 'response');
+      console.log(`Parsed Response : ${parsed_response}`);
+      
       const fillerStatus = await filler.fill(fieldType, fieldValue, 'response');
       console.log(`Filler Status ${fillerStatus}`);
 
