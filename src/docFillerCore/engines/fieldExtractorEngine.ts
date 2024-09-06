@@ -671,7 +671,7 @@ export class FieldExtractorEngine {
   }
 
   private getDomDateTimeWithMeridiem(element: HTMLElement): DateTimeDomFields {
-    const meridiem = element.querySelector('div[role=option]') as HTMLElement;
+    const meridiem = element.querySelector('div[role=presentation]') as HTMLElement;
     const inputField = element.querySelectorAll(
       'input[type=text], input[type=date]'
     ) as NodeListOf<HTMLInputElement>;
@@ -714,7 +714,7 @@ export class FieldExtractorEngine {
   }
 
   private getDomTimeWithMeridiem(element: HTMLElement): DateTimeDomFields {
-    const meridiem = element.querySelector('div[role=option]') as HTMLElement;
+    const meridiem = element.querySelector('div[role=presentation]') as HTMLElement;
     const inputField = element.querySelectorAll(
       'input[type=text], input[type=date]'
     ) as NodeListOf<HTMLInputElement>;
@@ -740,7 +740,7 @@ export class FieldExtractorEngine {
   private getDomDateTimeWithMeridiemWithoutYear(
     element: HTMLElement
   ): DateTimeDomFields {
-    const meridiem = element.querySelector('div[role=option]') as HTMLElement;
+    const meridiem = element.querySelector('div[role=presentation]') as HTMLElement;
     const inputField = element.querySelectorAll(
       'input[type=text], input[type=date]'
     ) as NodeListOf<HTMLInputElement>;
