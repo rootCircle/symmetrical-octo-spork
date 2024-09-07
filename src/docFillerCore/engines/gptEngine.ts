@@ -6,6 +6,8 @@ import {
   StringOutputParser,
 } from '@langchain/core/output_parsers';
 import LLMEngineType from '@utils/llmEngineTypes';
+import { RunnableSequence } from '@langchain/core/runnables';
+import { PromptTemplate } from '@langchain/core/prompts';
 import process from 'process';
 import { DEFAULT_LLM_MODEL } from '@utils/constant';
 import { QType } from '@utils/questionTypes';
@@ -88,27 +90,59 @@ export class LLMEngine {
   ): Promise<object | null> {
     if (promptText !== null) {
       try {
-        let response;
-        switch (LLMEngine.engine) {
-          case LLMEngineType.ChatGPT:
-            response = await LLMEngine.openai?.invoke(promptText);
-            break;
-          case LLMEngineType.Gemini:
-            response = await LLMEngine.gemini?.invoke(promptText);
-            break;
-          case LLMEngineType.Ollama:
-            response = await LLMEngine.ollama?.invoke(promptText);
-            break;
-        }
-
+        let response = null;
         const parser = LLMEngine.getParser(questionType);
-        try {
-          const parsedResponse = await parser.invoke(response as string);
-          return parsedResponse;
-        } catch (error) {
-          console.error('Error parsing response:', error);
-          return null;
+        switch (LLMEngine.engine) {
+          case LLMEngineType.ChatGPT: {
+            if (LLMEngine.openai) {
+              const chain = RunnableSequence.from([
+                PromptTemplate.fromTemplate(
+                  'Answer the users question as best as possible.\n{format_instructions}\n{question}'
+                ),
+                LLMEngine.openai,
+                parser,
+              ]);
+              response = await chain.invoke({
+                question: promptText,
+                format_instructions: parser.getFormatInstructions(),
+              });
+            }
+            break;
+          }
+          case LLMEngineType.Gemini: {
+            if (LLMEngine.gemini) {
+              const chain = RunnableSequence.from([
+                PromptTemplate.fromTemplate(
+                  'Answer the users question as best as possible.\n{format_instructions}\n{question}'
+                ),
+                LLMEngine.gemini,
+                parser,
+              ]);
+              response = await chain.invoke({
+                question: promptText,
+                format_instructions: parser.getFormatInstructions(),
+              });
+            }
+            break;
+          }
+          case LLMEngineType.Ollama: {
+            if (LLMEngine.ollama) {
+              const chain = RunnableSequence.from([
+                PromptTemplate.fromTemplate(
+                  'Answer the users question as best as possible.\n{format_instructions}\n{question}'
+                ),
+                LLMEngine.ollama,
+                parser,
+              ]);
+              response = await chain.invoke({
+                question: promptText,
+                format_instructions: parser.getFormatInstructions(),
+              });
+            }
+            break;
+          }
         }
+        return response;
       } catch (error) {
         console.error('Error getting response:', error);
       }
