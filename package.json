@@ -49,6 +49,7 @@
     "build": "bun tsc && bun bundler.ts",
     "dev:firefox": "bun bundler.ts && concurrently --kill-others \"bun watcher.ts\" \"web-ext run --source-dir=build\"",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
+    "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
     "webext:lint": "web-ext lint --source-dir=build",
     "lint": "eslint . --cache --cache-strategy content",
     "lint:fix": "eslint . --cache --cache-strategy content --fix",

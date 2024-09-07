@@ -29,7 +29,7 @@ jobs:
  
     - name: Prettier Check
       run: |
-        bun run format
+        bun run format:check
     
     - name: tsc
       run: |

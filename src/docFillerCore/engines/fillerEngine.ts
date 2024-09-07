@@ -68,10 +68,7 @@ export class FillerEngine {
         );
 
       case QType.TIME_WITH_MERIDIEM:
-        return await this.fillTimeWithMeridiem(
-          fieldValue,
-          '11-39-PM'
-        );
+        return await this.fillTimeWithMeridiem(fieldValue, '11-39-PM');
 
       case QType.TIME:
         return this.fillTime(fieldValue, '02-02');
@@ -100,7 +97,6 @@ export class FillerEngine {
           isOther: true,
           otherOptionValue: 'Random',
         } as MultiCorrectOrMultipleOption);
-
     }
   }
 
@@ -221,7 +217,7 @@ export class FillerEngine {
   private async fillDateTimeWithMeridiemWithoutYear(
     fieldValue: ExtractedValue,
     value: string
-): Promise<boolean> {
+  ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
     const dateTimePattern = /^(\d{2})-(\d{2})-(\d{2})-(\d{2})-(AM|PM)$/;
@@ -232,191 +228,187 @@ export class FillerEngine {
     const inputEvent = new Event('input', { bubbles: true });
 
     if (fieldValue.date) {
-        fieldValue.date.value = day;
-        fieldValue.date.dispatchEvent(inputEvent);
+      fieldValue.date.value = day;
+      fieldValue.date.dispatchEvent(inputEvent);
     }
     if (fieldValue.month) {
-        fieldValue.month.value = month;
-        fieldValue.month.dispatchEvent(inputEvent);
+      fieldValue.month.value = month;
+      fieldValue.month.dispatchEvent(inputEvent);
     }
     if (fieldValue.hour) {
-        fieldValue.hour.value = hours;
-        fieldValue.hour.dispatchEvent(inputEvent);
+      fieldValue.hour.value = hours;
+      fieldValue.hour.dispatchEvent(inputEvent);
     }
     if (fieldValue.minute) {
-        fieldValue.minute.value = minutes;
-        fieldValue.minute.dispatchEvent(inputEvent);
+      fieldValue.minute.value = minutes;
+      fieldValue.minute.dispatchEvent(inputEvent);
     }
 
     if (fieldValue.meridiem) {
-        const meridiemDropdown = fieldValue.meridiem;
-
-        if (
-            meridiemDropdown &&
-            meridiemDropdown.getAttribute('aria-expanded') !== 'true'
-        ) {
-            meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
-            await sleep(SLEEP_DURATION);
-        }
-
-        const optionElements = Array.from(
-            meridiemDropdown.parentElement?.childNodes || []
-        ).find(
-            (child) =>
-                !(child as HTMLElement).querySelector('div[role=presentation]')
-        )?.childNodes;
-
-        if (optionElements) {
-            for (const option of Array.from(optionElements)) {
-                const span = (option as HTMLElement).querySelector('span');
-                const optionText = span?.textContent?.trim();
-                if (optionText?.toLowerCase() === meridiem.toLowerCase()) {
-                    if (span) {
-                      span.dispatchEvent(new Event('click', { bubbles: true }));
-                    }
-                    return true;  
-                }
-            }
-        }
-    }
-    return false;
-}
-
-private async fillTimeWithMeridiem(
-  fieldValue: ExtractedValue,
-  value: string
-): Promise<boolean> {
-  await sleep(SLEEP_DURATION);
-
-  const timePattern = /^(\d{2})-(\d{2})-(AM|PM)$/;
-  if (!timePattern.test(value)) return false;
-
-  const [hours, minutes, meridiem] = value.split('-');
-
-  const inputEvent = new Event('input', { bubbles: true });
-
-  if (fieldValue.hour) {
-      fieldValue.hour.value = hours;
-      fieldValue.hour.dispatchEvent(inputEvent);
-  }
-  if (fieldValue.minute) {
-      fieldValue.minute.value = minutes;
-      fieldValue.minute.dispatchEvent(inputEvent);
-  }
-
-  if (fieldValue.meridiem) {
       const meridiemDropdown = fieldValue.meridiem;
 
       if (
-          meridiemDropdown &&
-          meridiemDropdown.getAttribute('aria-expanded') !== 'true'
+        meridiemDropdown &&
+        meridiemDropdown.getAttribute('aria-expanded') !== 'true'
       ) {
-          meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
-          await sleep(SLEEP_DURATION);
+        meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
+        await sleep(SLEEP_DURATION);
       }
 
       const optionElements = Array.from(
-          meridiemDropdown.parentElement?.childNodes || []
+        meridiemDropdown.parentElement?.childNodes || []
       ).find(
-          (child) =>
-              !(child as HTMLElement).querySelector('div[role=presentation]')
+        (child) =>
+          !(child as HTMLElement).querySelector('div[role=presentation]')
       )?.childNodes;
 
       if (optionElements) {
-          for (const option of Array.from(optionElements)) {
-              const span = (option as HTMLElement).querySelector('span');
-              const optionText = span?.textContent?.trim();
-              if (optionText?.toLowerCase() === meridiem.toLowerCase()) {
-                  span?.dispatchEvent(new Event('click', { bubbles: true }));
-                  return true; 
-              }
+        for (const option of Array.from(optionElements)) {
+          const span = (option as HTMLElement).querySelector('span');
+          const optionText = span?.textContent?.trim();
+          if (optionText?.toLowerCase() === meridiem.toLowerCase()) {
+            if (span) {
+              span.dispatchEvent(new Event('click', { bubbles: true }));
+            }
+            return true;
           }
+        }
       }
+    }
+    return false;
   }
 
-  return false; 
-}
+  private async fillTimeWithMeridiem(
+    fieldValue: ExtractedValue,
+    value: string
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
 
+    const timePattern = /^(\d{2})-(\d{2})-(AM|PM)$/;
+    if (!timePattern.test(value)) return false;
 
-  
+    const [hours, minutes, meridiem] = value.split('-');
 
-private async fillDateAndTimeWithMeridiem(
-  fieldValue: ExtractedValue,
-  value: string
-): Promise<boolean> {
-  await sleep(SLEEP_DURATION);
+    const inputEvent = new Event('input', { bubbles: true });
 
-  const dateTimePattern = /^(\d{2})-(\d{2})-(\d{4})-(\d{2})-(\d{2})-(AM|PM)$/;
-  if (!dateTimePattern.test(value)) return false;
+    if (fieldValue.hour) {
+      fieldValue.hour.value = hours;
+      fieldValue.hour.dispatchEvent(inputEvent);
+    }
+    if (fieldValue.minute) {
+      fieldValue.minute.value = minutes;
+      fieldValue.minute.dispatchEvent(inputEvent);
+    }
 
-  const [day, month, year, hours, minutes, meridiem] = value.split('-');
-  const date = new Date(`${year}-${month}-${day}`);
+    if (fieldValue.meridiem) {
+      const meridiemDropdown = fieldValue.meridiem;
 
-  if (
+      if (
+        meridiemDropdown &&
+        meridiemDropdown.getAttribute('aria-expanded') !== 'true'
+      ) {
+        meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
+        await sleep(SLEEP_DURATION);
+      }
+
+      const optionElements = Array.from(
+        meridiemDropdown.parentElement?.childNodes || []
+      ).find(
+        (child) =>
+          !(child as HTMLElement).querySelector('div[role=presentation]')
+      )?.childNodes;
+
+      if (optionElements) {
+        for (const option of Array.from(optionElements)) {
+          const span = (option as HTMLElement).querySelector('span');
+          const optionText = span?.textContent?.trim();
+          if (optionText?.toLowerCase() === meridiem.toLowerCase()) {
+            span?.dispatchEvent(new Event('click', { bubbles: true }));
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  private async fillDateAndTimeWithMeridiem(
+    fieldValue: ExtractedValue,
+    value: string
+  ): Promise<boolean> {
+    await sleep(SLEEP_DURATION);
+
+    const dateTimePattern = /^(\d{2})-(\d{2})-(\d{4})-(\d{2})-(\d{2})-(AM|PM)$/;
+    if (!dateTimePattern.test(value)) return false;
+
+    const [day, month, year, hours, minutes, meridiem] = value.split('-');
+    const date = new Date(`${year}-${month}-${day}`);
+
+    if (
       isNaN(date.valueOf()) ||
       date.getDate() !== Number(day) ||
       date.getMonth() + 1 !== Number(month) ||
       date.getFullYear() !== Number(year)
-  ) {
+    ) {
       return false;
-  }
+    }
 
-  const inputEvent = new Event('input', { bubbles: true });
+    const inputEvent = new Event('input', { bubbles: true });
 
-  if (fieldValue.date) {
+    if (fieldValue.date) {
       fieldValue.date.value = day;
       fieldValue.date.dispatchEvent(inputEvent);
-  }
-  if (fieldValue.month) {
+    }
+    if (fieldValue.month) {
       fieldValue.month.value = month;
       fieldValue.month.dispatchEvent(inputEvent);
-  }
-  if (fieldValue.year) {
+    }
+    if (fieldValue.year) {
       fieldValue.year.value = year;
       fieldValue.year.dispatchEvent(inputEvent);
-  }
-  if (fieldValue.hour) {
+    }
+    if (fieldValue.hour) {
       fieldValue.hour.value = hours;
       fieldValue.hour.dispatchEvent(inputEvent);
-  }
-  if (fieldValue.minute) {
+    }
+    if (fieldValue.minute) {
       fieldValue.minute.value = minutes;
       fieldValue.minute.dispatchEvent(inputEvent);
-  }
+    }
 
-  if (fieldValue.meridiem) {
+    if (fieldValue.meridiem) {
       const meridiemDropdown = fieldValue.meridiem;
 
       if (
-          meridiemDropdown &&
-          meridiemDropdown.getAttribute('aria-expanded') !== 'true'
+        meridiemDropdown &&
+        meridiemDropdown.getAttribute('aria-expanded') !== 'true'
       ) {
-          meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
-          await sleep(SLEEP_DURATION);
+        meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
+        await sleep(SLEEP_DURATION);
       }
 
       const optionElements = Array.from(
-          meridiemDropdown.parentElement?.childNodes || []
+        meridiemDropdown.parentElement?.childNodes || []
       ).find(
-          (child) =>
-              !(child as HTMLElement).querySelector('div[role=presentation]')
+        (child) =>
+          !(child as HTMLElement).querySelector('div[role=presentation]')
       )?.childNodes;
 
       if (optionElements) {
-          for (const option of Array.from(optionElements)) {
-              const span = (option as HTMLElement).querySelector('span');
-              const optionText = span?.textContent?.trim();
-              if (optionText?.toLowerCase() === meridiem.toLowerCase()) {
-                  span?.dispatchEvent(new Event('click', { bubbles: true }));
-                  return true; 
-              }
+        for (const option of Array.from(optionElements)) {
+          const span = (option as HTMLElement).querySelector('span');
+          const optionText = span?.textContent?.trim();
+          if (optionText?.toLowerCase() === meridiem.toLowerCase()) {
+            span?.dispatchEvent(new Event('click', { bubbles: true }));
+            return true;
           }
+        }
       }
+    }
+
+    return false;
   }
-
-  return false; 
-}
-
 
   private fillTime(fieldValue: ExtractedValue, value: string): boolean {
     const [hours, minutes] = value.split('-');
