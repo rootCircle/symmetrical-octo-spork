@@ -63,7 +63,9 @@ export class QuestionExtractorEngine {
    */
   private isSectionItem(element: HTMLElement): boolean {
     return Boolean(
-      !element.querySelector('img,iframe') &&
+      !element.querySelector(
+        'img,iframe,input,div[role=checkbox],div[role=radio],div[role=listbox]'
+      ) &&
         element.childElementCount > 0 &&
         element.childNodes[0].childNodes.length > 1
     );
