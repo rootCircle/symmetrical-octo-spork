@@ -40,7 +40,7 @@ jobs:
 
     - name: Spell Check
       run: |
-          bun run cspell
+          bun run spell
 
     - name: Build
       run: |
