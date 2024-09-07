@@ -153,7 +153,7 @@ export class FillerEngine {
   }
 
   private fillDate(fieldValue: ExtractedValue, value: any): boolean {
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
@@ -188,7 +188,7 @@ export class FillerEngine {
     value: any
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
@@ -236,7 +236,7 @@ export class FillerEngine {
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
@@ -313,7 +313,7 @@ export class FillerEngine {
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
@@ -380,7 +380,7 @@ export class FillerEngine {
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
@@ -459,7 +459,7 @@ export class FillerEngine {
   }
 
   private fillTime(fieldValue: ExtractedValue, value: any): boolean {
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
@@ -504,7 +504,7 @@ export class FillerEngine {
   }
 
   private fillDateWithoutYear(fieldValue: ExtractedValue, value: any): boolean {
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
@@ -534,7 +534,7 @@ export class FillerEngine {
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    if (value instanceof Date) return false;
+    if (!(value instanceof Date)) return false;
 
     const date = value;
 
