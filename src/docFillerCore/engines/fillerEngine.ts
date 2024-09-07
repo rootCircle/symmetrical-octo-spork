@@ -49,38 +49,68 @@ export class FillerEngine {
           { row: 'Brooooo', selectedColumn: 'Column 2' },
         ]);
 
-      case QType.DATE:
-        return this.fillDate(fieldValue, '11-11-2111');
-
-      case QType.DATE_AND_TIME:
-        return await this.fillDateAndTime(fieldValue, '01-01-2003-01-11');
-
-      case QType.DATE_TIME_WITH_MERIDIEM:
-        return await this.fillDateAndTimeWithMeridiem(
-          fieldValue,
-          '11-11-2023-11-39-PM'
+      case QType.DATE: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
         );
+        return this.fillDate(fieldValue, dateValue);
+      }
 
-      case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
+      case QType.DATE_AND_TIME: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
+        );
+        return await this.fillDateAndTime(fieldValue, dateValue);
+      }
+
+      case QType.DATE_TIME_WITH_MERIDIEM: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
+        );
+        return await this.fillDateAndTimeWithMeridiem(fieldValue, dateValue);
+      }
+
+      case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
+        );
         return await this.fillDateTimeWithMeridiemWithoutYear(
           fieldValue,
-          '11-11-11-39-PM'
+          dateValue
         );
+      }
 
-      case QType.TIME_WITH_MERIDIEM:
-        return await this.fillTimeWithMeridiem(fieldValue, '11-39-PM');
+      case QType.TIME_WITH_MERIDIEM: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
+        );
+        return await this.fillTimeWithMeridiem(fieldValue, dateValue);
+      }
 
-      case QType.TIME:
-        return this.fillTime(fieldValue, '02-02');
+      case QType.TIME: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
+        );
+        return this.fillTime(fieldValue, dateValue);
+      }
 
-      case QType.DURATION:
+      case QType.DURATION: {
         return this.fillDuration(fieldValue, '11-11-11');
+      }
 
-      case QType.DATE_WITHOUT_YEAR:
-        return this.fillDateWithoutYear(fieldValue, '11-11');
+      case QType.DATE_WITHOUT_YEAR: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
+        );
+        return this.fillDateWithoutYear(fieldValue, dateValue);
+      }
 
-      case QType.DATE_TIME_WITHOUT_YEAR:
-        return await this.fillDateTimeWithoutYear(fieldValue, '22-01-01-01');
+      case QType.DATE_TIME_WITHOUT_YEAR: {
+        const dateValue = new Date(
+          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
+        );
+        return await this.fillDateTimeWithoutYear(fieldValue, dateValue);
+      }
 
       case QType.MULTI_CORRECT_WITH_OTHER:
       case QType.MULTI_CORRECT:
@@ -122,38 +152,27 @@ export class FillerEngine {
     return this.fillText(fieldValue, value);
   }
 
-  private fillDate(fieldValue: ExtractedValue, value: string): boolean {
-    const datePattern = /^(\d{2})-(\d{2})-(\d{4})$/;
+  private fillDate(fieldValue: ExtractedValue, value: Date): boolean {
+    const date = new Date(value);
 
-    if (!datePattern.test(value)) return false;
-
-    const [day, month, year] = value.split('-');
-    const date = new Date(`${year}-${month}-${day}`);
-
-    // Invalid date format as raised by date constructor
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#return_value
     if (isNaN(date.valueOf())) return false;
 
-    if (
-      !(
-        date.getDate() === Number(day) &&
-        // Month numbering start from 0...11
-        date.getMonth() + 1 === Number(month) &&
-        date.getFullYear() === Number(year)
-      )
-    ) {
-      return false;
-    }
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
 
     const inputEvent = new Event('input', { bubbles: true });
+
     if (fieldValue.date) {
       fieldValue.date.value = day;
       fieldValue.date.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.month) {
       fieldValue.month.value = month;
       fieldValue.month.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.year) {
       fieldValue.year.value = year;
       fieldValue.year.dispatchEvent(inputEvent);
@@ -164,30 +183,19 @@ export class FillerEngine {
 
   private async fillDateAndTime(
     fieldValue: ExtractedValue,
-    value: string
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const datePattern = /^(\d{2})-(\d{2})-(\d{4})-(\d{2})-(\d{2})$/;
-    if (!datePattern.test(value)) return false;
+    const date = new Date(value);
 
-    const [day, month, year, hours, minutes] = value.split('-');
-    const date = new Date(`${year}-${month}-${day}`);
-
-    // Invalid date format as raised by date constructor
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#return_value
     if (isNaN(date.valueOf())) return false;
 
-    if (
-      !(
-        date.getDate() === Number(day) &&
-        // Month numbering start from 0...11
-        date.getMonth() + 1 === Number(month) &&
-        date.getFullYear() === Number(year)
-      )
-    ) {
-      return false;
-    }
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -195,35 +203,47 @@ export class FillerEngine {
       fieldValue.date.value = day;
       fieldValue.date.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.month) {
       fieldValue.month.value = month;
       fieldValue.month.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.year) {
       fieldValue.year.value = year;
       fieldValue.year.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.hour) {
       fieldValue.hour.value = hours;
       fieldValue.hour.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.minute) {
       fieldValue.minute.value = minutes;
       fieldValue.minute.dispatchEvent(inputEvent);
     }
+
     return true;
   }
 
   private async fillDateTimeWithMeridiemWithoutYear(
     fieldValue: ExtractedValue,
-    value: string
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const dateTimePattern = /^(\d{2})-(\d{2})-(\d{2})-(\d{2})-(AM|PM)$/;
-    if (!dateTimePattern.test(value)) return false;
+    const date = new Date(value);
 
-    const [day, month, hours, minutes, meridiem] = value.split('-');
+    if (isNaN(date.valueOf())) return false;
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const hours24 = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const meridiem = hours24 >= 12 ? 'PM' : 'AM';
+    const hours = (hours24 % 12 || 12).toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -231,14 +251,17 @@ export class FillerEngine {
       fieldValue.date.value = day;
       fieldValue.date.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.month) {
       fieldValue.month.value = month;
       fieldValue.month.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.hour) {
       fieldValue.hour.value = hours;
       fieldValue.hour.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.minute) {
       fieldValue.minute.value = minutes;
       fieldValue.minute.dispatchEvent(inputEvent);
@@ -275,24 +298,35 @@ export class FillerEngine {
         }
       }
     }
+
     return false;
   }
 
   private async fillTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: string
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const timePattern = /^(\d{2})-(\d{2})-(AM|PM)$/;
-    if (!timePattern.test(value)) return false;
+    const date = new Date(value);
 
-    const [hours, minutes, meridiem] = value.split('-');
+    if (isNaN(date.valueOf())) return false;
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const meridiem = hours >= 12 ? 'PM' : 'AM';
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+    const hours12 = hours.toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
     if (fieldValue.hour) {
-      fieldValue.hour.value = hours;
+      fieldValue.hour.value = hours12;
       fieldValue.hour.dispatchEvent(inputEvent);
     }
     if (fieldValue.minute) {
@@ -335,24 +369,28 @@ export class FillerEngine {
 
   private async fillDateAndTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: string
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const dateTimePattern = /^(\d{2})-(\d{2})-(\d{4})-(\d{2})-(\d{2})-(AM|PM)$/;
-    if (!dateTimePattern.test(value)) return false;
+    const date = new Date(value);
 
-    const [day, month, year, hours, minutes, meridiem] = value.split('-');
-    const date = new Date(`${year}-${month}-${day}`);
+    if (isNaN(date.valueOf())) return false;
 
-    if (
-      isNaN(date.valueOf()) ||
-      date.getDate() !== Number(day) ||
-      date.getMonth() + 1 !== Number(month) ||
-      date.getFullYear() !== Number(year)
-    ) {
-      return false;
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const meridiem = hours >= 12 ? 'PM' : 'AM';
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
     }
+    const hours12 = hours.toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -368,8 +406,9 @@ export class FillerEngine {
       fieldValue.year.value = year;
       fieldValue.year.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.hour) {
-      fieldValue.hour.value = hours;
+      fieldValue.hour.value = hours12;
       fieldValue.hour.dispatchEvent(inputEvent);
     }
     if (fieldValue.minute) {
@@ -410,18 +449,26 @@ export class FillerEngine {
     return false;
   }
 
-  private fillTime(fieldValue: ExtractedValue, value: string): boolean {
-    const [hours, minutes] = value.split('-');
+  private fillTime(fieldValue: ExtractedValue, value: Date): boolean {
+    const date = new Date(value);
+
+    if (isNaN(date.valueOf())) return false;
+
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
     const inputEvent = new Event('input', { bubbles: true });
 
     if (fieldValue.hour) {
       fieldValue.hour.value = hours;
       fieldValue.hour.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.minute) {
       fieldValue.minute.value = minutes;
       fieldValue.minute.dispatchEvent(inputEvent);
     }
+
     return true;
   }
 
@@ -447,15 +494,22 @@ export class FillerEngine {
 
   private fillDateWithoutYear(
     fieldValue: ExtractedValue,
-    value: string
+    value: Date
   ): boolean {
-    const [day, month] = value.split('-');
+    const date = new Date(value);
+
+    if (isNaN(date.valueOf())) return false;
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+
     const inputEvent = new Event('input', { bubbles: true });
 
     if (fieldValue.date) {
       fieldValue.date.value = day;
       fieldValue.date.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.month) {
       fieldValue.month.value = month;
       fieldValue.month.dispatchEvent(inputEvent);
@@ -466,25 +520,36 @@ export class FillerEngine {
 
   private async fillDateTimeWithoutYear(
     fieldValue: ExtractedValue,
-    value: string
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const [day, month, hours, minutes] = value.split('-');
+    const date = new Date(value);
+
+    if (isNaN(date.valueOf())) return false;
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
     const inputEvent = new Event('input', { bubbles: true });
 
     if (fieldValue.date) {
       fieldValue.date.value = day;
       fieldValue.date.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.month) {
       fieldValue.month.value = month;
       fieldValue.month.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.hour) {
       fieldValue.hour.value = hours;
       fieldValue.hour.dispatchEvent(inputEvent);
     }
+
     if (fieldValue.minute) {
       fieldValue.minute.value = minutes;
       fieldValue.minute.dispatchEvent(inputEvent);

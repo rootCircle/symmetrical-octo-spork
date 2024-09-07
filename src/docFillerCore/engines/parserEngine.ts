@@ -130,34 +130,19 @@ export class ParserEngine {
     return Boolean(response && response.match(mailRegex));
   }
 
-  private validateDate(response: string): boolean {
+  private validateDate(response: any): boolean {
     // Accepts: dd-MM-yyyy
-    const dateValid =
-      /^([0][1-9]|[1-2][0-9]|[3][0-1])-([0][1-9]|[1][0-2])-(\d{4})$/;
-    const dateArr = response.match(dateValid);
-    if (dateArr) {
-      const [_, date, month, year] = dateArr;
-      return this.validationUtil.validateDate(date, month, year);
-    }
-    return false;
+    return response instanceof Date;
   }
 
-  private validateDateAndTime(response: string): boolean {
+  private validateDateAndTime(response: any): boolean {
     // Accepts: dd-MM-yyyy-hh-mm
-    const dateTimeValid =
-      /^([0][1-9]|[1-2][0-9]|[3][0-1])-([0][1-9]|[1][0-2])-(\d{4})-([01][0-9]|[2][0-3])-([0-5][0-9])$/;
-    const dateArr = response.match(dateTimeValid);
-    if (dateArr) {
-      const [_, date, month, year, hour, minute] = dateArr;
-      return this.validationUtil.validateDate(date, month, year);
-    }
-    return false;
+    return response instanceof Date;
   }
 
-  private validateTime(response: string): boolean {
+  private validateTime(response: any): boolean {
     // Accepts: hh-mm
-    const timeValid = /^([01][0-9]|[2][0-3])-([0-5][0-9])$/;
-    return Boolean(response && response.match(timeValid));
+    return response instanceof Date;
   }
 
   private validateDuration(response: string): boolean {
@@ -166,28 +151,14 @@ export class ParserEngine {
     return Boolean(response && response.match(durationValid));
   }
 
-  private validateDateWithoutYear(response: string): boolean {
+  private validateDateWithoutYear(response: any): boolean {
     // Accepts: dd-MM
-    const dateWYearValid =
-      /^([0][1-9]|[1-2][0-9]|[3][0-1])-([0][1-9]|[1][0-2])$/;
-    const dateArr = response.match(dateWYearValid);
-    if (dateArr) {
-      const [_, date, month] = dateArr;
-      return this.validationUtil.validateDate(date, month);
-    }
-    return false;
+    return response instanceof Date;
   }
 
-  private validateDateTimeWithoutYear(response: string): boolean {
+  private validateDateTimeWithoutYear(response: any): boolean {
     // Accepts: dd-MM-hh-mm
-    const dateTimeWYearValid =
-      /^([0][1-9]|[1-2][0-9]|[3][0-1])-([0][1-9]|[1][0-2])-([01][0-9]|[2][0-3])-([0-5][0-9])$/;
-    const dateArr = response.match(dateTimeWYearValid);
-    if (dateArr) {
-      const [_, date, month, hour, minute] = dateArr;
-      return this.validationUtil.validateDate(date, month);
-    }
-    return false;
+    return response instanceof Date;
   }
 
   private validateMultiCorrect(
