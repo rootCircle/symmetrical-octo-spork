@@ -3,9 +3,9 @@ name: Health Check
 on:
   workflow_dispatch:
   push:
-    branches: [ "bun_tsc", "main", "dev" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "bun_tsc", "main", "dev" ]
+    branches: [ "dev" ]
   
 jobs:
   build:
@@ -17,6 +17,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - uses: oven-sh/setup-bun@v2
 
     - name: Install dependencies
@@ -31,9 +34,13 @@ jobs:
       run: |
         bun run format:check
     
-    - name: tsc
+    - name: Typecheck
       run: |
           bun run tsc
+
+    - name: Spell Check
+      run: |
+          bun run cspell
 
     - name: Build
       run: |

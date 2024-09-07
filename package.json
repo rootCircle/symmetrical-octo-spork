@@ -34,10 +34,12 @@
     "bun-types": "latest",
     "chokidar": "^3.6.0",
     "concurrently": "^8.2.2",
+    "cspell": "^8.14.2",
     "eslint": "^9.9.1",
     "eslint-plugin-async-await": "^0.0.0",
     "eslint-plugin-import": "^2.30.0",
     "globals": "^15.9.0",
+    "husky": "^9.1.5",
     "prettier": "^3.3.3",
     "web-ext": "^8.2.0"
   },
@@ -45,15 +47,19 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
+    "init": "husky install",
     "watch": "bun tsc && bun watcher.ts",
-    "build": "bun tsc && bun bundler.ts",
+    "build": "bun bundler.ts",
     "dev:firefox": "bun bundler.ts && concurrently --kill-others \"bun watcher.ts\" \"web-ext run --source-dir=build\"",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
     "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
     "webext:lint": "web-ext lint --source-dir=build",
     "lint": "eslint . --cache --cache-strategy content",
     "lint:fix": "eslint . --cache --cache-strategy content --fix",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "spell": "cspell \"**/*.{ts,js,md,json,txt,html,css}\" \"Makefile\" --gitignore",
+    "precommit": "bun run lint && bun run format:check && bun run tsc && bun run spell && bun run build && bun run webext:lint",
+    "prepare": "husky"
   },
   "type": "module",
   "dependencies": {
