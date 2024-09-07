@@ -152,8 +152,10 @@ export class FillerEngine {
     return this.fillText(fieldValue, value);
   }
 
-  private fillDate(fieldValue: ExtractedValue, value: Date): boolean {
-    const date = new Date(value);
+  private fillDate(fieldValue: ExtractedValue, value: any): boolean {
+    if (value instanceof Date) return false;
+
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
@@ -183,11 +185,12 @@ export class FillerEngine {
 
   private async fillDateAndTime(
     fieldValue: ExtractedValue,
-    value: Date
+    value: any
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
+    if (value instanceof Date) return false;
 
-    const date = new Date(value);
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
@@ -229,11 +232,13 @@ export class FillerEngine {
 
   private async fillDateTimeWithMeridiemWithoutYear(
     fieldValue: ExtractedValue,
-    value: Date
+    value: any
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const date = new Date(value);
+    if (value instanceof Date) return false;
+
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
@@ -304,11 +309,13 @@ export class FillerEngine {
 
   private async fillTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: Date
+    value: any
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const date = new Date(value);
+    if (value instanceof Date) return false;
+
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
@@ -369,11 +376,13 @@ export class FillerEngine {
 
   private async fillDateAndTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: Date
+    value: any
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const date = new Date(value);
+    if (value instanceof Date) return false;
+
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
@@ -449,8 +458,10 @@ export class FillerEngine {
     return false;
   }
 
-  private fillTime(fieldValue: ExtractedValue, value: Date): boolean {
-    const date = new Date(value);
+  private fillTime(fieldValue: ExtractedValue, value: any): boolean {
+    if (value instanceof Date) return false;
+
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
@@ -492,11 +503,10 @@ export class FillerEngine {
     return true;
   }
 
-  private fillDateWithoutYear(
-    fieldValue: ExtractedValue,
-    value: Date
-  ): boolean {
-    const date = new Date(value);
+  private fillDateWithoutYear(fieldValue: ExtractedValue, value: any): boolean {
+    if (value instanceof Date) return false;
+
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
@@ -520,11 +530,13 @@ export class FillerEngine {
 
   private async fillDateTimeWithoutYear(
     fieldValue: ExtractedValue,
-    value: Date
+    value: any
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
-    const date = new Date(value);
+    if (value instanceof Date) return false;
+
+    const date = value;
 
     if (isNaN(date.valueOf())) return false;
 
