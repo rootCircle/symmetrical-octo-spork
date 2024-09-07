@@ -36,7 +36,7 @@ async function runDocFillerEngine() {
       console.log('Prompt ↴');
       console.log(promptString);
 
-      const response = await llm.getResponse(promptString);
+      const response = await llm.getResponse(promptString, fieldType);
       console.log('LLM Response ↴');
       console.log(response);
 

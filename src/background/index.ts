@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.type === 'API_CALL') {
     LLMEngine.getInstance(CURRENT_LLM_MODEL)
-      .invokeLLM(message.prompt)
+      .invokeLLM(message.prompt, message.questionType)
       .then((response) => {
         sendResponse({ value: response });
       });
