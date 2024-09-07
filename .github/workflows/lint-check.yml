@@ -34,7 +34,7 @@ jobs:
       run: |
         bun run format:check
     
-    - name: Typecheck
+    - name: Typechecking
       run: |
           bun run tsc
 

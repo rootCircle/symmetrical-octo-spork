@@ -47,7 +47,6 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
-    "init": "husky install",
     "watch": "bun tsc && bun watcher.ts",
     "build": "bun bundler.ts",
     "dev:firefox": "bun bundler.ts && concurrently --kill-others \"bun watcher.ts\" \"web-ext run --source-dir=build\"",

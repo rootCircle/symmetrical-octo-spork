@@ -16,6 +16,7 @@ ollama
 openai
 outdir
 Parens
+precommit
 Radhakrishnan
 radiogroup
 Sarvepalli
