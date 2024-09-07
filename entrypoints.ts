@@ -10,9 +10,9 @@ const sourceDir = './src/';
  * @returns {Promise<string[]>} The entrypoints
  */
 async function getFiles(dir: string): Promise<string[]> {
-  const dirents = await readdir(dir, { withFileTypes: true });
+  const dirEntries = await readdir(dir, { withFileTypes: true });
   const files = await Promise.all(
-    dirents.map((dirent) => {
+    dirEntries.map((dirent) => {
       const res = join(dir, dirent.name);
       if (dirent.isDirectory()) {
         return getFiles(res);
