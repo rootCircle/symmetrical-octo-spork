@@ -43,7 +43,7 @@ export class LLMEngine {
         break;
       case LLMEngineType.Ollama:
         LLMEngine.ollama = new Ollama({
-          model: 'llama3', // Default value
+          model: 'gemma2:2b',
           temperature: 0,
           maxRetries: 2,
         });
@@ -72,9 +72,14 @@ export class LLMEngine {
       prompt: promptText,
       questionType: questionType,
     };
-    return await chrome.runtime.sendMessage(item).then((response) => {
-      return response.value;
-    });
+    try {
+      return await chrome.runtime.sendMessage(item).then((response) => {
+        return response.value;
+      });
+    } catch (error) {
+      console.error('Error getting response:', error);
+      return null;
+    }
   }
 
   async invokeLLM(
