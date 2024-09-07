@@ -2,7 +2,7 @@ lint:
 	bun lint
 
 format:
-	bun format
+	bun format:check
 
 tsccheck:
 	bun tsc
