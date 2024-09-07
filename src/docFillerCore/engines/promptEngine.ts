@@ -281,90 +281,50 @@ export class PromptEngine {
   }
 
   private getDatePrompt(title: string, description: string): string {
-    return (
-      `Please provide the date (in format dd-MM-yyyy) - (only return dd-MM-yyyy date, nothing ` +
-      `else, don't give any other sentence) that best corresponds to your response for the following ` +
-      `question: ${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time, nothing else, and do not include any other text.`;
   }
 
   private getTimePrompt(title: string, description: string): string {
-    return (
-      `Please provide the time (in format hh-mm) - (only return hh-mm time, ` +
-      `nothing else, don't include any other text) that best corresponds to ` +
-      `your response for the following question: ${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time, nothing else, and do not include any other text.`;
   }
 
   private getTimeWithMeridiemPrompt(
     title: string,
     description: string
   ): string {
-    return (
-      `Please provide the time (in format hh-mm (AM or PM)) - (only return ` +
-      `hh:mm (AM or PM) time, nothing else, don't include any other text) that ` +
-      `best corresponds to your response for the following question: ` +
-      `${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time, nothing else, and do not include any other text.`;
   }
 
   private getDateTimeWithMeridiemPrompt(
     title: string,
     description: string
   ): string {
-    return (
-      `Please strictly provide the date and time (in format dd-MM-yyyy-hh-mm (AM or PM)) - ` +
-      `(only return dd-MM-yyyy-hh-mm date and time, nothing else and please don't give any prompt, ` +
-      `just give the exact answer, include no string in answer) that best corresponds to your response ` +
-      `for the following question: ${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time (fill in the required fields among year, month, date, hour, minute, seconds as per the question; keep the rest as "00"), nothing else, and do not include any other text.`;
   }
 
   private getDateTimePrompt(title: string, description: string): string {
-    return (
-      `Please strictly provide the date and time (in format dd-MM-yyyy-hh-mm) - (only return ` +
-      `dd-MM-yyyy-hh-mm date and time, nothing else and please don't give any prompt, just give the ` +
-      `exact answer, include no string in answer) that best corresponds to your response for the ` +
-      `following question: ${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time (fill in the required fields among year, month, date, hour, minute, seconds as per the question; keep the rest as "00"), nothing else, and do not include any other text.`;
   }
 
   private getDurationPrompt(title: string, description: string): string {
-    return (
-      `Please provide the duration that best corresponds to your response (give only answer ` +
-      `and nothing else in this format hh-mm-ss) for the following question: ${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time (fill in the required fields among year, month, date, hour, minute, seconds as per the question; keep the rest as "00"), nothing else, and do not include any other text.`;
   }
 
   private getDateWithoutYearPrompt(title: string, description: string): string {
-    return (
-      `Please provide the date (month and day) - (in format dd-MM) - (only return dd-MM date, ` +
-      `nothing else) that best corresponds to your response for the following question: ${description} ` +
-      `${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time (fill in the required fields among year, month, date, hour, minute, seconds as per the question; keep the rest as "00"), nothing else, and do not include any other text.`;
   }
 
   private getDateTimeWithoutYearPrompt(
     title: string,
     description: string
   ): string {
-    return (
-      `Please strictly provide the date without year and time (in format dd-MM-hh-mm) - ` +
-      `(only return dd-MM-hh-mm date without year and time, nothing else and please don't give any ` +
-      `prompt, just give the exact answer, include no string in answer) that best corresponds to ` +
-      `your response for the following question: ${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time (fill in the required fields among year, month, date, hour, minute, seconds as per the question; keep the rest as "00"), nothing else, and do not include any other text.`;
   }
 
   private getDateTimeWithMeridiemWithoutYear(
     title: string,
     description: string
   ): string {
-    return (
-      `Please strictly provide the date without year and time (in format dd-MM-hh-mm (AM or PM)) - ` +
-      `(only return dd-MM-hh-mm date without year and time, nothing else and please don't give any ` +
-      `prompt, just give the exact answer, include no string in answer) that best corresponds to ` +
-      `your response for the following question: ${description} ${title}`
-    );
+    return `Please provide the correct time that best corresponds to your response for the following question: ${description} ${title}. Only return the correct time as per question(fill in the required fields among year, month, date, hour, minute, seconds as per the question; keep the rest as "00"), nothing else, and do not include any other text.`;
   }
 }
