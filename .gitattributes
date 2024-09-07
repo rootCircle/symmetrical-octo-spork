@@ -1,2 +1,30 @@
 # Auto detect text files and perform LF normalization
-* text eol=crlf
+* text auto 
+
+*.js text eol=crlf
+*.md text eol=crlf
+*.json text eol=crlf
+*.ts text eol=crlf
+*.json text eol=crlf
+*.yml text eol=crlf
+*.yaml text eol=crlf
+*.html text eol=crlf
+*.css text eol=crlf
+*.txt text eol=crlf
+
+Makefile text eol=crlf
+LICENSE text eol=crlf
+
+.gitattributes text eol=crlf
+.gitignore text eol=crlf
+.prettierrc text eol=crlf
+
+# Specify binary files
+*.jpg binary
+*.png binary
+*.pdf binary
+*.zip binary
+*.exe binary
+*.rnote binary
+*.ico binary
+bun.lockb binary
