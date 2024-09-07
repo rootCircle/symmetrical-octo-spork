@@ -5,6 +5,7 @@
   "trailingComma": "es5",
   "tabWidth": 2,
   "semi": true,
+  "endOfLine": "crlf",
   "overrides": [
     {
       "files": "*.md",
