@@ -139,7 +139,7 @@ export class LLMEngine {
       case QType.PARAGRAPH:
         return new StringOutputParser();
 
-      case QType.CHECKBOX_GRID:
+      case QType.CHECKBOX_GRID: {
         const checkboxGridColSchema = z.object({
           data: z
             .string()
@@ -166,8 +166,9 @@ export class LLMEngine {
           );
 
         return StructuredOutputParser.fromZodSchema(checkboxGridArraySchema);
+      }
 
-      case QType.MULTIPLE_CHOICE_GRID:
+      case QType.MULTIPLE_CHOICE_GRID: {
         const multipleChoiceGridRowSchema = z.object({
           row: z
             .string()
@@ -190,11 +191,12 @@ export class LLMEngine {
         return StructuredOutputParser.fromZodSchema(
           multipleChoiceGridArraySchema
         );
+      }
 
       case QType.MULTIPLE_CHOICE:
       case QType.MULTIPLE_CHOICE_WITH_OTHER:
       case QType.MULTI_CORRECT:
-      case QType.MULTI_CORRECT_WITH_OTHER:
+      case QType.MULTI_CORRECT_WITH_OTHER: {
         const multiCorrectOrMultipleOptionSchema = z
           .object({
             optionText: z
@@ -245,6 +247,7 @@ export class LLMEngine {
             )
           );
         }
+      }
     }
   }
 }
