@@ -278,12 +278,7 @@ export class FillerEngine {
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
     const meridiem = hours >= 12 ? 'PM' : 'AM';
-    if (hours > 12) {
-      hours -= 12;
-    } else if (hours === 0) {
-      hours = 12;
-    }
-    const hours12 = hours.toString().padStart(2, '0');
+    const hours12 = (hours % 12 || 12).toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -349,12 +344,7 @@ export class FillerEngine {
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
     const meridiem = hours >= 12 ? 'PM' : 'AM';
-    if (hours > 12) {
-      hours -= 12;
-    } else if (hours === 0) {
-      hours = 12;
-    }
-    const hours12 = hours.toString().padStart(2, '0');
+    const hours12 = (hours % 12 || 12).toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -606,12 +596,10 @@ export class FillerEngine {
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
     for (const index in fieldValue.options) {
-      if (Object.prototype.hasOwnProperty.call(fieldValue.options, index)) {
+      if (fieldValue.options?.hasOwnProperty(index)) {
         const scale = fieldValue.options[Number(index)];
 
         if (scale.data.toString() === value?.answer?.toString()) {
-          console.log('found');
-
           if (scale.dom?.getAttribute('aria-checked') !== 'true') {
             (scale.dom as HTMLInputElement)?.dispatchEvent(
               new Event('click', { bubbles: true })
