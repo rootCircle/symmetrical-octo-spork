@@ -140,9 +140,7 @@ export class PromptEngine {
       `represents "${
         bounds?.upperBound ?? EMPTY_STRING
       }" with uniform distribution between.\n` +
-      `Instructions: Return only the integer answer and nothing else. ` +
-      `Only return the key corresponding to the calculated answer\n\nQuestion: ` +
-      `${title} ${description}`
+      `\nQuestion: ${title} ${description}`
     );
   }
 

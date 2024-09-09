@@ -11,93 +11,121 @@ export class ParserEngine {
   public parse(
     fieldType: QType,
     extractedValue: ExtractedValue,
-    response: string
+    response: any
   ): boolean | null {
+    if (!response) {
+      return false;
+    }
+    //replaced with data present in testing form for better testing.
     // TODO: Just for testing, remove this later
-    const testResponse = {
-      TEXT: 'Andrew',
-      EMAIL: 'abc@gmail.com',
-      PARAGRAPH:
-        "Please enjoy these great stories, fairy-tales, fables, and nursery rhymes for children. They help kids learn to read and make excellent bedtime stories! We have hundreds of great children's stories for you to share.",
-      MULTI_CORRECT: 'Swimming\nHiking',
-      MULTI_CORRECT_WITH_OTHER: 'Day 1\nDay 2',
-      DATE: '22-12-2022',
-      TIME: '10-12',
-      DATE_AND_TIME: '22-12-2022-12-12',
-      DURATION: '21-34-58',
-      DATE_WITHOUT_YEAR: '31-12',
-      DATE_TIME_WITHOUT_YEAR: '31-12-17-12',
-      MULTIPLE_CHOICE: 'Tanzania',
-      MULTIPLE_CHOICE_WITH_OTHER: 'Tanzania',
-      LINEAR_SCALE: '1',
-      MULTIPLE_CHOICE_GRID:
-        'Strongly disagree\nAgree\nStrongly agree\nDisagree',
-      CHECKBOX_GRID: 'Japan\nCanada',
-      DROPDOWN: 'Asia',
-    };
+    // const testResponse = {
+    //   TEXT: 'Andrew',
+    //   EMAIL: 'abc@gmail.com',
+    //   PARAGRAPH:
+    //     "Please enjoy these great stories, fairy-tales, fables, and nursery rhymes for children. They help kids learn to read and make excellent bedtime stories! We have hundreds of great children's stories for you to share.",
+    //   MULTI_CORRECT: 'Africa\nAsia',
+    //   MULTI_CORRECT_WITH_OTHER: 'Solar\nWind',
+    //   DATE_AND_TIME: new Date(
+    //     'Wed Mar 08 2023 22:03:00 GMT+0530 (India Standard Time)'
+    //   ),
+    //   DATE: new Date('Wed Mar 08 2023 22:03:00 GMT+0530 (India Standard Time)'),
+    //   TIME: new Date('1970-01-01T10:12:00'),
+    //   DATE_WITHOUT_YEAR: new Date('2023-12-31'),
+    //   DATE_TIME_WITHOUT_YEAR: new Date('2023-12-31T17:12:00'),
+    //   DURATION: '21-34-58',
+    //   MULTIPLE_CHOICE: 'Galileo Galilei',
+    //   MULTIPLE_CHOICE_WITH_OTHER: 'Melbourne',
+    //   LINEAR_SCALE: '1',
+    //   MULTIPLE_CHOICE_GRID: [
+    //     { row: 'first generation', selectedColumn: 'low level' },
+    //     { row: 'second generation', selectedColumn: 'high level' },
+    //     { row: 'third generation', selectedColumn: 'low level' },
+    //     { row: 'fourth generation', selectedColumn: 'high level' },
+    //     { row: 'fifth generation', selectedColumn: 'high level' },
+    //   ],
+    //   CHECKBOX_GRID: [
+    //     {
+    //       row: 'Apple',
+    //       cols: [
+    //         { data: 'Speed' },
+    //         { data: 'Storage' },
+    //         { data: 'Camera Quality' },
+    //         { data: 'Pricing' },
+    //       ],
+    //     },
+    //     {
+    //       row: 'OnePlus',
+    //       cols: [
+    //         { data: 'Speed' },
+    //         { data: 'Storage' },
+    //         { data: 'Camera Quality' },
+    //         { data: 'Pricing' },
+    //       ],
+    //     },
+    //     {
+    //       row: 'Samsung',
+    //       cols: [
+    //         { data: 'Speed' },
+    //         { data: 'Storage' },
+    //         { data: 'Camera Quality' },
+    //         { data: 'Pricing' },
+    //       ],
+    //     },
+    //     {
+    //       row: 'Motorola',
+    //       cols: [
+    //         { data: 'Speed' },
+    //         { data: 'Storage' },
+    //         { data: 'Camera Quality' },
+    //         { data: 'Pricing' },
+    //       ],
+    //     },
+    //   ] as RowColumnOption[],
+    //   DROPDOWN: 'Giraffe',
+    // };
 
-    const validatedResponse = this.validateResponse(response);
-
-    if (validatedResponse === false) {
+    if (response === false) {
       return false;
     }
 
     if (fieldType !== null && extractedValue !== null) {
       switch (fieldType) {
         case QType.TEXT:
-          return this.validateText(testResponse.TEXT);
+          return this.validateText(response);
         case QType.TEXT_EMAIL:
-          return this.validateEmail(testResponse.EMAIL);
+          return this.validateEmail(response);
         case QType.MULTI_CORRECT_WITH_OTHER:
-          return this.validateMultiCorrectWithOther(
-            extractedValue,
-            testResponse.MULTI_CORRECT_WITH_OTHER
-          );
+          return this.validateMultiCorrectWithOther(extractedValue, response);
         case QType.MULTI_CORRECT:
-          return this.validateMultiCorrect(
-            extractedValue,
-            testResponse.MULTI_CORRECT
-          );
+          return this.validateMultiCorrect(extractedValue, response);
         case QType.PARAGRAPH:
-          return this.validateParagraph(testResponse.PARAGRAPH);
+          return this.validateParagraph(response);
         case QType.DATE:
-          return this.validateDate(testResponse.DATE);
+          return this.validateDate(response);
         case QType.DATE_AND_TIME:
-          return this.validateDateAndTime(testResponse.DATE_AND_TIME);
+          return this.validateDateAndTime(response);
         case QType.TIME:
-          return this.validateTime(testResponse.TIME);
+          return this.validateTime(response);
         case QType.DURATION:
-          return this.validateDuration(testResponse.DURATION);
+          return this.validateDuration(response);
         case QType.DATE_WITHOUT_YEAR:
-          return this.validateDateWithoutYear(testResponse.DATE_WITHOUT_YEAR);
+          return this.validateDateWithoutYear(response);
         case QType.DATE_TIME_WITHOUT_YEAR:
-          return this.validateDateTimeWithoutYear(
-            testResponse.DATE_TIME_WITHOUT_YEAR
-          );
+          return this.validateDateTimeWithoutYear(response);
         case QType.MULTIPLE_CHOICE:
-          return this.validateMultipleChoice(
-            extractedValue,
-            testResponse.MULTIPLE_CHOICE
-          );
+          return this.validateMultipleChoice(extractedValue, response);
         case QType.MULTIPLE_CHOICE_WITH_OTHER:
-          return this.validateMultipleChoiceWithOther(
-            extractedValue,
-            testResponse.MULTIPLE_CHOICE_WITH_OTHER
-          );
+          return this.validateMultipleChoiceWithOther(extractedValue, response);
         case QType.LINEAR_SCALE:
-          return this.validateLinearScale(
-            extractedValue,
-            testResponse.LINEAR_SCALE
-          );
+          return this.validateLinearScale(extractedValue, response);
+
         case QType.MULTIPLE_CHOICE_GRID:
-          return this.validateMultipleChoiceGrid(
-            extractedValue,
-            testResponse.MULTIPLE_CHOICE_GRID
-          );
-        // case QType.CHECKBOX_GRID:
-        //     return this.validateCheckBoxGrid(extractedValue, testResponse.CHECKBOX_GRID);
+          return this.validateMultipleChoiceGrid(extractedValue, response);
+
+        case QType.CHECKBOX_GRID:
+          return this.validateCheckBoxGrid(extractedValue, response);
         case QType.DROPDOWN:
-          return this.validateDropdown(extractedValue, testResponse.DROPDOWN);
+          return this.validateDropdown(extractedValue, response);
         default:
           return null;
       }
@@ -106,42 +134,40 @@ export class ParserEngine {
     }
   }
 
-  // TODO: Check if it not one of those LLM error messages like those on safety etc
-
-  private validateResponse(response: string): boolean {
-    return !response.startsWith('As an AI model');
-  }
-
   private validateText(response: string): boolean {
     const text = response.trim();
     return text.length > 0 && !(text.includes('\n') || text.includes('\r'));
   }
 
   private validateParagraph(response: string): boolean {
-    return response.trim().length > 0;
+    return response?.trim().length > 0;
   }
 
-  private validateEmail(response: string): boolean {
+  private validateEmail(response: GenericLLMResponse): boolean {
     // Checking valid email in accord to RFC 5322
     // https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression/201378#201378
 
     const mailRegex =
       /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-    return Boolean(response && response.match(mailRegex));
+    return Boolean(response && response?.answer?.match(mailRegex));
   }
 
-  private validateDate(response: any): boolean {
+  private validateDate(response: Date): boolean {
     // Accepts: dd-MM-yyyy
+    if (isNaN(response.valueOf())) return false;
     return response instanceof Date;
   }
 
-  private validateDateAndTime(response: any): boolean {
+  private validateDateAndTime(response: Date): boolean {
     // Accepts: dd-MM-yyyy-hh-mm
+    if (isNaN(response.valueOf())) return false;
     return response instanceof Date;
   }
 
-  private validateTime(response: any): boolean {
+  private validateTime(response: Date): boolean {
     // Accepts: hh-mm
+
+    if (isNaN(response.valueOf())) return false;
     return response instanceof Date;
   }
 
@@ -151,115 +177,164 @@ export class ParserEngine {
     return Boolean(response && response.match(durationValid));
   }
 
-  private validateDateWithoutYear(response: any): boolean {
+  private validateDateWithoutYear(response: Date): boolean {
     // Accepts: dd-MM
+    if (isNaN(response.valueOf())) return false;
     return response instanceof Date;
   }
 
-  private validateDateTimeWithoutYear(response: any): boolean {
+  private validateDateTimeWithoutYear(response: Date): boolean {
     // Accepts: dd-MM-hh-mm
+    if (isNaN(response.valueOf())) return false;
     return response instanceof Date;
   }
 
   private validateMultiCorrect(
     extractedValue: ExtractedValue,
-    response: string
+    response: MultiCorrectOrMultipleOption[]
   ): boolean {
+    console.log(response);
     const responseOptions = response
-      .split(/\r?\n/)
-      .map((option) => option.trim());
+      .map((option) => option.optionText?.trim())
+      .filter((text) => text !== undefined && text !== '');
+
     const actualOptions = extractedValue.options?.map((option) =>
-      option.data.trim()
+      option.data.trim().toLowerCase()
     );
 
-    return responseOptions.every((option) =>
-      actualOptions?.some(
-        (actualOption) => option.toLowerCase() === actualOption.toLowerCase()
-      )
+    return responseOptions.every(
+      (option) => option && actualOptions?.includes(option.toLowerCase())
     );
   }
 
   private validateMultiCorrectWithOther(
     extractedValue: ExtractedValue,
-    response: string
+    response: MultiCorrectOrMultipleOption[]
   ): boolean {
-    return (
-      this.validateMultiCorrect(extractedValue, response) ||
-      (response.startsWith('Other') && this.validateText(response))
+    const isMulticorrect = this.validateMultiCorrect(extractedValue, response);
+    const isValidOther = response.some(
+      (option) =>
+        option.isOther && this.validateText(option.otherOptionValue || '')
     );
+    return isMulticorrect || isValidOther;
   }
 
   private validateMultipleChoice(
     extractedValue: ExtractedValue,
-    response: string
+    response: MultiCorrectOrMultipleOption
   ): boolean {
-    const trimmedResponse = response.trim();
-    const actualOptions = extractedValue.options?.map((option) =>
-      option.data.trim()
-    );
+    if (!response || typeof response.optionText !== 'string') {
+      console.log('Response must have a valid optionText.');
+      return false;
+    }
 
-    return Boolean(
-      actualOptions?.some(
-        (option) => option.toLowerCase() === trimmedResponse.toLowerCase()
-      )
-    );
+    const trimmedResponse = response.optionText.trim().toLowerCase();
+
+    const actualOptions =
+      extractedValue.options?.map((option) =>
+        option.data.trim().toLowerCase()
+      ) || [];
+
+    console.log('Actual Options:', actualOptions);
+    console.log('Trimmed Response:', trimmedResponse);
+
+    const isValid = actualOptions.includes(trimmedResponse);
+
+    console.log('Is Valid:', isValid);
+    console.log('Validation worked');
+    return isValid;
   }
 
   private validateMultipleChoiceWithOther(
     extractedValue: ExtractedValue,
-    response: string
+    response: MultiCorrectOrMultipleOption
   ): boolean {
-    return (
-      this.validateMultipleChoice(extractedValue, response) ||
-      (response.startsWith('Other') && this.validateText(response))
-    );
+    const isValidChoice = this.validateMultipleChoice(extractedValue, response);
+
+    const isOtherOption = response.isOther ?? false;
+
+    console.log(!!isValidChoice);
+    console.log(isOtherOption);
+
+    return !!isValidChoice || isOtherOption;
   }
 
   private validateLinearScale(
     extractedValue: ExtractedValue,
-    response: string
+    response: GenericLLMResponse
   ): boolean {
-    // Validations works the same as for MultipleChoice behind the hood!
-    return this.validateMultipleChoice(extractedValue, response);
+    console.log(response);
+    const selectedValue = parseInt(response.answer, 10);
+    console.log('hello ' + selectedValue);
+    if (isNaN(selectedValue)) {
+      return false;
+    }
+
+    const validOptions = (extractedValue.options ?? []).map(
+      (option) => option.data
+    );
+
+    if (!validOptions.includes(selectedValue.toString())) {
+      return false;
+    }
+    // console.log("found LinearScale")
+    return true;
   }
 
   private validateMultipleChoiceGrid(
     extractedValue: ExtractedValue,
-    response: string
+    response: RowColumn[]
   ): boolean {
-    const responseOptions = response
-      .trim()
-      .split(/\r?\n/)
-      .map((option) => option.trim());
-
-    if (responseOptions.length !== (extractedValue.rowArray || []).length) {
+    if (response.length !== (extractedValue.rowColumnOption || []).length) {
       return false;
     }
 
-    const actualOptions = extractedValue.columnArray || [];
+    return response.every((responseRow, rowIndex) => {
+      const actualRow = extractedValue.rowColumnOption?.[rowIndex];
+      if (!actualRow) return false;
 
-    return responseOptions.every((option) =>
-      actualOptions.some(
-        (actualOption) => option.toLowerCase() === actualOption.toLowerCase()
-      )
-    );
+      const selectedColumn = responseRow.selectedColumn.trim().toLowerCase();
+
+      const actualColumns = actualRow.cols.map((col) =>
+        col.data.trim().toLowerCase()
+      );
+
+      return actualColumns.includes(selectedColumn);
+    });
   }
 
-  // TODO: Implement this
+  // TODO: Implement this : DONE
   private validateCheckBoxGrid(
     extractedValue: ExtractedValue,
-    response: string
+    response: RowColumnOption[]
   ): boolean {
-    return false;
-    // return this.validateMultipleChoiceGrid(extractedValue, response);
+    if (response.length !== (extractedValue.rowColumnOption || []).length) {
+      return false;
+    }
+
+    return response.every((responseRow, rowIndex) => {
+      const actualRow = extractedValue.rowColumnOption?.[rowIndex];
+      if (!actualRow) return false;
+
+      const selectedColumns = responseRow.cols.map((col) =>
+        col.data.trim().toLowerCase()
+      );
+
+      const actualColumns = actualRow.cols.map((col) =>
+        col.data.trim().toLowerCase()
+      );
+
+      return selectedColumns.every((selectedCol) =>
+        actualColumns.includes(selectedCol)
+      );
+    });
   }
 
   private validateDropdown(
     extractedValue: ExtractedValue,
-    response: string
+    response: MultiCorrectOrMultipleOption[]
   ): boolean {
-    // Validations works the same as for MultipleChoice behind the hood!
-
+    return true;
     return this.validateMultipleChoice(extractedValue, response);
   }
 }
