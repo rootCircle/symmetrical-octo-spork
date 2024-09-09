@@ -95,3 +95,7 @@ interface RowColumn {
   row: string;
   selectedColumn: string;
 }
+
+interface GenericLLMResponse {
+  answer: string;
+}

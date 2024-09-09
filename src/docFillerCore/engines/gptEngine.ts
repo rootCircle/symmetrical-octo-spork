@@ -155,9 +155,16 @@ export class LLMEngine {
   ): StructuredOutputParser<any> | DatetimeOutputParser | StringOutputParser {
     switch (questionType) {
       case QType.TEXT:
-      case QType.TEXT_EMAIL:
-      case QType.TEXT_URL:
         return new StringOutputParser();
+      case QType.TEXT_EMAIL:
+        return StructuredOutputParser.fromNamesAndDescriptions({
+          answer:
+            'Give Correct Email corresponding to given question or give random@gmail.com',
+        });
+      case QType.TEXT_URL:
+        return StructuredOutputParser.fromNamesAndDescriptions({
+          answer: 'Give Correct Url corresponding to given question',
+        });
 
       case QType.DATE:
       case QType.TIME:
@@ -171,6 +178,10 @@ export class LLMEngine {
         return new DatetimeOutputParser();
 
       case QType.LINEAR_SCALE:
+        return StructuredOutputParser.fromNamesAndDescriptions({
+          answer:
+            "The integer answer to the user's question as the key corresponding to the calculated answer",
+        });
       case QType.DROPDOWN:
         return StructuredOutputParser.fromNamesAndDescriptions({
           answer: "answer to the user's question",
