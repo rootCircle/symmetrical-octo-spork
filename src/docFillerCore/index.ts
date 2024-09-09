@@ -1,6 +1,6 @@
 import { DetectBoxType } from '@docFillerCore/detectors/detectBoxType';
 import { FieldExtractorEngine } from '@docFillerCore/engines/fieldExtractorEngine';
-import { ParserEngine } from '@docFillerCore/engines/parserEngine';
+import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
 import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtractorEngine';
 import { PromptEngine } from '@docFillerCore/engines/promptEngine';
 import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
@@ -15,7 +15,7 @@ async function runDocFillerEngine() {
   const fields = new FieldExtractorEngine();
   const prompts = new PromptEngine();
   const llm = LLMEngine.getInstance(CURRENT_LLM_MODEL);
-  const parser = new ParserEngine();
+  const validator = new ValidatorEngine();
   const filler = new FillerEngine();
 
   for (const question of questions) {
@@ -40,11 +40,17 @@ async function runDocFillerEngine() {
       console.log('LLM Response ↴');
       console.log(response);
 
-      const parsed_response = parser.parse(fieldType, fieldValue, 'response');
+      const parsed_response = validator.validate(
+        fieldType,
+        fieldValue,
+        response
+      );
       console.log(`Parsed Response : ${parsed_response}`);
 
-      const fillerStatus = await filler.fill(fieldType, fieldValue, 'response');
-      console.log(`Filler Status ${fillerStatus}`);
+      if (parsed_response) {
+        const fillerStatus = await filler.fill(fieldType, fieldValue, response);
+        console.log(`Filler Status ${fillerStatus}`);
+      }
 
       console.log();
     }
