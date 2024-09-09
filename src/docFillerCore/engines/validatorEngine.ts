@@ -1,90 +1,15 @@
+import { EMPTY_STRING } from '@utils/constant';
 import { QType } from '@utils/questionTypes';
-import ValidationUtils from '@utils/validationUtils';
 
-export class ParserEngine {
-  private validationUtil: ValidationUtils;
+export class ValidatorEngine {
+  constructor() {}
 
-  constructor() {
-    this.validationUtil = new ValidationUtils();
-  }
-
-  public parse(
+  public validate(
     fieldType: QType,
     extractedValue: ExtractedValue,
     response: any
   ): boolean | null {
     if (!response) {
-      return false;
-    }
-    //replaced with data present in testing form for better testing.
-    // TODO: Just for testing, remove this later
-    // const testResponse = {
-    //   TEXT: 'Andrew',
-    //   EMAIL: 'abc@gmail.com',
-    //   PARAGRAPH:
-    //     "Please enjoy these great stories, fairy-tales, fables, and nursery rhymes for children. They help kids learn to read and make excellent bedtime stories! We have hundreds of great children's stories for you to share.",
-    //   MULTI_CORRECT: 'Africa\nAsia',
-    //   MULTI_CORRECT_WITH_OTHER: 'Solar\nWind',
-    //   DATE_AND_TIME: new Date(
-    //     'Wed Mar 08 2023 22:03:00 GMT+0530 (India Standard Time)'
-    //   ),
-    //   DATE: new Date('Wed Mar 08 2023 22:03:00 GMT+0530 (India Standard Time)'),
-    //   TIME: new Date('1970-01-01T10:12:00'),
-    //   DATE_WITHOUT_YEAR: new Date('2023-12-31'),
-    //   DATE_TIME_WITHOUT_YEAR: new Date('2023-12-31T17:12:00'),
-    //   DURATION: '21-34-58',
-    //   MULTIPLE_CHOICE: 'Galileo Galilei',
-    //   MULTIPLE_CHOICE_WITH_OTHER: 'Melbourne',
-    //   LINEAR_SCALE: '1',
-    //   MULTIPLE_CHOICE_GRID: [
-    //     { row: 'first generation', selectedColumn: 'low level' },
-    //     { row: 'second generation', selectedColumn: 'high level' },
-    //     { row: 'third generation', selectedColumn: 'low level' },
-    //     { row: 'fourth generation', selectedColumn: 'high level' },
-    //     { row: 'fifth generation', selectedColumn: 'high level' },
-    //   ],
-    //   CHECKBOX_GRID: [
-    //     {
-    //       row: 'Apple',
-    //       cols: [
-    //         { data: 'Speed' },
-    //         { data: 'Storage' },
-    //         { data: 'Camera Quality' },
-    //         { data: 'Pricing' },
-    //       ],
-    //     },
-    //     {
-    //       row: 'OnePlus',
-    //       cols: [
-    //         { data: 'Speed' },
-    //         { data: 'Storage' },
-    //         { data: 'Camera Quality' },
-    //         { data: 'Pricing' },
-    //       ],
-    //     },
-    //     {
-    //       row: 'Samsung',
-    //       cols: [
-    //         { data: 'Speed' },
-    //         { data: 'Storage' },
-    //         { data: 'Camera Quality' },
-    //         { data: 'Pricing' },
-    //       ],
-    //     },
-    //     {
-    //       row: 'Motorola',
-    //       cols: [
-    //         { data: 'Speed' },
-    //         { data: 'Storage' },
-    //         { data: 'Camera Quality' },
-    //         { data: 'Pricing' },
-    //       ],
-    //     },
-    //   ] as RowColumnOption[],
-    //   DROPDOWN: 'Giraffe',
-    // };
-
-    if (response === false) {
       return false;
     }
 
@@ -126,8 +51,14 @@ export class ParserEngine {
           return this.validateCheckBoxGrid(extractedValue, response);
         case QType.DROPDOWN:
           return this.validateDropdown(extractedValue, response);
-        default:
-          return null;
+        case QType.DATE_TIME_WITH_MERIDIEM:
+          return this.validateDateTimeWithMeridiem(response);
+        case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
+          return this.validateDateTimeWithMeridiemWithoutYear(response);
+        case QType.TEXT_URL:
+          return this.validateTextUrl(response);
+        case QType.TIME_WITH_MERIDIEM:
+          return this.validateTimeWithMeridiem(response);
       }
     } else {
       return false;
@@ -137,6 +68,10 @@ export class ParserEngine {
   private validateText(response: string): boolean {
     const text = response.trim();
     return text.length > 0 && !(text.includes('\n') || text.includes('\r'));
+  }
+
+  private validateTextUrl(response: string): boolean {
+    return this.validateText(response);
   }
 
   private validateParagraph(response: string): boolean {
@@ -153,22 +88,19 @@ export class ParserEngine {
   }
 
   private validateDate(response: Date): boolean {
-    // Accepts: dd-MM-yyyy
-    if (isNaN(response.valueOf())) return false;
-    return response instanceof Date;
+    return response instanceof Date && !isNaN(response.valueOf());
   }
 
   private validateDateAndTime(response: Date): boolean {
-    // Accepts: dd-MM-yyyy-hh-mm
-    if (isNaN(response.valueOf())) return false;
-    return response instanceof Date;
+    return this.validateDate(response);
   }
 
   private validateTime(response: Date): boolean {
-    // Accepts: hh-mm
+    return this.validateDate(response);
+  }
 
-    if (isNaN(response.valueOf())) return false;
-    return response instanceof Date;
+  private validateTimeWithMeridiem(response: Date): boolean {
+    return this.validateDate(response);
   }
 
   private validateDuration(response: string): boolean {
@@ -178,15 +110,19 @@ export class ParserEngine {
   }
 
   private validateDateWithoutYear(response: Date): boolean {
-    // Accepts: dd-MM
-    if (isNaN(response.valueOf())) return false;
-    return response instanceof Date;
+    return this.validateDate(response);
   }
 
   private validateDateTimeWithoutYear(response: Date): boolean {
-    // Accepts: dd-MM-hh-mm
-    if (isNaN(response.valueOf())) return false;
-    return response instanceof Date;
+    return this.validateDate(response);
+  }
+
+  private validateDateTimeWithMeridiem(response: Date): boolean {
+    return this.validateDate(response);
+  }
+
+  private validateDateTimeWithMeridiemWithoutYear(response: Date): boolean {
+    return this.validateDate(response);
   }
 
   private validateMultiCorrect(
@@ -196,7 +132,7 @@ export class ParserEngine {
     console.log(response);
     const responseOptions = response
       .map((option) => option.optionText?.trim())
-      .filter((text) => text !== undefined && text !== '');
+      .filter((text) => Boolean(text));
 
     const actualOptions = extractedValue.options?.map((option) =>
       option.data.trim().toLowerCase()
@@ -214,17 +150,18 @@ export class ParserEngine {
     const isMulticorrect = this.validateMultiCorrect(extractedValue, response);
     const isValidOther = response.some(
       (option) =>
-        option.isOther && this.validateText(option.otherOptionValue || '')
+        option.isOther &&
+        option.otherOptionValue &&
+        this.validateText(option?.otherOptionValue)
     );
-    return isMulticorrect || isValidOther;
+    return isMulticorrect || !(isMulticorrect || isValidOther);
   }
 
   private validateMultipleChoice(
     extractedValue: ExtractedValue,
     response: MultiCorrectOrMultipleOption
   ): boolean {
-    if (!response || typeof response.optionText !== 'string') {
-      console.log('Response must have a valid optionText.');
+    if (typeof response.optionText !== 'string') {
       return false;
     }
 
@@ -235,13 +172,7 @@ export class ParserEngine {
         option.data.trim().toLowerCase()
       ) || [];
 
-    console.log('Actual Options:', actualOptions);
-    console.log('Trimmed Response:', trimmedResponse);
-
     const isValid = actualOptions.includes(trimmedResponse);
-
-    console.log('Is Valid:', isValid);
-    console.log('Validation worked');
     return isValid;
   }
 
@@ -253,31 +184,20 @@ export class ParserEngine {
 
     const isOtherOption = response.isOther ?? false;
 
-    console.log(!!isValidChoice);
-    console.log(isOtherOption);
-
-    return !!isValidChoice || isOtherOption;
+    return isValidChoice || isOtherOption;
   }
 
   private validateLinearScale(
     extractedValue: ExtractedValue,
     response: GenericLLMResponse
   ): boolean {
-    console.log(response);
-    const selectedValue = parseInt(response.answer, 10);
-    console.log('hello ' + selectedValue);
-    if (isNaN(selectedValue)) {
-      return false;
-    }
-
     const validOptions = (extractedValue.options ?? []).map(
       (option) => option.data
     );
 
-    if (!validOptions.includes(selectedValue.toString())) {
+    if (!validOptions.includes(response?.answer ?? EMPTY_STRING)) {
       return false;
     }
-    // console.log("found LinearScale")
     return true;
   }
 
@@ -285,6 +205,7 @@ export class ParserEngine {
     extractedValue: ExtractedValue,
     response: RowColumn[]
   ): boolean {
+    console.log(response);
     if (response.length !== (extractedValue.rowColumnOption || []).length) {
       return false;
     }
