@@ -335,6 +335,6 @@ export class ParserEngine {
     response: MultiCorrectOrMultipleOption[]
   ): boolean {
     return true;
-    return this.validateMultipleChoice(extractedValue, response);
+    // return this.validateMultipleChoice(extractedValue, response);
   }
 }
