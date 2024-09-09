@@ -10,123 +10,72 @@ export class FillerEngine {
   public async fill(
     fieldType: QType,
     fieldValue: ExtractedValue,
-    value: string
+    value: any
   ): Promise<boolean> {
     if (fieldType === null) return false;
 
     switch (fieldType) {
       case QType.TEXT:
-        return this.fillText(fieldValue, '1000');
+        return this.fillText(fieldValue, value);
 
       case QType.TEXT_EMAIL:
-        return this.fillEmail(fieldValue, 'harshit123@gmail.com');
+        return this.fillEmail(fieldValue, value);
 
       case QType.TEXT_URL:
-        return this.fillTextURL(fieldValue, 'https://google.com');
+        return this.fillTextURL(fieldValue, value);
 
       case QType.PARAGRAPH:
-        return this.fillParagraph(fieldValue, 'this is a paragraph \new');
+        return this.fillParagraph(fieldValue, value);
 
       case QType.LINEAR_SCALE:
-        return await this.fillLinearScale(fieldValue, '1');
+        return await this.fillLinearScale(fieldValue, value);
 
       case QType.DROPDOWN:
-        return await this.fillDropDown(fieldValue, 'Option 3');
+        return await this.fillDropDown(fieldValue, value);
 
       case QType.CHECKBOX_GRID:
-        return await this.fillCheckboxGrid(fieldValue, [
-          {
-            row: 'Row 1',
-            cols: [{ data: 'Column 1' }, { data: 'Column 2' }],
-          },
-          { row: 'Row 2', cols: [{ data: 'Column 2' }] },
-        ] as RowColumnOption[]);
+        return await this.fillCheckboxGrid(fieldValue, value);
 
       case QType.MULTIPLE_CHOICE_GRID:
-        return await this.fillMultipleChoiceGrid(fieldValue, [
-          { row: 'Row 1', selectedColumn: 'Column 1' },
-          { row: 'Row 2', selectedColumn: 'Column 2' },
-          { row: 'Brooooo', selectedColumn: 'Column 2' },
-        ]);
+        return await this.fillMultipleChoiceGrid(fieldValue, value);
 
-      case QType.DATE: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
-        return this.fillDate(fieldValue, dateValue);
-      }
+      case QType.DATE:
+        return this.fillDate(fieldValue, value);
 
-      case QType.DATE_AND_TIME: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
-        return await this.fillDateAndTime(fieldValue, dateValue);
-      }
+      case QType.DATE_AND_TIME:
+        return await this.fillDateAndTime(fieldValue, value);
 
-      case QType.DATE_TIME_WITH_MERIDIEM: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
-        return await this.fillDateAndTimeWithMeridiem(fieldValue, dateValue);
-      }
+      case QType.DATE_TIME_WITH_MERIDIEM:
+        return await this.fillDateAndTimeWithMeridiem(fieldValue, value);
 
-      case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
+      case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
         return await this.fillDateTimeWithMeridiemWithoutYear(
           fieldValue,
-          dateValue
+          value
         );
-      }
 
-      case QType.TIME_WITH_MERIDIEM: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
-        return await this.fillTimeWithMeridiem(fieldValue, dateValue);
-      }
+      case QType.TIME_WITH_MERIDIEM:
+        return await this.fillTimeWithMeridiem(fieldValue, value);
 
-      case QType.TIME: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
-        return this.fillTime(fieldValue, dateValue);
-      }
+      case QType.TIME:
+        return this.fillTime(fieldValue, value);
 
-      case QType.DURATION: {
-        return this.fillDuration(fieldValue, '11-11-11');
-      }
+      case QType.DURATION:
+        return this.fillDuration(fieldValue, value);
 
-      case QType.DATE_WITHOUT_YEAR: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
-        return this.fillDateWithoutYear(fieldValue, dateValue);
-      }
+      case QType.DATE_WITHOUT_YEAR:
+        return this.fillDateWithoutYear(fieldValue, value);
 
-      case QType.DATE_TIME_WITHOUT_YEAR: {
-        const dateValue = new Date(
-          'Mon Jun 17 2004 21:01:01 GMT+0530 (India Standard Time)'
-        );
-        return await this.fillDateTimeWithoutYear(fieldValue, dateValue);
-      }
+      case QType.DATE_TIME_WITHOUT_YEAR:
+        return await this.fillDateTimeWithoutYear(fieldValue, value);
 
       case QType.MULTI_CORRECT_WITH_OTHER:
       case QType.MULTI_CORRECT:
-        return await this.fillMultiCorrectWithOther(fieldValue, [
-          { optionText: 'Sightseeing' },
-          { optionText: 'Day 2' },
-          { isOther: true, otherOptionValue: 'My name is Andrew!' },
-        ] as MultiCorrectOrMultipleOption[]);
+        return await this.fillMultiCorrectWithOther(fieldValue, value);
 
       case QType.MULTIPLE_CHOICE_WITH_OTHER:
       case QType.MULTIPLE_CHOICE:
-        return await this.fillMultipleChoiceWithOther(fieldValue, {
-          // optionText: 'Option 2',
-          isOther: true,
-          otherOptionValue: 'Random',
-        } as MultiCorrectOrMultipleOption);
+        return await this.fillMultipleChoiceWithOther(fieldValue, value);
     }
   }
 
@@ -140,19 +89,25 @@ export class FillerEngine {
     return false;
   }
 
-  private fillEmail(fieldValue: ExtractedValue, value: string): boolean {
-    return this.fillText(fieldValue, value);
+  private fillEmail(
+    fieldValue: ExtractedValue,
+    value: GenericLLMResponse
+  ): boolean {
+    return this.fillText(fieldValue, value?.answer);
   }
 
-  private fillTextURL(fieldValue: ExtractedValue, value: string): boolean {
-    return this.fillText(fieldValue, value);
+  private fillTextURL(
+    fieldValue: ExtractedValue,
+    value: GenericLLMResponse
+  ): boolean {
+    return this.fillText(fieldValue, value?.answer);
   }
 
   private fillParagraph(fieldValue: ExtractedValue, value: string): boolean {
     return this.fillText(fieldValue, value);
   }
 
-  private fillDate(fieldValue: ExtractedValue, value: any): boolean {
+  private fillDate(fieldValue: ExtractedValue, value: Date): boolean {
     if (!(value instanceof Date)) return false;
 
     const date = value;
@@ -185,7 +140,7 @@ export class FillerEngine {
 
   private async fillDateAndTime(
     fieldValue: ExtractedValue,
-    value: any
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
     if (!(value instanceof Date)) return false;
@@ -232,7 +187,7 @@ export class FillerEngine {
 
   private async fillDateTimeWithMeridiemWithoutYear(
     fieldValue: ExtractedValue,
-    value: any
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
@@ -309,7 +264,7 @@ export class FillerEngine {
 
   private async fillTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: any
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
@@ -376,7 +331,7 @@ export class FillerEngine {
 
   private async fillDateAndTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: any
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
@@ -458,7 +413,7 @@ export class FillerEngine {
     return false;
   }
 
-  private fillTime(fieldValue: ExtractedValue, value: any): boolean {
+  private fillTime(fieldValue: ExtractedValue, value: Date): boolean {
     if (!(value instanceof Date)) return false;
 
     const date = value;
@@ -503,7 +458,10 @@ export class FillerEngine {
     return true;
   }
 
-  private fillDateWithoutYear(fieldValue: ExtractedValue, value: any): boolean {
+  private fillDateWithoutYear(
+    fieldValue: ExtractedValue,
+    value: Date
+  ): boolean {
     if (!(value instanceof Date)) return false;
 
     const date = value;
@@ -530,7 +488,7 @@ export class FillerEngine {
 
   private async fillDateTimeWithoutYear(
     fieldValue: ExtractedValue,
-    value: any
+    value: Date
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
 
@@ -644,21 +602,25 @@ export class FillerEngine {
 
   private async fillLinearScale(
     fieldValue: ExtractedValue,
-    value: string
+    value: GenericLLMResponse
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
+    for (const index in fieldValue.options) {
+      if (Object.prototype.hasOwnProperty.call(fieldValue.options, index)) {
+        const scale = fieldValue.options[Number(index)];
 
-    fieldValue.options?.forEach((scale) => {
-      if (scale.data === value) {
-        if (scale.dom?.getAttribute('aria-checked') !== 'true') {
-          (scale.dom as HTMLInputElement)?.dispatchEvent(
-            new Event('click', { bubbles: true })
-          );
+        if (scale.data.toString() === value?.answer?.toString()) {
+          console.log('found');
+
+          if (scale.dom?.getAttribute('aria-checked') !== 'true') {
+            (scale.dom as HTMLInputElement)?.dispatchEvent(
+              new Event('click', { bubbles: true })
+            );
+          }
           return true;
         }
       }
-    });
-
+    }
     return false;
   }
 
@@ -726,11 +688,12 @@ export class FillerEngine {
 
   private async fillDropDown(
     fieldValue: ExtractedValue,
-    value: string
+    value: GenericLLMResponse
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
+
     for (const option of fieldValue.options || []) {
-      if (option.data === value) {
+      if (option.data === value?.answer) {
         const dropdown = option.dom;
         if (fieldValue.dom) {
           if (fieldValue.dom?.getAttribute('aria-expanded') !== 'true') {
@@ -739,10 +702,13 @@ export class FillerEngine {
               ?.dispatchEvent(new Event('click', { bubbles: true }));
             await sleep(SLEEP_DURATION);
           }
+
           const allOptions =
             fieldValue.dom.querySelectorAll(`div[role=option]`);
           allOptions.forEach((possibleOption) => {
-            if (possibleOption.querySelector('span')?.textContent === value) {
+            if (
+              possibleOption.querySelector('span')?.textContent === value.answer
+            ) {
               possibleOption.dispatchEvent(
                 new Event('click', { bubbles: true })
               );
