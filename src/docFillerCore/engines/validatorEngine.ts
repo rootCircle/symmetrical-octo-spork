@@ -129,7 +129,6 @@ export class ValidatorEngine {
     extractedValue: ExtractedValue,
     response: MultiCorrectOrMultipleOption[]
   ): boolean {
-    console.log(response);
     const responseOptions = response
       .map((option) => option.optionText?.trim())
       .filter((text) => Boolean(text));
@@ -182,9 +181,12 @@ export class ValidatorEngine {
   ): boolean {
     const isValidChoice = this.validateMultipleChoice(extractedValue, response);
 
-    const isOtherOption = response.isOther ?? false;
+    const isOtherOption =
+      (response.isOther ?? false) &&
+      response.otherOptionValue &&
+      this.validateText(response.otherOptionValue);
 
-    return isValidChoice || isOtherOption;
+    return isValidChoice || Boolean(isOtherOption);
   }
 
   private validateLinearScale(
@@ -195,17 +197,13 @@ export class ValidatorEngine {
       (option) => option.data
     );
 
-    if (!validOptions.includes(response?.answer ?? EMPTY_STRING)) {
-      return false;
-    }
-    return true;
+    return validOptions.includes(response?.answer ?? EMPTY_STRING);
   }
 
   private validateMultipleChoiceGrid(
     extractedValue: ExtractedValue,
     response: RowColumn[]
   ): boolean {
-    console.log(response);
     if (response.length !== (extractedValue.rowColumnOption || []).length) {
       return false;
     }
@@ -253,7 +251,7 @@ export class ValidatorEngine {
 
   private validateDropdown(
     extractedValue: ExtractedValue,
-    response: MultiCorrectOrMultipleOption[]
+    response: GenericLLMResponse
   ): boolean {
     return true;
     // return this.validateMultipleChoice(extractedValue, response);
