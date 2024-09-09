@@ -158,11 +158,12 @@ export class LLMEngine {
         return new StringOutputParser();
       case QType.TEXT_EMAIL:
         return StructuredOutputParser.fromNamesAndDescriptions({
-          answer: "Give Correct Email corresponding to given question or give random@gmail.com",
+          answer:
+            'Give Correct Email corresponding to given question or give random@gmail.com',
         });
       case QType.TEXT_URL:
         return StructuredOutputParser.fromNamesAndDescriptions({
-          answer: "Give Correct Url corresponding to given question",
+          answer: 'Give Correct Url corresponding to given question',
         });
 
       case QType.DATE:
@@ -178,7 +179,8 @@ export class LLMEngine {
 
       case QType.LINEAR_SCALE:
         return StructuredOutputParser.fromNamesAndDescriptions({
-          answer: "The integer answer to the user's question as the key corresponding to the calculated answer",
+          answer:
+            "The integer answer to the user's question as the key corresponding to the calculated answer",
         });
       case QType.DROPDOWN:
         return StructuredOutputParser.fromNamesAndDescriptions({

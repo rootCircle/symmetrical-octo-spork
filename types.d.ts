@@ -97,5 +97,5 @@ interface RowColumn {
 }
 
 interface GenericLLMResponse {
-  answer: string
+  answer: string;
 }
