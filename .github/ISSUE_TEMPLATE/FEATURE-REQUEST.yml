@@ -1,9 +1,9 @@
 ---
 name: 🛠️ Feature Request
 description: Suggest an idea to help us improve docFiller
-title: "[Feature]: "
+title: "feat: "
 labels:
-  - "feature_request"
+  - "enhancement"
 
 body:
   - type: markdown
