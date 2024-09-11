@@ -169,19 +169,25 @@ export class LLMEngine {
       case QType.DATE:
       case QType.TIME:
       case QType.DATE_AND_TIME:
-      case QType.DURATION:
       case QType.DATE_TIME_WITHOUT_YEAR:
       case QType.DATE_TIME_WITH_MERIDIEM:
       case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
       case QType.DATE_WITHOUT_YEAR:
       case QType.TIME_WITH_MERIDIEM:
+      case QType.DURATION:
         return new DatetimeOutputParser();
 
       case QType.LINEAR_SCALE:
-        return StructuredOutputParser.fromNamesAndDescriptions({
-          answer:
-            "The integer answer to the user's question as the key corresponding to the calculated answer",
-        });
+        return StructuredOutputParser.fromZodSchema(
+          z.object({
+            answer: z
+              .number()
+              .describe(
+                "The integer answer to the user's question as the key corresponding to the calculated answer"
+              ),
+          })
+        );
+
       case QType.DROPDOWN:
         return StructuredOutputParser.fromNamesAndDescriptions({
           answer: "answer to the user's question",
