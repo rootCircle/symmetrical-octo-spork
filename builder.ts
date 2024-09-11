@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 import copyContents from './copier';
 import entryPoints from './entrypoints';
 
 const build = async () => {
   const entrypoints = await entryPoints();
   const buildStatus = await Bun.build({
-    entrypoints: entrypoints,
+    entrypoints,
     outdir: './build',
     minify: true,
     target: 'browser',

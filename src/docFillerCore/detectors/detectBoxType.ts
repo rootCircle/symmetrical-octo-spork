@@ -11,6 +11,7 @@ export class DetectBoxType {
 
   public detectType = (element: HTMLElement): QType | null => {
     const possibleBoxesMethod: {
+      // eslint-disable-next-line no-unused-vars
       [key in QType]: boolean;
     } = {
       [QType.DROPDOWN]: this.isDropdown(element),
@@ -50,14 +51,14 @@ export class DetectBoxType {
   public isDropdown(element: HTMLElement): boolean {
     return Boolean(
       element.querySelector('div[role=listbox]') &&
-        !element.querySelector('input')
+        !element.querySelector('input'),
     );
   }
 
   private isText(element: HTMLElement): boolean {
     const inputFields = element.querySelectorAll('input');
     const inputType =
-      inputFields.length === 1 ? inputFields[0].getAttribute('type') : null;
+      inputFields.length === 1 ? inputFields[0]?.getAttribute('type') : null;
     return (
       inputFields.length === 1 &&
       inputType !== 'hidden' &&
@@ -84,11 +85,11 @@ export class DetectBoxType {
       element.querySelector('div[role=list]') &&
         !(
           optionCount > 0 &&
-          options[optionCount - 1].nextElementSibling &&
-          options[optionCount - 1].nextElementSibling?.querySelector(
-            'input:not([type=hidden])'
+          options?.[optionCount - 1]?.nextElementSibling &&
+          options?.[optionCount - 1]?.nextElementSibling?.querySelector(
+            'input:not([type=hidden])',
           )
-        )
+        ),
     );
   }
 
@@ -98,10 +99,10 @@ export class DetectBoxType {
     return Boolean(
       element.querySelector('div[role=list]') &&
         optionCount > 0 &&
-        options[optionCount - 1].nextElementSibling &&
-        options[optionCount - 1].nextElementSibling?.querySelector(
-          'input:not([type=hidden])'
-        )
+        options[optionCount - 1]?.nextElementSibling &&
+        options[optionCount - 1]?.nextElementSibling?.querySelector(
+          'input:not([type=hidden])',
+        ),
     );
   }
 
@@ -110,7 +111,7 @@ export class DetectBoxType {
     return Boolean(
       optionBox &&
         optionBox.querySelector('div') &&
-        !optionBox.querySelector('span')
+        !optionBox.querySelector('span'),
     );
   }
 
@@ -121,11 +122,11 @@ export class DetectBoxType {
       element.querySelector('div[role=radiogroup] label span') &&
         !(
           optionCount > 0 &&
-          options[optionCount - 1].nextElementSibling &&
-          options[optionCount - 1].nextElementSibling?.querySelector(
-            'input:not([type=hidden])'
+          options[optionCount - 1]?.nextElementSibling &&
+          options[optionCount - 1]?.nextElementSibling?.querySelector(
+            'input:not([type=hidden])',
           )
-        )
+        ),
     );
   }
 
@@ -135,16 +136,16 @@ export class DetectBoxType {
     return Boolean(
       element.querySelector('div[role=radiogroup] label span') &&
         optionCount > 0 &&
-        options[optionCount - 1].nextElementSibling &&
-        options[optionCount - 1].nextElementSibling?.querySelector(
-          'input:not([type=hidden])'
-        )
+        options[optionCount - 1]?.nextElementSibling &&
+        options[optionCount - 1]?.nextElementSibling?.querySelector(
+          'input:not([type=hidden])',
+        ),
     );
   }
 
   private isCheckboxGrid(element: HTMLElement): boolean {
     return Boolean(
-      element.querySelector('div[role=group] label div[role=checkbox]')
+      element.querySelector('div[role=group] label div[role=checkbox]'),
     );
   }
 
@@ -167,12 +168,12 @@ export class DetectBoxType {
      */
 
     const radioGroups = element.querySelector(
-      'div[role=radiogroup] span[role=presentation]'
+      'div[role=radiogroup] span[role=presentation]',
     );
     const hasTableRowDisplay =
       radioGroups && getComputedStyle(radioGroups).display === 'table-row';
     return Boolean(
-      hasTableRowDisplay && radioGroups.querySelector('div[role=radio]')
+      hasTableRowDisplay && radioGroups.querySelector('div[role=radio]'),
     );
   }
 
@@ -196,7 +197,7 @@ export class DetectBoxType {
         !hasHour &&
         !hasMinute &&
         !hasSecond &&
-        !hasMeridiemField
+        !hasMeridiemField,
     );
   }
 
@@ -220,7 +221,7 @@ export class DetectBoxType {
         hasHour &&
         hasMinute &&
         !hasSecond &&
-        !hasMeridiemField
+        !hasMeridiemField,
     );
   }
 
@@ -244,7 +245,7 @@ export class DetectBoxType {
         hasHour &&
         hasMinute &&
         !hasSecond &&
-        !hasMeridiemField
+        !hasMeridiemField,
     );
   }
 
@@ -254,17 +255,19 @@ export class DetectBoxType {
       hasYear,
       hasMonth,
       hasDate,
-      hasHour,
-      hasMinute,
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      _hasHour,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+      _hasMinute,
       hasSecond,
       hasMeridiemField,
     ] = this.timeCacher.getTimeParams(element);
 
     const hasHourReal = Boolean(
-      element.querySelector('input[aria-label="Hours"]')
+      element.querySelector('input[aria-label="Hours"]'),
     );
     const hasMinuteReal = Boolean(
-      element.querySelector('input[aria-label="Minutes"]')
+      element.querySelector('input[aria-label="Minutes"]'),
     );
 
     return Boolean(
@@ -275,7 +278,7 @@ export class DetectBoxType {
         hasHourReal &&
         hasMinuteReal &&
         hasSecond &&
-        !hasMeridiemField
+        !hasMeridiemField,
     );
   }
 
@@ -299,7 +302,7 @@ export class DetectBoxType {
         !hasHour &&
         !hasMinute &&
         !hasSecond &&
-        !hasMeridiemField
+        !hasMeridiemField,
     );
   }
 
@@ -323,7 +326,7 @@ export class DetectBoxType {
         hasHour &&
         hasMinute &&
         !hasSecond &&
-        !hasMeridiemField
+        !hasMeridiemField,
     );
   }
 
@@ -347,7 +350,7 @@ export class DetectBoxType {
         hasHour &&
         hasMinute &&
         !hasSecond &&
-        hasMeridiemField
+        hasMeridiemField,
     );
   }
 
@@ -371,7 +374,7 @@ export class DetectBoxType {
         hasHour &&
         hasMinute &&
         !hasSecond &&
-        hasMeridiemField
+        hasMeridiemField,
     );
   }
 
@@ -395,7 +398,7 @@ export class DetectBoxType {
         hasHour &&
         hasMinute &&
         !hasSecond &&
-        hasMeridiemField
+        hasMeridiemField,
     );
   }
 }

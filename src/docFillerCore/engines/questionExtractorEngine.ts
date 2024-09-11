@@ -4,8 +4,8 @@ export class QuestionExtractorEngine {
    * @returns An array of validated question DOM elements.
    */
   public getValidQuestions(): HTMLElement[] {
-    let questions = this.getQuestions();
-    let validatedQuestions = this.validateQuestions(questions);
+    const questions = this.getQuestions();
+    const validatedQuestions = this.validateQuestions(questions);
     return validatedQuestions;
   }
 
@@ -25,8 +25,8 @@ export class QuestionExtractorEngine {
    * @returns An array of valid question DOM elements.
    */
   private validateQuestions(questions: NodeListOf<HTMLElement>): HTMLElement[] {
-    let filteredQuestions = Array.from(questions).filter(
-      (question) => !this.isSectionHeading(question)
+    const filteredQuestions = Array.from(questions).filter(
+      (question) => !this.isSectionHeading(question),
     );
 
     return Array.from(filteredQuestions).filter(
@@ -34,7 +34,7 @@ export class QuestionExtractorEngine {
         !this.isCheckBoxListItem(question) &&
         !this.isVideo(question) &&
         !this.isImage(question) &&
-        !this.isSectionItem(question)
+        !this.isSectionItem(question),
     );
   }
 
@@ -45,13 +45,13 @@ export class QuestionExtractorEngine {
    */
   private isCheckBoxListItem(element: HTMLElement): boolean {
     let hasListRole = false;
-    let parent: HTMLElement | null = element.parentElement;
+    let parentElement: HTMLElement | null = element.parentElement;
 
-    while (parent && !hasListRole) {
-      if (parent.getAttribute('role') === 'listitem') {
+    while (parentElement && !hasListRole) {
+      if (parentElement.getAttribute('role') === 'listitem') {
         hasListRole = true;
       }
-      parent = parent.parentElement;
+      parentElement = parentElement.parentElement;
     }
     return hasListRole;
   }
@@ -64,10 +64,13 @@ export class QuestionExtractorEngine {
   private isSectionItem(element: HTMLElement): boolean {
     return Boolean(
       !element.querySelector(
-        'img,iframe,input,div[role=checkbox],div[role=radio],div[role=listbox]'
+        'img,iframe,input,div[role=checkbox],div[role=radio],div[role=listbox]',
       ) &&
         element.childElementCount > 0 &&
-        element.childNodes[0].childNodes.length > 1
+        element.childNodes &&
+        element.childNodes[0] &&
+        element.childNodes[0].childNodes &&
+        element.childNodes[0].childNodes.length > 1,
     );
   }
 
@@ -89,7 +92,10 @@ export class QuestionExtractorEngine {
     return Boolean(
       element.querySelector('img') &&
         element.childElementCount > 0 &&
-        element.childNodes[0].childNodes.length > 1
+        element.childNodes &&
+        element.childNodes[0] &&
+        element.childNodes[0].childNodes &&
+        element.childNodes[0].childNodes.length > 1,
     );
   }
 
@@ -105,7 +111,8 @@ export class QuestionExtractorEngine {
       return (
         attributes?.attributes.getNamedItem('role')?.nodeValue === 'heading'
       );
-    } catch (_e) {
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    } catch (error) {
       return false;
     }
   }

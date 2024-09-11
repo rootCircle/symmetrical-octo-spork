@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { DetectBoxType } from '@docFillerCore/detectors/detectBoxType';
 import { FieldExtractorEngine } from '@docFillerCore/engines/fieldExtractorEngine';
 import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
@@ -44,7 +45,7 @@ async function runDocFillerEngine() {
         response = await consensusEngine.generateAndValidate(
           promptString,
           fieldValue,
-          fieldType
+          fieldType,
         );
       } else {
         response = await llm.getResponse(promptString, fieldType);
@@ -53,10 +54,14 @@ async function runDocFillerEngine() {
       console.log('LLM Response ↴');
       console.log(response);
 
+      if (response === null) {
+        console.log('No response from LLM');
+        continue;
+      }
       const parsed_response = validator.validate(
         fieldType,
         fieldValue,
-        response
+        response,
       );
       console.log(`Parsed Response : ${parsed_response}`);
 

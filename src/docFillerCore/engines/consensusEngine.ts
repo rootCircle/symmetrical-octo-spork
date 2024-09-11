@@ -20,7 +20,7 @@ class ConsensusEngine {
   private distributeWeights() {
     const totalWeights = Array.from(this.llmWeights.values()).reduce(
       (sum, weight) => sum + weight,
-      0
+      0,
     );
     const numLLMs = this.llmWeights.size;
     const equalWeight = totalWeights / numLLMs;
@@ -40,23 +40,25 @@ class ConsensusEngine {
   async generateAndValidate(
     promptString: string,
     extractedValue: ExtractedValue,
-    fieldType: QType
-  ): Promise<object | null> {
+    fieldType: QType,
+  ): Promise<LLMResponse | null> {
     const responses = [];
     for (const [llmType, weight] of this.llmWeights.entries()) {
       const llm = LLMEngine.getInstance(llmType);
       const response = await llm.getResponse(promptString, fieldType);
-      const parsedResponse = this.validateEngine.validate(
-        fieldType,
-        extractedValue,
-        response
-      );
-      if (parsedResponse === true) {
-        responses.push({
-          source: llmType,
-          weight: weight,
-          value: response ?? {},
-        });
+      if (response !== null) {
+        const parsedResponse = this.validateEngine.validate(
+          fieldType,
+          extractedValue,
+          response,
+        );
+        if (parsedResponse === true) {
+          responses.push({
+            source: llmType,
+            weight,
+            value: response ?? {},
+          });
+        }
       }
     }
 

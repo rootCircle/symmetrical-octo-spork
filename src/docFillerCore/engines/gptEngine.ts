@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import process from 'process';
+
 import { Ollama } from '@langchain/ollama';
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
@@ -8,7 +15,6 @@ import {
 import LLMEngineType from '@utils/llmEngineTypes';
 import { RunnableSequence } from '@langchain/core/runnables';
 import { PromptTemplate } from '@langchain/core/prompts';
-import process from 'process';
 import { DEFAULT_LLM_MODEL } from '@utils/constant';
 import { QType } from '@utils/questionTypes';
 import { DatetimeOutputParser } from 'langchain/output_parsers';
@@ -32,7 +38,8 @@ export class LLMEngine {
       case LLMEngineType.ChatGPT:
         LLMEngine.openai = new ChatOpenAI({
           model: 'gpt-4',
-          apiKey: process.env.CHATGPT_API_KEY as string,
+          // eslint-disable-next-line dot-notation
+          apiKey: process.env['CHATGPT_API_KEY'] as string,
         });
         break;
       case LLMEngineType.Gemini:
@@ -40,7 +47,8 @@ export class LLMEngine {
           model: 'gemini-pro',
           temperature: 0,
           maxRetries: 2,
-          apiKey: process.env.GEMINI_API_KEY as string,
+          // eslint-disable-next-line dot-notation
+          apiKey: process.env['GEMINI_API_KEY'] as string,
         });
         break;
       case LLMEngineType.Ollama:
@@ -67,27 +75,28 @@ export class LLMEngine {
 
   public async getResponse(
     promptText: string,
-    questionType: QType
-  ): Promise<object | null> {
-    let item = {
+    questionType: QType,
+  ): Promise<LLMResponse | null> {
+    const item = {
       type: 'API_CALL',
       prompt: promptText,
-      questionType: questionType,
+      questionType,
     };
     try {
       return await chrome.runtime.sendMessage(item).then((response) => {
-        return response.value;
+        return response?.value;
       });
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error('Error getting response:', error);
+      // console.error('Error getting response:', error);
       return null;
     }
   }
 
   async invokeLLM(
     promptText: string,
-    questionType: QType
-  ): Promise<object | null> {
+    questionType: QType,
+  ): Promise<LLMResponse | null> {
     if (promptText !== null) {
       try {
         let response = null;
@@ -97,7 +106,7 @@ export class LLMEngine {
             if (LLMEngine.openai) {
               const chain = RunnableSequence.from([
                 PromptTemplate.fromTemplate(
-                  'Answer the users question as best as possible.\n{format_instructions}\n{question}'
+                  'Answer the users question as best as possible.\n{format_instructions}\n{question}',
                 ),
                 LLMEngine.openai,
                 parser,
@@ -113,7 +122,7 @@ export class LLMEngine {
             if (LLMEngine.gemini) {
               const chain = RunnableSequence.from([
                 PromptTemplate.fromTemplate(
-                  'Answer the users question as best as possible.\n{format_instructions}\n{question}'
+                  'Answer the users question as best as possible.\n{format_instructions}\n{question}',
                 ),
                 LLMEngine.gemini,
                 parser,
@@ -129,7 +138,7 @@ export class LLMEngine {
             if (LLMEngine.ollama) {
               const chain = RunnableSequence.from([
                 PromptTemplate.fromTemplate(
-                  'Answer the users question as best as possible.\n{format_instructions}\n{question}'
+                  'Answer the users question as best as possible.\n{format_instructions}\n{question}',
                 ),
                 LLMEngine.ollama,
                 parser,
@@ -142,7 +151,7 @@ export class LLMEngine {
             break;
           }
         }
-        return response;
+        return this.patchResponse(response, questionType);
       } catch (error) {
         console.error('Error getting response:', error);
       }
@@ -150,8 +159,42 @@ export class LLMEngine {
     return null;
   }
 
+  private patchResponse(response: any, questionType: QType): LLMResponse {
+    switch (questionType) {
+      case QType.DATE:
+      case QType.TIME:
+      case QType.DATE_AND_TIME:
+      case QType.DATE_TIME_WITHOUT_YEAR:
+      case QType.DATE_TIME_WITH_MERIDIEM:
+      case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
+      case QType.DATE_WITHOUT_YEAR:
+      case QType.TIME_WITH_MERIDIEM:
+      case QType.DURATION:
+        return { date: response as Date };
+      case QType.LINEAR_SCALE:
+        return { linearScale: response as LinearScaleResponse };
+      case QType.MULTIPLE_CHOICE:
+      case QType.MULTIPLE_CHOICE_WITH_OTHER:
+        return { multipleChoice: response as MultiCorrectOrMultipleOption };
+      case QType.MULTI_CORRECT:
+      case QType.MULTI_CORRECT_WITH_OTHER:
+        return { multiCorrect: response as MultiCorrectOrMultipleOption[] };
+      case QType.MULTIPLE_CHOICE_GRID:
+        return { multipleChoiceGrid: response as RowColumn[] };
+      case QType.CHECKBOX_GRID:
+        return { checkboxGrid: response as RowColumnOption[] };
+      case QType.TEXT_EMAIL:
+      case QType.TEXT_URL:
+      case QType.DROPDOWN:
+        return { genericResponse: response as GenericLLMResponse };
+      case QType.PARAGRAPH:
+      case QType.TEXT:
+        return { text: response as string };
+    }
+  }
+
   private static getParser(
-    questionType: QType
+    questionType: QType,
   ): StructuredOutputParser<any> | DatetimeOutputParser | StringOutputParser {
     switch (questionType) {
       case QType.TEXT:
@@ -183,9 +226,9 @@ export class LLMEngine {
             answer: z
               .number()
               .describe(
-                "The integer answer to the user's question as the key corresponding to the calculated answer"
+                "The integer answer to the user's question as the key corresponding to the calculated answer",
               ),
-          })
+          }),
         );
 
       case QType.DROPDOWN:
@@ -200,7 +243,7 @@ export class LLMEngine {
           data: z
             .string()
             .describe(
-              "The name or label of the column in the checkbox grid which is correct as per user's question"
+              "The name or label of the column in the checkbox grid which is correct as per user's question",
             ),
         });
 
@@ -211,14 +254,14 @@ export class LLMEngine {
           cols: z
             .array(checkboxGridColSchema)
             .describe(
-              'The list of correct columns associated with the row to be marked as checked'
+              'The list of correct columns associated with the row to be marked as checked',
             ),
         });
 
         const checkboxGridArraySchema = z
           .array(checkboxGridRowSchema)
           .describe(
-            'An array of rows for the checkbox grid, each with a list of columns'
+            'An array of rows for the checkbox grid, each with a list of columns',
           );
 
         return StructuredOutputParser.fromZodSchema(checkboxGridArraySchema);
@@ -229,23 +272,23 @@ export class LLMEngine {
           row: z
             .string()
             .describe(
-              'The label or name of the row in the multiple-choice grid'
+              'The label or name of the row in the multiple-choice grid',
             ),
           selectedColumn: z
             .string()
             .describe(
-              'The column selected for the given row in the multiple-choice grid that is correct as per user question'
+              'The column selected for the given row in the multiple-choice grid that is correct as per user question',
             ),
         });
 
         const multipleChoiceGridArraySchema = z
           .array(multipleChoiceGridRowSchema)
           .describe(
-            'An array of rows for the multiple-choice grid, each with a selected column'
+            'An array of rows for the multiple-choice grid, each with a selected column',
           );
 
         return StructuredOutputParser.fromZodSchema(
-          multipleChoiceGridArraySchema
+          multipleChoiceGridArraySchema,
         );
       }
 
@@ -259,18 +302,18 @@ export class LLMEngine {
               .string()
               .optional()
               .describe(
-                "The text of the option. Optional if 'isOther' is true."
+                "The text of the option. Optional if 'isOther' is true.",
               ),
             isOther: z
               .boolean()
               .describe(
-                "Indicates if this is an 'other' option. This field is required."
+                "Indicates if this is an 'other' option. This field is required.",
               ),
             otherOptionValue: z
               .string()
               .optional()
               .describe(
-                "The value for the 'other' option. Must be provided if 'isOther' is true."
+                "The value for the 'other' option. Must be provided if 'isOther' is true.",
               ),
           })
           .refine(
@@ -279,7 +322,7 @@ export class LLMEngine {
               message:
                 "'otherOptionValue' must be provided if 'isOther' is true",
               path: ['otherOptionValue'],
-            }
+            },
           );
 
         if (
@@ -289,18 +332,18 @@ export class LLMEngine {
           const multiCorrectOptionsArraySchema = z
             .array(multiCorrectOrMultipleOptionSchema)
             .describe(
-              "An array of options for multi-correct or multiple-choice with optional 'other' option"
+              "An array of options for multi-correct or multiple-choice with optional 'other' option",
             );
 
           return StructuredOutputParser.fromZodSchema(
-            multiCorrectOptionsArraySchema
+            multiCorrectOptionsArraySchema,
           );
         } else {
           // For multiple-choice with optional 'other' option
           return StructuredOutputParser.fromZodSchema(
             multiCorrectOrMultipleOptionSchema.describe(
-              "Schema for a single option in multiple-choice with an optional 'other' option"
-            )
+              "Schema for a single option in multiple-choice with an optional 'other' option",
+            ),
           );
         }
       }

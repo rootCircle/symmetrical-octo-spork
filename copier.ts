@@ -10,7 +10,7 @@ import { join } from 'path';
  */
 export default async function copyContents(
   sourceDir: string,
-  targetDir: string
+  targetDir: string,
 ): Promise<void> {
   const entries = await readdir(sourceDir);
 

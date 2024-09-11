@@ -7,7 +7,7 @@ export class ValidatorEngine {
   public validate(
     fieldType: QType,
     extractedValue: ExtractedValue,
-    response: any
+    response: LLMResponse,
   ): boolean | null {
     if (!response) {
       return false;
@@ -65,108 +65,170 @@ export class ValidatorEngine {
     }
   }
 
-  private validateText(response: string): boolean {
-    const text = response.trim();
-    return text.length > 0 && !(text.includes('\n') || text.includes('\r'));
+  private validateText(response: LLMResponse): boolean {
+    if (!response.text) {
+      return false;
+    }
+    return this.__validateText(response.text);
   }
 
-  private validateTextUrl(response: string): boolean {
-    return this.validateText(response);
+  private __validateText(text: string): boolean {
+    const trimmedText = text.trim();
+    return (
+      trimmedText.length > 0 &&
+      !(trimmedText.includes('\n') || trimmedText.includes('\r'))
+    );
   }
 
-  private validateParagraph(response: string): boolean {
-    return response?.trim().length > 0;
+  private validateTextUrl(response: LLMResponse): boolean {
+    if (!response.genericResponse) {
+      return false;
+    }
+    return this.__validateText(response.genericResponse.answer);
   }
 
-  private validateEmail(response: GenericLLMResponse): boolean {
+  private validateParagraph(response: LLMResponse): boolean {
+    if (!response.text) {
+      return false;
+    }
+    return response.text?.trim().length > 0;
+  }
+
+  private validateEmail(response: LLMResponse): boolean {
+    if (!response.genericResponse) {
+      return false;
+    }
     // Checking valid email in accord to RFC 5322
     // https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression/201378#201378
 
     const mailRegex =
+      // eslint-disable-next-line no-control-regex
       /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-    return Boolean(response && response?.answer?.match(mailRegex));
+    return Boolean(
+      response && response.genericResponse?.answer?.match(mailRegex),
+    );
   }
 
-  private validateDate(response: Date): boolean {
-    return response instanceof Date && !isNaN(response.valueOf());
+  private validateDate(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
+    return response.date instanceof Date && !isNaN(response.date.valueOf());
   }
 
-  private validateDateAndTime(response: Date): boolean {
+  private validateDateAndTime(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
-  private validateTime(response: Date): boolean {
+  private validateTime(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
-  private validateTimeWithMeridiem(response: Date): boolean {
+  private validateTimeWithMeridiem(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
-  private validateDuration(response: Date): boolean {
+  private validateDuration(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
-  private validateDateWithoutYear(response: Date): boolean {
+  private validateDateWithoutYear(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
-  private validateDateTimeWithoutYear(response: Date): boolean {
+  private validateDateTimeWithoutYear(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
-  private validateDateTimeWithMeridiem(response: Date): boolean {
+  private validateDateTimeWithMeridiem(response: LLMResponse): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
-  private validateDateTimeWithMeridiemWithoutYear(response: Date): boolean {
+  private validateDateTimeWithMeridiemWithoutYear(
+    response: LLMResponse,
+  ): boolean {
+    if (!response.date) {
+      return false;
+    }
     return this.validateDate(response);
   }
 
   private validateMultiCorrect(
     extractedValue: ExtractedValue,
-    response: MultiCorrectOrMultipleOption[]
+    response: LLMResponse,
   ): boolean {
-    const responseOptions = response
+    if (!response.multiCorrect) {
+      return false;
+    }
+    const responseOptions = response.multiCorrect
       .map((option) => option.optionText?.trim())
       .filter((text) => Boolean(text));
 
     const actualOptions = extractedValue.options?.map((option) =>
-      option.data.trim().toLowerCase()
+      option.data.trim().toLowerCase(),
     );
 
     return responseOptions.every(
-      (option) => option && actualOptions?.includes(option.toLowerCase())
+      (option) => option && actualOptions?.includes(option.toLowerCase()),
     );
   }
 
   private validateMultiCorrectWithOther(
     extractedValue: ExtractedValue,
-    response: MultiCorrectOrMultipleOption[]
+    response: LLMResponse,
   ): boolean {
+    if (!response.multiCorrect) {
+      return false;
+    }
     const isMulticorrect = this.validateMultiCorrect(extractedValue, response);
-    const isValidOther = response.some(
+    const isValidOther = response.multiCorrect.some(
       (option) =>
         option.isOther &&
         option.otherOptionValue &&
-        this.validateText(option?.otherOptionValue)
+        this.__validateText(option?.otherOptionValue),
     );
     return isMulticorrect || isValidOther;
   }
 
   private validateMultipleChoice(
     extractedValue: ExtractedValue,
-    response: MultiCorrectOrMultipleOption
+    response: LLMResponse,
   ): boolean {
-    if (typeof response.optionText !== 'string') {
+    if (!response.multipleChoice) {
+      return false;
+    }
+    if (typeof response.multipleChoice.optionText !== 'string') {
       return false;
     }
 
-    const trimmedResponse = response.optionText.trim().toLowerCase();
+    const trimmedResponse = response.multipleChoice.optionText
+      .trim()
+      .toLowerCase();
 
     const actualOptions =
       extractedValue.options?.map((option) =>
-        option.data.trim().toLowerCase()
+        option.data.trim().toLowerCase(),
       ) || [];
 
     const isValid = actualOptions.includes(trimmedResponse);
@@ -175,85 +237,113 @@ export class ValidatorEngine {
 
   private validateMultipleChoiceWithOther(
     extractedValue: ExtractedValue,
-    response: MultiCorrectOrMultipleOption
+    response: LLMResponse,
   ): boolean {
+    if (!response.multipleChoice) {
+      return false;
+    }
     const isValidChoice = this.validateMultipleChoice(extractedValue, response);
 
     const isOtherOption =
-      (response.isOther ?? false) &&
-      response.otherOptionValue &&
-      this.validateText(response.otherOptionValue);
+      (response.multipleChoice.isOther ?? false) &&
+      response.multipleChoice.otherOptionValue &&
+      this.__validateText(response.multipleChoice.otherOptionValue);
 
     return isValidChoice || Boolean(isOtherOption);
   }
 
   private validateLinearScale(
     extractedValue: ExtractedValue,
-    response: LinearScaleResponse
+    response: LLMResponse,
   ): boolean {
+    if (!response.linearScale) {
+      return false;
+    }
     const validOptions = (extractedValue.options ?? []).map(
-      (option) => option.data
+      (option) => option.data,
     );
 
-    return validOptions.includes(response?.answer.toString() ?? EMPTY_STRING);
+    return validOptions.includes(
+      response.linearScale?.answer.toString() ?? EMPTY_STRING,
+    );
   }
 
   private validateMultipleChoiceGrid(
     extractedValue: ExtractedValue,
-    response: RowColumn[]
+    response: LLMResponse,
   ): boolean {
-    if (response.length !== (extractedValue.rowColumnOption || []).length) {
+    if (!response.multipleChoiceGrid) {
+      return false;
+    }
+    if (
+      response.multipleChoiceGrid.length !==
+      (extractedValue.rowColumnOption || []).length
+    ) {
       return false;
     }
 
-    return response.every((responseRow, rowIndex) => {
+    return response.multipleChoiceGrid.every((responseRow, rowIndex) => {
       const actualRow = extractedValue.rowColumnOption?.[rowIndex];
-      if (!actualRow) return false;
+      if (!actualRow) {
+        return false;
+      }
 
       const selectedColumn = responseRow.selectedColumn.trim().toLowerCase();
 
       const actualColumns = actualRow.cols.map((col) =>
-        col.data.trim().toLowerCase()
+        col.data.trim().toLowerCase(),
       );
 
       return actualColumns.includes(selectedColumn);
     });
   }
 
-  // TODO: Implement this : DONE
   private validateCheckBoxGrid(
     extractedValue: ExtractedValue,
-    response: RowColumnOption[]
+    response: LLMResponse,
   ): boolean {
-    if (response.length !== (extractedValue.rowColumnOption || []).length) {
+    if (!response.checkboxGrid) {
+      return false;
+    }
+    if (
+      response.checkboxGrid.length !==
+      (extractedValue.rowColumnOption || []).length
+    ) {
       return false;
     }
 
-    return response.every((responseRow, rowIndex) => {
+    return response.checkboxGrid.every((responseRow, rowIndex) => {
       const actualRow = extractedValue.rowColumnOption?.[rowIndex];
-      if (!actualRow) return false;
+      if (!actualRow) {
+        return false;
+      }
 
       const selectedColumns = responseRow.cols.map((col) =>
-        col.data.trim().toLowerCase()
+        col.data.trim().toLowerCase(),
       );
 
       const actualColumns = actualRow.cols.map((col) =>
-        col.data.trim().toLowerCase()
+        col.data.trim().toLowerCase(),
       );
 
       return selectedColumns.every((selectedCol) =>
-        actualColumns.includes(selectedCol)
+        actualColumns.includes(selectedCol),
       );
     });
   }
 
   private validateDropdown(
     extractedValue: ExtractedValue,
-    response: GenericLLMResponse
+    response: LLMResponse,
   ): boolean {
+    if (!response.genericResponse) {
+      return false;
+    }
     const validOptions = (extractedValue.options ?? []).map(
-      (option) => option.data
+      (option) => option.data,
     );
-    return validOptions.includes(response?.answer ?? EMPTY_STRING);
+    return validOptions.includes(
+      response.genericResponse?.answer ?? EMPTY_STRING,
+    );
   }
 }

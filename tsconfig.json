@@ -35,17 +35,17 @@
     "noFallthroughCasesInSwitch": true,
 
     // Some stricter flags (disabled by default)
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true,
-    "allowUnusedLabels": false,
+    "allowUnusedLabels": true,
     "allowUnreachableCode": false,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
 
-    "isolatedModules": true,
+    "isolatedModules": true
     // "checkJs": true,
   }
 }
