@@ -15,7 +15,6 @@ import {
 import LLMEngineType from '@utils/llmEngineTypes';
 import { RunnableSequence } from '@langchain/core/runnables';
 import { PromptTemplate } from '@langchain/core/prompts';
-import { DEFAULT_LLM_MODEL } from '@utils/constant';
 import { QType } from '@utils/questionTypes';
 import { DatetimeOutputParser } from 'langchain/output_parsers';
 import { z } from 'zod';
@@ -23,26 +22,36 @@ import { z } from 'zod';
 export class LLMEngine {
   private static instance: LLMEngine;
   private static engine: LLMEngineType;
-  private static openai?: ChatOpenAI;
-  private static ollama?: Ollama;
-  private static gemini?: ChatGoogleGenerativeAI;
+  private static openai: ChatOpenAI;
+  private static ollama: Ollama;
+  private static gemini: ChatGoogleGenerativeAI;
 
-  private constructor(engine?: LLMEngineType) {
-    if (engine) {
-      LLMEngine.engine = engine;
-    } else {
-      LLMEngine.engine = DEFAULT_LLM_MODEL; // Default engine
-    }
+  private constructor(engine: LLMEngineType) {
+    LLMEngine.engine = engine;
 
-    switch (LLMEngine.engine) {
-      case LLMEngineType.ChatGPT:
+    LLMEngine.getEngine(LLMEngine.engine);
+  }
+
+  public static getEngine(
+    engine: LLMEngineType,
+  ): ChatOpenAI | Ollama | ChatGoogleGenerativeAI {
+    switch (engine) {
+      case LLMEngineType.ChatGPT: {
+        if (LLMEngine.openai) {
+          return LLMEngine.openai;
+        }
         LLMEngine.openai = new ChatOpenAI({
           model: 'gpt-4',
           // eslint-disable-next-line dot-notation
           apiKey: process.env['CHATGPT_API_KEY'] as string,
         });
-        break;
-      case LLMEngineType.Gemini:
+        return LLMEngine.openai;
+      }
+
+      case LLMEngineType.Gemini: {
+        if (LLMEngine.gemini) {
+          return LLMEngine.gemini;
+        }
         LLMEngine.gemini = new ChatGoogleGenerativeAI({
           model: 'gemini-pro',
           temperature: 0,
@@ -50,21 +59,23 @@ export class LLMEngine {
           // eslint-disable-next-line dot-notation
           apiKey: process.env['GEMINI_API_KEY'] as string,
         });
-        break;
-      case LLMEngineType.Ollama:
+        return LLMEngine.gemini;
+      }
+      case LLMEngineType.Ollama: {
+        if (LLMEngine.ollama) {
+          return LLMEngine.ollama;
+        }
         LLMEngine.ollama = new Ollama({
           model: 'gemma2:2b',
           temperature: 0,
           maxRetries: 2,
         });
-        break;
-
-      default:
-        break;
+        return LLMEngine.ollama;
+      }
     }
   }
 
-  public static getInstance(engine?: LLMEngineType): LLMEngine {
+  public static getInstance(engine: LLMEngineType): LLMEngine {
     if (LLMEngine.instance && LLMEngine.engine === engine) {
       return LLMEngine.instance;
     }
