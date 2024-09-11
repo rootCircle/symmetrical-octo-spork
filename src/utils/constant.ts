@@ -4,7 +4,7 @@ const SLEEP_DURATION: number = 2000;
 const EMPTY_STRING: string = '';
 const DEFAULT_LLM_MODEL = LLMEngineType.ChatGPT;
 const CURRENT_LLM_MODEL = LLMEngineType.Ollama;
-const ENABLE_CONSENSUS = false;
+const ENABLE_CONSENSUS = true;
 export {
   EMPTY_STRING,
   SLEEP_DURATION,

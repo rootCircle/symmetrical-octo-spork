@@ -5,36 +5,42 @@ import LLMEngineType from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
 
 class ConsensusEngine {
+  private static instance: ConsensusEngine;
   private validateEngine: ValidatorEngine;
   private llmWeights: Map<LLMEngineType, number> = new Map();
 
-  constructor() {
+  private constructor() {
     this.validateEngine = new ValidatorEngine();
 
-    this.llmWeights.set(LLMEngineType.ChatGPT, 0.42);
+    // this.llmWeights.set(LLMEngineType.ChatGPT, 0.42);
     this.llmWeights.set(LLMEngineType.Gemini, 0.42);
     this.llmWeights.set(LLMEngineType.Ollama, 0.16);
     this.distributeWeights();
   }
 
+  public static getInstance(): ConsensusEngine {
+    if (!ConsensusEngine.instance) {
+      ConsensusEngine.instance = new ConsensusEngine();
+    }
+
+    return ConsensusEngine.instance;
+  }
+
   private distributeWeights() {
-    const totalWeights = Array.from(this.llmWeights.values()).reduce(
+    const currentSum = Array.from(this.llmWeights.values()).reduce(
       (sum, weight) => sum + weight,
       0,
     );
-    const numLLMs = this.llmWeights.size;
-    const equalWeight = totalWeights / numLLMs;
 
-    if (totalWeights !== 1) {
-      const remainingWeight = 1 - totalWeights;
-      const additionalWeight = remainingWeight / numLLMs;
-
-      for (const [llmType, weight] of this.llmWeights.entries()) {
-        if (weight <= 0) {
-          this.llmWeights.set(llmType, equalWeight + additionalWeight);
-        }
-      }
+    if (currentSum === 1) {
+      return;
     }
+
+    const adjustment = (1 - currentSum) / this.llmWeights.size;
+
+    this.llmWeights.forEach((value, key) => {
+      this.llmWeights.set(key, value + adjustment);
+    });
   }
 
   async generateAndValidate(

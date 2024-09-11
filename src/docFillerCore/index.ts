@@ -41,7 +41,7 @@ async function runDocFillerEngine() {
       let response = null;
 
       if (ENABLE_CONSENSUS) {
-        const consensusEngine = new ConsensusEngine();
+        const consensusEngine = ConsensusEngine.getInstance();
         response = await consensusEngine.generateAndValidate(
           promptString,
           fieldValue,

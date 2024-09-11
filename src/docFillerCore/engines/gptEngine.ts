@@ -92,6 +92,7 @@ export class LLMEngine {
       type: 'API_CALL',
       prompt: promptText,
       questionType,
+      model: LLMEngine.engine,
     };
     try {
       return await chrome.runtime.sendMessage(item).then((response) => {
