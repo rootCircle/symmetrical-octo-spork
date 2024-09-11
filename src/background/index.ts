@@ -1,10 +1,11 @@
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
-import { CURRENT_LLM_MODEL } from '@utils/constant';
+import LLMEngineType from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
 
 interface ChromeResponseMessage {
   type: string;
   prompt: string;
+  model: LLMEngineType;
   questionType: QType;
 }
 
@@ -19,7 +20,7 @@ chrome.runtime.onMessage.addListener(
     //     message.data = null;
     //   }
     if (message.type === 'API_CALL') {
-      LLMEngine.getInstance(CURRENT_LLM_MODEL)
+      LLMEngine.getInstance(message.model)
         .invokeLLM(message.prompt, message.questionType)
         .then((response) => {
           sendResponse({ value: response });

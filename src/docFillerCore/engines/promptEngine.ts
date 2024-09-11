@@ -102,7 +102,7 @@ export class PromptEngine {
 
   private getTextEmailPrompt(title: string, description: string): string {
     return `Please generate a valid and realistic email address in the standard format (username@domain.com) based on the following: 
-    ${title} — ${description}.If a valid email cannot be generated, return 'emailchahiye@email.com'.`;
+    ${title} — ${description}.If a valid email cannot be generated, return 'dummyemail@gmail.com'.`;
   }
 
   private getTextURLPrompt(title: string, description: string): string {
