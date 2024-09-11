@@ -428,8 +428,12 @@ export class FillerEngine {
     return true;
   }
 
-  private fillDuration(fieldValue: ExtractedValue, value: string): boolean {
-    const [hours, minutes, seconds] = value.split('-');
+  private fillDuration(fieldValue: ExtractedValue, value: Date): boolean {
+    if (!(value instanceof Date)) return false;
+    const hours = value.getUTCHours().toString();
+    const minutes = value.getUTCMinutes().toString();
+    const seconds = value.getUTCSeconds().toString();
+
     const inputEvent = new Event('input', { bubbles: true });
 
     if (fieldValue.hour) {
@@ -535,7 +539,7 @@ export class FillerEngine {
           }
         }
         // For Other option
-        else if (option.isOther && option.otherOptionValue) {
+        if (option.isOther && option.otherOptionValue) {
           if (fieldValue.other?.dom?.getAttribute('aria-checked') !== 'true') {
             fieldValue.other?.dom?.dispatchEvent(
               new Event('click', { bubbles: true })
@@ -592,7 +596,7 @@ export class FillerEngine {
 
   private async fillLinearScale(
     fieldValue: ExtractedValue,
-    value: GenericLLMResponse
+    value: LinearScaleResponse
   ): Promise<boolean> {
     await sleep(SLEEP_DURATION);
     for (const index in fieldValue.options) {

@@ -99,3 +99,7 @@ interface RowColumn {
 interface GenericLLMResponse {
   answer: string;
 }
+
+interface LinearScaleResponse {
+  answer: number;
+}
