@@ -103,8 +103,7 @@ export class QuestionExtractorEngine {
 
     try {
       return (
-        attributes?.attributes.getNamedItem('role')?.nodeValue === 'heading' ??
-        false
+        attributes?.attributes.getNamedItem('role')?.nodeValue === 'heading'
       );
     } catch (_e) {
       return false;

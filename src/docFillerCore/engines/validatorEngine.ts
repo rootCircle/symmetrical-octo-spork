@@ -103,10 +103,8 @@ export class ValidatorEngine {
     return this.validateDate(response);
   }
 
-  private validateDuration(response: string): boolean {
-    // Accepts: hh-mm-ss
-    const durationValid = /^([01][0-9]|[2][0-3])(-[0-5][0-9]){2}$/;
-    return Boolean(response && response.match(durationValid));
+  private validateDuration(response: Date): boolean {
+    return this.validateDate(response);
   }
 
   private validateDateWithoutYear(response: Date): boolean {
@@ -153,7 +151,7 @@ export class ValidatorEngine {
         option.otherOptionValue &&
         this.validateText(option?.otherOptionValue)
     );
-    return isMulticorrect || !(isMulticorrect || isValidOther);
+    return isMulticorrect || isValidOther;
   }
 
   private validateMultipleChoice(
@@ -191,13 +189,13 @@ export class ValidatorEngine {
 
   private validateLinearScale(
     extractedValue: ExtractedValue,
-    response: GenericLLMResponse
+    response: LinearScaleResponse
   ): boolean {
     const validOptions = (extractedValue.options ?? []).map(
       (option) => option.data
     );
 
-    return validOptions.includes(response?.answer ?? EMPTY_STRING);
+    return validOptions.includes(response?.answer.toString() ?? EMPTY_STRING);
   }
 
   private validateMultipleChoiceGrid(
@@ -253,7 +251,9 @@ export class ValidatorEngine {
     extractedValue: ExtractedValue,
     response: GenericLLMResponse
   ): boolean {
-    return true;
-    // return this.validateMultipleChoice(extractedValue, response);
+    const validOptions = (extractedValue.options ?? []).map(
+      (option) => option.data
+    );
+    return validOptions.includes(response?.answer ?? EMPTY_STRING);
   }
 }
