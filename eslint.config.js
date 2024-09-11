@@ -1,34 +1,19 @@
-/* eslint import/no-extraneous-dependencies: 0 */
-/* eslint import/namespace: 0 */
-
-// Derived from: https://github.com/mozilla/web-ext/blob/a59873b9649c73a14dc104cd79cbc98e21f6d59e/.eslintrc
-// import asyncAwait from "eslint-plugin-async-await";
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-import _import from 'eslint-plugin-import';
-import { fixupPluginRules } from '@eslint/compat';
 import globals from 'globals';
-import babelParser from '@babel/eslint-parser';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
-
-// eslint-disable-next-line no-shadow
-const __filename = fileURLToPath(import.meta.url);
-// eslint-disable-next-line no-shadow
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import { fixupPluginRules } from '@eslint/compat';
+import _import from 'eslint-plugin-import';
 
 export default [
+  { files: ['**/*.{js,mjs,cjs,ts}'] },
   {
     ignores: ['build/', 'node_modules/', 'docs/'],
   },
-  ...compat.extends('eslint:recommended'),
+  { languageOptions: { globals: globals.browser } },
+  pluginJs.configs.recommended,
+  eslintConfigPrettier,
+  ...tseslint.configs.recommended,
   {
     plugins: {
       // "async-await": asyncAwait,
@@ -43,11 +28,13 @@ export default [
         require: false,
       },
 
-      parser: babelParser,
+      // parser: babelParser,
       ecmaVersion: 6,
       sourceType: 'module',
 
       parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
           arrowFunctions: true,
           blockBindings: true,
@@ -58,12 +45,6 @@ export default [
           restParams: true,
           spread: true,
         },
-
-        babelConfig: {
-          configFile: './.babelrc',
-        },
-
-        requireConfigFile: false,
       },
     },
 
@@ -219,3 +200,4 @@ export default [
     },
   },
 ];
+

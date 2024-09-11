@@ -1,12 +1,14 @@
 Barkha
 Brooooo
 Cacher
+camelcase
 compat
 Datetime
 divs
 docfiller
 Dutt
 genai
+iife
 langchain
 libphonenumber
 listbox
@@ -17,10 +19,12 @@ ollama
 openai
 outdir
 Parens
+plusplus
 precommit
 Radhakrishnan
 radiogroup
 Sarvepalli
 scrapy
+tseslint
 webext
 webextension

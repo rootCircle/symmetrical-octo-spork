@@ -5,7 +5,8 @@ import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtracto
 import { PromptEngine } from '@docFillerCore/engines/promptEngine';
 import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
-import { CURRENT_LLM_MODEL } from '@utils/constant';
+import { CURRENT_LLM_MODEL, ENABLE_CONSENSUS } from '@utils/constant';
+import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
 
 async function runDocFillerEngine() {
   console.clear(); // Temporary code, while debugging
@@ -36,7 +37,19 @@ async function runDocFillerEngine() {
       console.log('Prompt ↴');
       console.log(promptString);
 
-      const response = await llm.getResponse(promptString, fieldType);
+      let response = null;
+
+      if (ENABLE_CONSENSUS) {
+        const consensusEngine = new ConsensusEngine();
+        response = await consensusEngine.generateAndValidate(
+          promptString,
+          fieldValue,
+          fieldType
+        );
+      } else {
+        response = await llm.getResponse(promptString, fieldType);
+      }
+
       console.log('LLM Response ↴');
       console.log(response);
 

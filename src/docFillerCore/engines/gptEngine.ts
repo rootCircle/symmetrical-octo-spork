@@ -68,7 +68,7 @@ export class LLMEngine {
   public async getResponse(
     promptText: string,
     questionType: QType
-  ): Promise<string | null> {
+  ): Promise<object | null> {
     let item = {
       type: 'API_CALL',
       prompt: promptText,

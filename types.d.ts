@@ -103,3 +103,4 @@ interface GenericLLMResponse {
 interface LinearScaleResponse {
   answer: number;
 }
+type FlattenedPair = [string, any];
