@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 function listenFillFormAction(): void {
   const fillerButton =
     document.querySelector<HTMLButtonElement>('#filler_button');
@@ -16,13 +17,19 @@ function listenFillFormAction(): void {
     (tabs) => {
       if (tabs.length > 0) {
         fillerButton.addEventListener('click', () => {
-          if (tabs[0].id !== undefined) {
-            chrome.scripting.executeScript({
-              target: { tabId: tabs[0].id },
-              func: () => {
-                chrome.runtime.sendMessage({ data: 'FILL_FORM' });
-              },
-            });
+          if (tabs && tabs[0] && tabs[0].id !== undefined) {
+            chrome.scripting
+              .executeScript({
+                target: { tabId: tabs[0].id },
+                func: () => {
+                  chrome.runtime
+                    .sendMessage({ data: 'FILL_FORM' })
+                    .then(() => {})
+                    .catch(() => {});
+                },
+              })
+              .then(() => {})
+              .catch(() => {});
           } else {
             console.error('Tab ID is undefined.');
           }
@@ -33,7 +40,7 @@ function listenFillFormAction(): void {
         errorMsg.textContent = 'Website not supported!!!';
         document.body.appendChild(errorMsg);
       }
-    }
+    },
   );
 }
 
@@ -45,7 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector<HTMLButtonElement>('#filler_button');
   if (fillerButton) {
     fillerButton.addEventListener('click', () => {
-      chrome.runtime.sendMessage({ data: 'FILL_FORM' });
+      chrome.runtime
+        .sendMessage({ data: 'FILL_FORM' })
+        .then(() => {})
+        .catch(() => {});
     });
   }
 });

@@ -21,7 +21,7 @@ export class DetectBoxTypeTimeCacher {
 
   public getTimeParams(
     element: HTMLElement,
-    invalidateCache: boolean = false
+    invalidateCache: boolean = false,
   ): [
     number | null,
     boolean | null,
@@ -37,20 +37,20 @@ export class DetectBoxTypeTimeCacher {
       this.inputFieldCount = element.querySelectorAll('input').length;
       this.hasYear = Boolean(element.querySelector('input[aria-label="Year"]'));
       this.hasMonth = Boolean(
-        element.querySelector('input[aria-label="Month"]')
+        element.querySelector('input[aria-label="Month"]'),
       );
       this.hasDate = Boolean(
-        element.querySelector('input[aria-label="Day of the month"]')
+        element.querySelector('input[aria-label="Day of the month"]'),
       );
       this.hasHour = Boolean(element.querySelector('input[aria-label="Hour"]'));
       this.hasMinute = Boolean(
-        element.querySelector('input[aria-label="Minute"]')
+        element.querySelector('input[aria-label="Minute"]'),
       );
       this.hasSecond = Boolean(
-        element.querySelector('input[aria-label="Seconds"]')
+        element.querySelector('input[aria-label="Seconds"]'),
       );
       this.hasMeridiemField = Boolean(
-        element.querySelector('div[role=option][data-value=AM]')
+        element.querySelector('div[role=option][data-value=AM]'),
       );
     }
 

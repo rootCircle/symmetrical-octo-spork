@@ -10,9 +10,11 @@ export class FillerEngine {
   public async fill(
     fieldType: QType,
     fieldValue: ExtractedValue,
-    value: any
+    value: LLMResponse,
   ): Promise<boolean> {
-    if (fieldType === null) return false;
+    if (fieldType === null) {
+      return false;
+    }
 
     switch (fieldType) {
       case QType.TEXT:
@@ -51,7 +53,7 @@ export class FillerEngine {
       case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
         return await this.fillDateTimeWithMeridiemWithoutYear(
           fieldValue,
-          value
+          value,
         );
 
       case QType.TIME_WITH_MERIDIEM:
@@ -79,7 +81,15 @@ export class FillerEngine {
     }
   }
 
-  private fillText(fieldValue: ExtractedValue, value: string): boolean {
+  private fillText(fieldValue: ExtractedValue, value: LLMResponse): boolean {
+    if (!value.text) {
+      return false;
+    }
+
+    return this.__fillText(fieldValue, value.text);
+  }
+
+  private __fillText(fieldValue: ExtractedValue, value: string): boolean {
     const inputField = fieldValue.dom as HTMLInputElement;
     if (inputField) {
       inputField.value = value;
@@ -89,30 +99,43 @@ export class FillerEngine {
     return false;
   }
 
-  private fillEmail(
+  private fillEmail(fieldValue: ExtractedValue, value: LLMResponse): boolean {
+    if (!value.genericResponse) {
+      return false;
+    }
+    return this.__fillText(fieldValue, value.genericResponse?.answer);
+  }
+
+  private fillTextURL(fieldValue: ExtractedValue, value: LLMResponse): boolean {
+    if (!value.genericResponse) {
+      return false;
+    }
+    return this.__fillText(fieldValue, value.genericResponse?.answer);
+  }
+
+  private fillParagraph(
     fieldValue: ExtractedValue,
-    value: GenericLLMResponse
+    value: LLMResponse,
   ): boolean {
-    return this.fillText(fieldValue, value?.answer);
+    if (!value.text) {
+      return false;
+    }
+    return this.__fillText(fieldValue, value.text);
   }
 
-  private fillTextURL(
-    fieldValue: ExtractedValue,
-    value: GenericLLMResponse
-  ): boolean {
-    return this.fillText(fieldValue, value?.answer);
-  }
+  private fillDate(fieldValue: ExtractedValue, value: LLMResponse): boolean {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
 
-  private fillParagraph(fieldValue: ExtractedValue, value: string): boolean {
-    return this.fillText(fieldValue, value);
-  }
+    const date = value.date;
 
-  private fillDate(fieldValue: ExtractedValue, value: Date): boolean {
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -140,14 +163,19 @@ export class FillerEngine {
 
   private async fillDateAndTime(
     fieldValue: ExtractedValue,
-    value: Date
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -187,15 +215,19 @@ export class FillerEngine {
 
   private async fillDateTimeWithMeridiemWithoutYear(
     fieldValue: ExtractedValue,
-    value: Date
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
-
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -239,10 +271,10 @@ export class FillerEngine {
       }
 
       const optionElements = Array.from(
-        meridiemDropdown.parentElement?.childNodes || []
+        meridiemDropdown.parentElement?.childNodes || [],
       ).find(
         (child) =>
-          !(child as HTMLElement).querySelector('div[role=presentation]')
+          !(child as HTMLElement).querySelector('div[role=presentation]'),
       )?.childNodes;
 
       if (optionElements) {
@@ -264,17 +296,21 @@ export class FillerEngine {
 
   private async fillTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: Date
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
 
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
-
-    let hours = date.getHours();
+    const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
     const meridiem = hours >= 12 ? 'PM' : 'AM';
@@ -303,10 +339,10 @@ export class FillerEngine {
       }
 
       const optionElements = Array.from(
-        meridiemDropdown.parentElement?.childNodes || []
+        meridiemDropdown.parentElement?.childNodes || [],
       ).find(
         (child) =>
-          !(child as HTMLElement).querySelector('div[role=presentation]')
+          !(child as HTMLElement).querySelector('div[role=presentation]'),
       )?.childNodes;
 
       if (optionElements) {
@@ -326,21 +362,25 @@ export class FillerEngine {
 
   private async fillDateAndTimeWithMeridiem(
     fieldValue: ExtractedValue,
-    value: Date
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
-
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString();
 
-    let hours = date.getHours();
+    const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
     const meridiem = hours >= 12 ? 'PM' : 'AM';
@@ -382,10 +422,10 @@ export class FillerEngine {
       }
 
       const optionElements = Array.from(
-        meridiemDropdown.parentElement?.childNodes || []
+        meridiemDropdown.parentElement?.childNodes || [],
       ).find(
         (child) =>
-          !(child as HTMLElement).querySelector('div[role=presentation]')
+          !(child as HTMLElement).querySelector('div[role=presentation]'),
       )?.childNodes;
 
       if (optionElements) {
@@ -403,12 +443,17 @@ export class FillerEngine {
     return false;
   }
 
-  private fillTime(fieldValue: ExtractedValue, value: Date): boolean {
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
+  private fillTime(fieldValue: ExtractedValue, value: LLMResponse): boolean {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
 
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -428,11 +473,24 @@ export class FillerEngine {
     return true;
   }
 
-  private fillDuration(fieldValue: ExtractedValue, value: Date): boolean {
-    if (!(value instanceof Date)) return false;
-    const hours = value.getUTCHours().toString();
-    const minutes = value.getUTCMinutes().toString();
-    const seconds = value.getUTCSeconds().toString();
+  private fillDuration(
+    fieldValue: ExtractedValue,
+    value: LLMResponse,
+  ): boolean {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
+
+    const hours = date.getUTCHours().toString();
+    const minutes = date.getUTCMinutes().toString();
+    const seconds = date.getUTCSeconds().toString();
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -454,13 +512,18 @@ export class FillerEngine {
 
   private fillDateWithoutYear(
     fieldValue: ExtractedValue,
-    value: Date
+    value: LLMResponse,
   ): boolean {
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -482,15 +545,19 @@ export class FillerEngine {
 
   private async fillDateTimeWithoutYear(
     fieldValue: ExtractedValue,
-    value: Date
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.date) {
+      return false;
+    }
+    if (!(value.date instanceof Date)) {
+      return false;
+    }
+    const date = value.date;
+    if (isNaN(date.valueOf())) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
-
-    if (!(value instanceof Date)) return false;
-
-    const date = value;
-
-    if (isNaN(date.valueOf())) return false;
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -524,12 +591,15 @@ export class FillerEngine {
 
   private async fillMultiCorrectWithOther(
     fieldValue: ExtractedValue,
-    value: MultiCorrectOrMultipleOption[]
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.multiCorrect) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
 
     for (const element of fieldValue.options || []) {
-      for (const option of value) {
+      for (const option of value.multiCorrect) {
         // For checkbox
         if (option.optionText && !option.isOther) {
           if (element.data.toLowerCase() === option.optionText.toLowerCase()) {
@@ -542,16 +612,16 @@ export class FillerEngine {
         if (option.isOther && option.otherOptionValue) {
           if (fieldValue.other?.dom?.getAttribute('aria-checked') !== 'true') {
             fieldValue.other?.dom?.dispatchEvent(
-              new Event('click', { bubbles: true })
+              new Event('click', { bubbles: true }),
             );
           }
 
           fieldValue.other?.inputBoxDom.setAttribute(
             'value',
-            option.otherOptionValue
+            option.otherOptionValue,
           );
           fieldValue.other?.inputBoxDom.dispatchEvent(
-            new Event('input', { bubbles: true })
+            new Event('input', { bubbles: true }),
           );
         }
       }
@@ -561,33 +631,41 @@ export class FillerEngine {
 
   private async fillMultipleChoiceWithOther(
     fieldValue: ExtractedValue,
-    value: MultiCorrectOrMultipleOption
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.multipleChoice) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
 
     for (const element of fieldValue.options || []) {
-      // For checkbox
-      if (value.optionText && !value.isOther) {
-        if (element.data.toLowerCase() === value.optionText.toLowerCase()) {
+      if (value.multipleChoice.optionText && !value.multipleChoice.isOther) {
+        // For checkbox
+        if (
+          element.data.toLowerCase() ===
+          value.multipleChoice.optionText.toLowerCase()
+        ) {
           if (element.dom?.getAttribute('aria-checked') !== 'true') {
             element.dom?.dispatchEvent(new Event('click', { bubbles: true }));
           }
         }
-      }
-      // For Other option
-      else if (value.isOther && value.otherOptionValue) {
+      } else if (
+        value.multipleChoice.isOther &&
+        value.multipleChoice.otherOptionValue
+      ) {
+        // For Other option
         if (fieldValue.other?.dom?.getAttribute('aria-checked') !== 'true') {
           fieldValue.other?.dom?.dispatchEvent(
-            new Event('click', { bubbles: true })
+            new Event('click', { bubbles: true }),
           );
         }
 
         fieldValue.other?.inputBoxDom.setAttribute(
           'value',
-          value.otherOptionValue
+          value.multipleChoice.otherOptionValue,
         );
         fieldValue.other?.inputBoxDom.dispatchEvent(
-          new Event('input', { bubbles: true })
+          new Event('input', { bubbles: true }),
         );
       }
     }
@@ -596,17 +674,19 @@ export class FillerEngine {
 
   private async fillLinearScale(
     fieldValue: ExtractedValue,
-    value: LinearScaleResponse
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.linearScale) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
     for (const index in fieldValue.options) {
-      if (fieldValue.options?.hasOwnProperty(index)) {
+      if (index in fieldValue.options) {
         const scale = fieldValue.options[Number(index)];
-
-        if (scale.data.toString() === value?.answer?.toString()) {
+        if (scale?.data.toString() === value.linearScale?.answer?.toString()) {
           if (scale.dom?.getAttribute('aria-checked') !== 'true') {
             (scale.dom as HTMLInputElement)?.dispatchEvent(
-              new Event('click', { bubbles: true })
+              new Event('click', { bubbles: true }),
             );
           }
           return true;
@@ -618,28 +698,31 @@ export class FillerEngine {
 
   private async fillCheckboxGrid(
     fieldValue: ExtractedValue,
-    options: RowColumnOption[]
+    options: LLMResponse,
   ): Promise<boolean> {
+    if (!options.checkboxGrid) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
 
     fieldValue.rowColumnOption?.forEach((row) => {
-      const matchingOptionRow = options.find(
-        (option) => option.row === row.row
+      const matchingOptionRow = options.checkboxGrid?.find(
+        (option) => option.row === row.row,
       );
       if (matchingOptionRow) {
         matchingOptionRow.cols.forEach((optionValue) => {
           const checkboxObj = row.cols.find(
-            (col) => col.data === optionValue.data
+            (col) => col.data === optionValue.data,
           );
           if (checkboxObj) {
             // Check if already marked
             if (
               !checkboxObj.dom?.querySelector(
-                'div[role=checkbox][aria-checked=true]'
+                'div[role=checkbox][aria-checked=true]',
               )
             ) {
               checkboxObj.dom?.dispatchEvent(
-                new Event('click', { bubbles: true })
+                new Event('click', { bubbles: true }),
               );
             }
           }
@@ -651,24 +734,27 @@ export class FillerEngine {
 
   private async fillMultipleChoiceGrid(
     fieldValue: ExtractedValue,
-    options: RowColumn[]
+    options: LLMResponse,
   ): Promise<boolean> {
+    if (!options.multipleChoiceGrid) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
 
     fieldValue.rowColumnOption?.forEach((row) => {
-      const matchingOptionRow = options.find(
-        (option) => option.row === row.row
+      const matchingOptionRow = options.multipleChoiceGrid?.find(
+        (option) => option.row === row.row,
       );
       if (matchingOptionRow) {
         const matchingOptionRowCol = row.cols.find(
-          (box) => box.data === matchingOptionRow.selectedColumn
+          (box) => box.data === matchingOptionRow.selectedColumn,
         );
         if (matchingOptionRowCol) {
           if (
             matchingOptionRowCol.dom?.getAttribute('aria-checked') !== 'true'
           ) {
             matchingOptionRowCol.dom?.dispatchEvent(
-              new Event('click', { bubbles: true })
+              new Event('click', { bubbles: true }),
             );
           }
         }
@@ -680,13 +766,15 @@ export class FillerEngine {
 
   private async fillDropDown(
     fieldValue: ExtractedValue,
-    value: GenericLLMResponse
+    value: LLMResponse,
   ): Promise<boolean> {
+    if (!value.genericResponse) {
+      return false;
+    }
     await sleep(SLEEP_DURATION);
 
     for (const option of fieldValue.options || []) {
-      if (option.data === value?.answer) {
-        const dropdown = option.dom;
+      if (option.data === value.genericResponse?.answer) {
         if (fieldValue.dom) {
           if (fieldValue.dom?.getAttribute('aria-expanded') !== 'true') {
             fieldValue.dom
@@ -696,13 +784,14 @@ export class FillerEngine {
           }
 
           const allOptions =
-            fieldValue.dom.querySelectorAll(`div[role=option]`);
+            fieldValue.dom.querySelectorAll('div[role=option]');
           allOptions.forEach((possibleOption) => {
             if (
-              possibleOption.querySelector('span')?.textContent === value.answer
+              possibleOption.querySelector('span')?.textContent ===
+              value.genericResponse?.answer
             ) {
               possibleOption.dispatchEvent(
-                new Event('click', { bubbles: true })
+                new Event('click', { bubbles: true }),
               );
               return;
             }

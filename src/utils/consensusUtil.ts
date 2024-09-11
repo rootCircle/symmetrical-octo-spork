@@ -3,12 +3,27 @@ import LLMEngineType from '@utils/llmEngineTypes';
 interface WeightedObject {
   source: LLMEngineType;
   weight: number;
-  value: Record<string, any>;
+  value: LLMResponse;
 }
 
+type FlattenedPair = [
+  string,
+  (
+    | string
+    | number
+    | boolean
+    | Date
+    | MultiCorrectOrMultipleOption[]
+    | MultiCorrectOrMultipleOption
+    | LinearScaleResponse
+    | RowColumn[]
+    | RowColumnOption[]
+  ),
+];
+
 function analyzeWeightedObjects(
-  objects: WeightedObject[]
-): Record<string, any> {
+  objects: WeightedObject[],
+): Partial<LLMResponse> {
   // Step 1: Count Weighted Votes
   const voteCounts = new Map<string, number>();
   const firstAppearance = new Map<string, number>();
@@ -28,11 +43,37 @@ function analyzeWeightedObjects(
   // Step 2 & 3: Aggregate Scores and Determine Maximum Scores
   const maxScores = new Map<
     string,
-    { value: any; score: number; index: number }
+    {
+      value:
+        | string
+        | number
+        | boolean
+        | Date
+        | MultiCorrectOrMultipleOption[]
+        | MultiCorrectOrMultipleOption
+        | LinearScaleResponse
+        | RowColumn[]
+        | RowColumnOption[];
+      score: number;
+      index: number;
+    }
   >();
 
   voteCounts.forEach((score, pairKey) => {
-    const [key, value] = JSON.parse(pairKey);
+    const [key, value] = JSON.parse(pairKey) as [
+      string,
+      (
+        | string
+        | number
+        | boolean
+        | Date
+        | MultiCorrectOrMultipleOption[]
+        | MultiCorrectOrMultipleOption
+        | LinearScaleResponse
+        | RowColumn[]
+        | RowColumnOption[]
+      ),
+    ];
     if (
       !maxScores.has(key) ||
       score > maxScores.get(key)!.score ||
@@ -48,7 +89,7 @@ function analyzeWeightedObjects(
   });
 
   // Step 4: Construct and Format Result
-  const result: Record<string, any> = {};
+  const result: Partial<LLMResponse> = {};
   maxScores.forEach((data, key) => {
     if (data.score > 0) {
       setNestedValue(result, key.split('.'), data.value);
@@ -59,29 +100,60 @@ function analyzeWeightedObjects(
 }
 
 // Helper function to flatten nested objects
-function flattenObject(
-  obj: Record<string, any>,
-  prefix: string = ''
-): FlattenedPair[] {
+function flattenObject(obj: LLMResponse, prefix: string = ''): FlattenedPair[] {
   return Object.entries(obj).flatMap(([key, value]): FlattenedPair[] => {
     const newKey = prefix ? `${prefix}.${key}` : key;
-    return typeof value === 'object' && value !== null
-      ? flattenObject(value, newKey)
-      : [[newKey, value]];
+    if (
+      typeof value === 'object' &&
+      value !== null &&
+      !(value instanceof Date)
+    ) {
+      return flattenObject(value as LLMResponse, newKey);
+    } else {
+      return [
+        [
+          newKey,
+          value as
+            | string
+            | number
+            | boolean
+            | Date
+            | MultiCorrectOrMultipleOption[]
+            | MultiCorrectOrMultipleOption
+            | LinearScaleResponse
+            | RowColumn[]
+            | RowColumnOption[],
+        ],
+      ];
+    }
   });
 }
 
 // Helper function to set nested value in an object
 function setNestedValue(
-  obj: Record<string, any>,
+  obj: Partial<LLMResponse>,
   path: string[],
-  value: any
+  value:
+    | string
+    | number
+    | boolean
+    | Date
+    | MultiCorrectOrMultipleOption[]
+    | MultiCorrectOrMultipleOption
+    | LinearScaleResponse
+    | RowColumn[]
+    | RowColumnOption[],
 ): void {
   const lastKey = path.pop()!;
-  const lastObj = path.reduce((acc, key) => {
-    if (!acc[key]) acc[key] = {};
-    return acc[key];
-  }, obj);
+  const lastObj = path.reduce(
+    (acc: Record<string, unknown>, key) => {
+      if (!acc[key]) {
+        acc[key] = {};
+      }
+      return acc[key] as Record<string, unknown>;
+    },
+    obj as Record<string, unknown>,
+  );
   lastObj[lastKey] = value;
 }
 

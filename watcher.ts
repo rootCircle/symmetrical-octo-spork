@@ -1,9 +1,13 @@
+/* eslint-disable no-console */
 import chokidar from 'chokidar';
+
 import runBuild from './builder.ts';
 
 const watch = () => {
   // Initial build
-  runBuild();
+  runBuild()
+    .then(() => {})
+    .catch(() => {});
 
   // Watch directories
   const watcher = chokidar.watch(['src/', 'public/'], {
@@ -11,19 +15,25 @@ const watch = () => {
     persistent: true,
   });
 
-  watcher.on('change', (path) => {
+  watcher.on('change', () => {
     // console.log(`File ${path} has been changed`);
-    runBuild();
+    runBuild()
+      .then(() => {})
+      .catch(() => {});
   });
 
-  watcher.on('add', (path) => {
+  watcher.on('add', () => {
     // console.log(`File ${path} has been added`);
-    runBuild();
+    runBuild()
+      .then(() => {})
+      .catch(() => {});
   });
 
-  watcher.on('unlink', (path) => {
+  watcher.on('unlink', () => {
     // console.log(`File ${path} has been removed`);
-    runBuild();
+    runBuild()
+      .then(() => {})
+      .catch(() => {});
   });
 
   console.log('Watching for file changes...');

@@ -1,5 +1,4 @@
 import { QType } from '@utils/questionTypes';
-
 import { EMPTY_STRING } from '@utils/constant';
 
 export class FieldExtractorEngine {
@@ -88,7 +87,7 @@ export class FieldExtractorEngine {
 
       case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
         return this.getDomDateTimeWithMeridiemWithoutYear(
-          element
+          element,
         ) as ExtractedValue;
     }
   }
@@ -116,14 +115,14 @@ export class FieldExtractorEngine {
   }
 
   private getDescription(element: HTMLElement): string | null {
-    let headingElement = element.querySelector('div[role="heading"]');
+    const headingElement = element.querySelector('div[role="heading"]');
 
     if (!headingElement) {
       return null;
     }
 
     // Get the second child of the parent element of the div with role="heading"
-    let required = headingElement.parentElement?.children[1] as HTMLElement;
+    const required = headingElement.parentElement?.children[1] as HTMLElement;
 
     if (!required || required.textContent === EMPTY_STRING) {
       return null;
@@ -143,7 +142,7 @@ export class FieldExtractorEngine {
   }
 
   private getParamsMultiCorrect(
-    element: HTMLElement
+    element: HTMLElement,
   ): ParamsMultiChoiceOrCorrectResult {
     const optionLabels = element.querySelectorAll('span[dir="auto"]');
 
@@ -151,23 +150,24 @@ export class FieldExtractorEngine {
       return { options: [] };
     }
 
-    const clickElements = element.querySelectorAll(
-      'div[role="checkbox"]'
-    ) as NodeListOf<HTMLElement>;
+    const clickElements = element.querySelectorAll('div[role="checkbox"]');
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
       optionData.push(label.textContent?.trim() || EMPTY_STRING);
     });
 
-    const options: Option[] = [];
+    const options: OptionType[] = [];
 
     if (
       clickElements.length > 0 &&
       clickElements.length === optionData.length
     ) {
       for (let i = 0; i < clickElements.length; i++) {
-        options.push({ data: optionData[i], dom: clickElements[i] });
+        options.push({
+          data: optionData[i] ?? EMPTY_STRING,
+          dom: clickElements[i] as HTMLElement,
+        });
       }
     }
 
@@ -175,7 +175,7 @@ export class FieldExtractorEngine {
   }
 
   private getParamsMultiCorrectWithOther(
-    element: HTMLElement
+    element: HTMLElement,
   ): ParamsMultiChoiceOrCorrectResult {
     const optionLabels = element.querySelectorAll('span[dir="auto"]');
 
@@ -183,9 +183,7 @@ export class FieldExtractorEngine {
       return { options: [] };
     }
 
-    const clickElements = element.querySelectorAll(
-      'div[role="checkbox"]'
-    ) as NodeListOf<HTMLElement>;
+    const clickElements = element.querySelectorAll('div[role="checkbox"]');
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
@@ -194,7 +192,7 @@ export class FieldExtractorEngine {
       }
     });
 
-    const options: Option[] = [];
+    const options: OptionType[] = [];
 
     // Remove the last option and add 'other_option' field in the object
     const lastOptionIndex = optionData.length - 1;
@@ -205,11 +203,14 @@ export class FieldExtractorEngine {
       clickElements.length === optionData.length + 1
     ) {
       for (let i = 0; i < clickElements.length - 1; i++) {
-        options.push({ data: optionData[i], dom: clickElements[i] });
+        options.push({
+          data: optionData[i] ?? EMPTY_STRING,
+          dom: clickElements[i] as HTMLElement,
+        });
       }
 
       const inputInMultiCorrectWithOther = element.querySelector(
-        'input[dir="auto"]'
+        'input[dir="auto"]',
       ) as HTMLInputElement;
 
       const otherOption: OtherOption = {
@@ -225,7 +226,7 @@ export class FieldExtractorEngine {
   }
 
   private getParamsMultipleChoice(
-    element: HTMLElement
+    element: HTMLElement,
   ): ParamsMultiChoiceOrCorrectResult {
     const optionLabels = element.querySelectorAll('span[dir="auto"]');
 
@@ -233,9 +234,7 @@ export class FieldExtractorEngine {
       return { options: [] };
     }
 
-    const clickElements = element.querySelectorAll(
-      'div[role="radio"]'
-    ) as NodeListOf<HTMLElement>;
+    const clickElements = element.querySelectorAll('div[role="radio"]');
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
@@ -244,14 +243,17 @@ export class FieldExtractorEngine {
       }
     });
 
-    const options: Option[] = [];
+    const options: OptionType[] = [];
 
     if (
       clickElements.length > 0 &&
       clickElements.length === optionData.length
     ) {
       for (let i = 0; i < clickElements.length; i++) {
-        options.push({ data: optionData[i], dom: clickElements[i] });
+        options.push({
+          data: optionData[i] ?? EMPTY_STRING,
+          dom: clickElements[i] as HTMLElement,
+        });
       }
     }
 
@@ -259,7 +261,7 @@ export class FieldExtractorEngine {
   }
 
   private getParamsMultipleChoiceWithOther(
-    element: HTMLElement
+    element: HTMLElement,
   ): ParamsMultiChoiceOrCorrectResult {
     const optionLabels = element.querySelectorAll('span[dir="auto"]');
 
@@ -268,9 +270,7 @@ export class FieldExtractorEngine {
       return { options: [] };
     }
 
-    const clickElements = element.querySelectorAll(
-      'div[role="radio"]'
-    ) as NodeListOf<HTMLElement>;
+    const clickElements = element.querySelectorAll('div[role="radio"]');
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
@@ -279,7 +279,7 @@ export class FieldExtractorEngine {
       }
     });
 
-    const options: Option[] = [];
+    const options: OptionType[] = [];
 
     // Remove the last option and add 'Other' field in the object
     const lastOptionIndex = optionData.length - 1;
@@ -290,10 +290,13 @@ export class FieldExtractorEngine {
       clickElements.length === optionData.length + 1
     ) {
       for (let i = 0; i < clickElements.length - 1; i++) {
-        options.push({ data: optionData[i], dom: clickElements[i] });
+        options.push({
+          data: optionData[i] ?? EMPTY_STRING,
+          dom: clickElements[i] as HTMLElement,
+        });
       }
       const inputInMultipleChoiceWithOther = element.querySelector(
-        'input[dir="auto"]'
+        'input[dir="auto"]',
       ) as HTMLInputElement;
 
       const otherDom: OtherOption = {
@@ -316,12 +319,10 @@ export class FieldExtractorEngine {
     let lowerBound: string = EMPTY_STRING;
     let upperBound: string = EMPTY_STRING;
 
-    const domsArray = element.querySelectorAll(
-      'div[role=radio]'
-    ) as NodeListOf<HTMLElement>;
+    const domsArray = element.querySelectorAll('div[role=radio]');
 
     // Determine lowerBound and upperBound
-    elementsWithHierarchy.forEach((elm, index) => {
+    elementsWithHierarchy.forEach((elm) => {
       const textContent = elm.textContent?.trim() || EMPTY_STRING;
       if (lowerBound === EMPTY_STRING && textContent !== EMPTY_STRING) {
         lowerBound = textContent;
@@ -332,15 +333,18 @@ export class FieldExtractorEngine {
 
     const optionElements = element.querySelectorAll('div[dir="auto"]');
     const options = Array.from(optionElements).map(
-      (optionElement) => optionElement.textContent?.trim() || EMPTY_STRING
+      (optionElement) => optionElement.textContent?.trim() || EMPTY_STRING,
     );
 
-    const optionsArray: Option[] = [];
+    const optionsArray: OptionType[] = [];
     if (domsArray.length > 0) {
       let j = 0;
       for (let i = 0; i < options.length; i++) {
         if (options[i] !== EMPTY_STRING) {
-          optionsArray.push({ data: options[i], dom: domsArray[j++] });
+          optionsArray.push({
+            data: options[i] ?? EMPTY_STRING,
+            dom: domsArray[j++] as HTMLElement,
+          });
         }
       }
     }
@@ -351,7 +355,7 @@ export class FieldExtractorEngine {
   }
 
   private getParamsMultipleChoiceGrid(
-    element: HTMLElement
+    element: HTMLElement,
   ): ParamsMultipleChoiceGridResult {
     const path =
       'div:first-child > div:first-child > div:nth-child(2) > div:first-child > div:nth-child(2) > div';
@@ -364,7 +368,7 @@ export class FieldExtractorEngine {
       .map((column) => column.textContent?.trim() || EMPTY_STRING);
 
     const rowsArray = Array.from(rows).map(
-      (row) => row.textContent?.trim() || EMPTY_STRING
+      (row) => row.textContent?.trim() || EMPTY_STRING,
     );
 
     const optionsArray: HTMLElement[][] = [];
@@ -379,10 +383,13 @@ export class FieldExtractorEngine {
       optionsArray.push(rowColumns);
     });
 
-    const optionDom: Option[] = [];
+    const optionDom: OptionType[] = [];
     for (let i = 0; i < rowsArray.length; i++) {
       for (let j = 0; j < columnsArray.length; j++) {
-        optionDom.push({ data: columnsArray[j], dom: optionsArray[i][j] });
+        optionDom.push({
+          data: columnsArray[j] ?? EMPTY_STRING,
+          dom: optionsArray?.[i]?.[j] as HTMLElement,
+        });
       }
     }
 
@@ -393,7 +400,10 @@ export class FieldExtractorEngine {
       for (let p = q; p < columnsArray.length * (i + 1); p++, q++) {
         cols.push(optionDom[p]);
       }
-      rowColDom.push({ row: rowsArray[i], cols });
+      rowColDom.push({
+        row: rowsArray[i] ?? EMPTY_STRING,
+        cols: cols as OptionType[],
+      });
     }
 
     return {
@@ -415,11 +425,11 @@ export class FieldExtractorEngine {
       .map((column) => column.textContent?.trim() || EMPTY_STRING);
 
     const rowsArray = Array.from(rows).map(
-      (row) => row.textContent?.trim() || EMPTY_STRING
+      (row) => row.textContent?.trim() || EMPTY_STRING,
     );
 
     const optionArray = Array.from(
-      element.querySelectorAll('div[role=group] label')
+      element.querySelectorAll('div[role=group] label'),
     );
 
     const optionsArray: HTMLElement[][] = [];
@@ -435,10 +445,13 @@ export class FieldExtractorEngine {
       optionsArray.push(rowArray);
     }
 
-    const optionDom: Option[] = [];
+    const optionDom: OptionType[] = [];
     for (let i = 0; i < rowsArray.length; i++) {
       for (let j = 0; j < columnsArray.length; j++) {
-        optionDom.push({ data: columnsArray[j], dom: optionsArray[i][j] });
+        optionDom.push({
+          data: columnsArray[j] ?? EMPTY_STRING,
+          dom: optionsArray?.[i]?.[j] as HTMLElement,
+        });
       }
     }
 
@@ -446,15 +459,17 @@ export class FieldExtractorEngine {
     let checkboxNumber = 0;
 
     for (let rowIndex = 0; rowIndex < rowsArray.length; rowIndex++) {
-      const arr: Option[] = [];
+      const arr: OptionType[] = [];
       for (
         let p = checkboxNumber;
         p < columnsArray.length * (rowIndex + 1);
         p++, checkboxNumber++
       ) {
-        arr.push(optionDom[p]);
+        if (optionDom[p] !== undefined) {
+          arr.push(optionDom[p] as OptionType);
+        }
       }
-      rowColDom.push({ row: rowsArray[rowIndex], cols: arr });
+      rowColDom.push({ row: rowsArray[rowIndex] ?? EMPTY_STRING, cols: arr });
     }
 
     return {
@@ -470,11 +485,11 @@ export class FieldExtractorEngine {
       return { options: [] };
     }
 
-    const options: Option[] = [];
+    const options: OptionType[] = [];
     // 0th index is `Choose`
     for (let i = 1; i < optionDivs.length; i++) {
       const optionDiv = optionDivs[i];
-      const span = optionDiv.querySelector('span');
+      const span = optionDiv?.querySelector('span');
 
       if (span) {
         options.push({
@@ -497,7 +512,7 @@ export class FieldExtractorEngine {
 
   private getDomTextEmail(element: HTMLElement): DOMPointer {
     const inputField = element.querySelector(
-      'input[type=text], input[type=email]'
+      'input[type=text], input[type=email]',
     );
     return { dom: inputField as HTMLElement };
   }
@@ -509,7 +524,7 @@ export class FieldExtractorEngine {
 
   private getDomDate(element: HTMLElement): DateTimeDomFields {
     const inputField = element.querySelectorAll(
-      'input[type=text], input[type=date]'
+      'input[type=text], input[type=date]',
     );
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
@@ -536,7 +551,7 @@ export class FieldExtractorEngine {
 
   private getDomDateAndTime(element: HTMLElement): DateTimeDomFields {
     const inputField = element.querySelectorAll(
-      'input[type=text], input[type=date]'
+      'input[type=text], input[type=date]',
     );
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
@@ -606,7 +621,7 @@ export class FieldExtractorEngine {
 
   private getDomDateWithoutYear(element: HTMLElement): DateTimeDomFields {
     const inputField = element.querySelectorAll(
-      'input[type=text], input[type=date]'
+      'input[type=text], input[type=date]',
     );
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
@@ -629,7 +644,7 @@ export class FieldExtractorEngine {
 
   getDomDateTimeWithoutYear(element: HTMLElement): DateTimeDomFields {
     const inputField = element.querySelectorAll(
-      'input[type=text], input[type=date]'
+      'input[type=text], input[type=date]',
     );
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
@@ -665,18 +680,18 @@ export class FieldExtractorEngine {
 
   private getDomTextUrl(element: HTMLElement): DOMPointer {
     const inputField = element.querySelector(
-      'input[type=url]'
+      'input[type=url]',
     ) as HTMLInputElement;
     return { dom: inputField };
   }
 
   private getDomDateTimeWithMeridiem(element: HTMLElement): DateTimeDomFields {
     const meridiem = element.querySelector(
-      'div[role=presentation]'
+      'div[role=presentation]',
     ) as HTMLElement;
     const inputField = element.querySelectorAll(
-      'input[type=text], input[type=date]'
-    ) as NodeListOf<HTMLInputElement>;
+      'input[type=text], input[type=date]',
+    );
 
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
@@ -688,19 +703,19 @@ export class FieldExtractorEngine {
       const ariaLabel = input.getAttribute('aria-label');
       switch (ariaLabel) {
         case 'Day of the month':
-          dateDom = input;
+          dateDom = input as HTMLInputElement;
           break;
         case 'Month':
-          monthDom = input;
+          monthDom = input as HTMLInputElement;
           break;
         case 'Year':
-          yearDom = input;
+          yearDom = input as HTMLInputElement;
           break;
         case 'Hour':
-          hourDom = input;
+          hourDom = input as HTMLInputElement;
           break;
         case 'Minute':
-          minuteDom = input;
+          minuteDom = input as HTMLInputElement;
           break;
       }
     });
@@ -717,11 +732,11 @@ export class FieldExtractorEngine {
 
   private getDomTimeWithMeridiem(element: HTMLElement): DateTimeDomFields {
     const meridiem = element.querySelector(
-      'div[role=presentation]'
+      'div[role=presentation]',
     ) as HTMLElement;
     const inputField = element.querySelectorAll(
-      'input[type=text], input[type=date]'
-    ) as NodeListOf<HTMLInputElement>;
+      'input[type=text], input[type=date]',
+    );
 
     let hourDom: HTMLInputElement | null = null;
     let minuteDom: HTMLInputElement | null = null;
@@ -730,10 +745,10 @@ export class FieldExtractorEngine {
       const ariaLabel = input.getAttribute('aria-label');
       switch (ariaLabel) {
         case 'Hour':
-          hourDom = input;
+          hourDom = input as HTMLInputElement;
           break;
         case 'Minute':
-          minuteDom = input;
+          minuteDom = input as HTMLInputElement;
           break;
       }
     });
@@ -742,14 +757,14 @@ export class FieldExtractorEngine {
   }
 
   private getDomDateTimeWithMeridiemWithoutYear(
-    element: HTMLElement
+    element: HTMLElement,
   ): DateTimeDomFields {
     const meridiem = element.querySelector(
-      'div[role=presentation]'
+      'div[role=presentation]',
     ) as HTMLElement;
     const inputField = element.querySelectorAll(
-      'input[type=text], input[type=date]'
-    ) as NodeListOf<HTMLInputElement>;
+      'input[type=text], input[type=date]',
+    );
 
     let dateDom: HTMLInputElement | null = null;
     let monthDom: HTMLInputElement | null = null;
@@ -760,16 +775,16 @@ export class FieldExtractorEngine {
       const ariaLabel = input.getAttribute('aria-label');
       switch (ariaLabel) {
         case 'Day of the month':
-          dateDom = input;
+          dateDom = input as HTMLInputElement;
           break;
         case 'Month':
-          monthDom = input;
+          monthDom = input as HTMLInputElement;
           break;
         case 'Hour':
-          hourDom = input;
+          hourDom = input as HTMLInputElement;
           break;
         case 'Minute':
-          minuteDom = input;
+          minuteDom = input as HTMLInputElement;
           break;
       }
     });
@@ -784,9 +799,7 @@ export class FieldExtractorEngine {
   }
 
   private getDomTime(element: HTMLElement): DateTimeDomFields {
-    const inputField = element.querySelectorAll(
-      'input[type=text]'
-    ) as NodeListOf<HTMLInputElement>;
+    const inputField = element.querySelectorAll('input[type=text]');
 
     let hourDom: HTMLInputElement | null = null;
     let minuteDom: HTMLInputElement | null = null;
@@ -795,10 +808,10 @@ export class FieldExtractorEngine {
       const ariaLabel = input.getAttribute('aria-label');
       switch (ariaLabel) {
         case 'Hour':
-          hourDom = input;
+          hourDom = input as HTMLInputElement;
           break;
         case 'Minute':
-          minuteDom = input;
+          minuteDom = input as HTMLInputElement;
           break;
       }
     });

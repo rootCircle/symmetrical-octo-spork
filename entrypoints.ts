@@ -19,13 +19,14 @@ async function getFiles(dir: string): Promise<string[]> {
       } else {
         return Promise.resolve(res);
       }
-    })
+    }),
   );
 
   // Flatten the array and filter only .ts and .js files
-  return Array.prototype
-    .concat(...files)
-    .filter((file) => ['.ts', '.js'].includes(extname(file)));
+  const filteredFiles: string[] = (
+    Array.prototype.concat(...files) as string[]
+  ).filter((file) => ['.ts', '.js'].includes(extname(file)));
+  return filteredFiles;
 }
 
 /**

@@ -17,7 +17,7 @@ class ValidationUtils {
       return false; // Invalid values in Day or Month Params
     }
 
-    let parsedYear = Number(year);
+    const parsedYear = Number(year);
     if (isNaN(parsedYear)) {
       return false; // Invalid formatted year
     }

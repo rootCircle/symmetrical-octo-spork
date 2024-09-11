@@ -2,15 +2,11 @@
 
 /// <reference lib="dom" />
 
-interface Option {
-  data: string;
-}
-
 interface ExtractedValue {
   title?: string;
   description?: string | null;
   dom?: HTMLElement;
-  options?: Option[];
+  options?: OptionType[];
   other?: OtherOption;
   rowColumnOption?: RowColumnOption[];
   rowArray?: string[];
@@ -29,17 +25,17 @@ interface DOMPointer {
   dom: HTMLElement;
 }
 
-interface Option {
+interface OptionType {
   dom?: HTMLElement;
   data: string;
 }
 
-interface OtherOption extends Option {
+interface OtherOption extends OptionType {
   inputBoxDom: HTMLInputElement;
 }
 
 interface ParamsMultiChoiceOrCorrectResult {
-  options: Option[];
+  options: OptionType[];
   other?: OtherOption;
 }
 
@@ -50,7 +46,7 @@ interface LowerUpperBound {
 
 interface ParamsLinearScaleResult {
   bounds: LowerUpperBound;
-  options: Option[];
+  options: OptionType[];
 }
 
 interface ParamsMultipleChoiceGridResult {
@@ -61,7 +57,7 @@ interface ParamsMultipleChoiceGridResult {
 
 interface RowColumnOption {
   row: string;
-  cols: Option[];
+  cols: OptionType[];
 }
 
 interface CheckboxGridResult {
@@ -72,7 +68,7 @@ interface CheckboxGridResult {
 
 interface DropdownResult {
   dom?: HTMLElement;
-  options: Option[];
+  options: OptionType[];
 }
 
 interface DateTimeDomFields {
@@ -103,4 +99,14 @@ interface GenericLLMResponse {
 interface LinearScaleResponse {
   answer: number;
 }
-type FlattenedPair = [string, any];
+
+interface LLMResponse {
+  text?: string;
+  genericResponse?: GenericLLMResponse;
+  date?: Date;
+  multiCorrect?: MultiCorrectOrMultipleOption[];
+  multipleChoice?: MultiCorrectOrMultipleOption;
+  linearScale?: LinearScaleResponse;
+  multipleChoiceGrid?: RowColumn[];
+  checkboxGrid?: RowColumnOption[];
+}

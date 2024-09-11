@@ -1,3 +1,5 @@
 import runBuild from './builder.ts';
 
-runBuild();
+runBuild()
+  .then(() => {})
+  .catch(() => {});
