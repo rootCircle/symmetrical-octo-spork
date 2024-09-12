@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import LLMEngineType from '@utils/llmEngineTypes';
 
 interface WeightedObject {
@@ -6,155 +10,91 @@ interface WeightedObject {
   value: LLMResponse;
 }
 
-type FlattenedPair = [
-  string,
-  (
-    | string
-    | number
-    | boolean
-    | Date
-    | MultiCorrectOrMultipleOption[]
-    | MultiCorrectOrMultipleOption
-    | LinearScaleResponse
-    | RowColumn[]
-    | RowColumnOption[]
-  ),
-];
+type LLMResponseValue = LLMResponse[keyof LLMResponse];
+type FlattenedLLMResponse = { [key: string]: LLMResponseValue };
 
-function analyzeWeightedObjects(
-  objects: WeightedObject[],
-): Partial<LLMResponse> {
-  // Step 1: Count Weighted Votes
-  const voteCounts = new Map<string, number>();
-  const firstAppearance = new Map<string, number>();
+function createWeightedObjectAnalyzer() {
+  return function analyzeWeightedObjects(
+    objects: WeightedObject[],
+  ): LLMResponse {
+    if (objects.length === 0) {
+      return {};
+    }
 
-  objects.forEach((obj, index) => {
-    const flattenedPairs = flattenObject(obj.value);
-    flattenedPairs.forEach(([key, value]) => {
-      const pairKey = JSON.stringify([key, value]);
-      if (!voteCounts.has(pairKey)) {
-        voteCounts.set(pairKey, 0);
-        firstAppearance.set(pairKey, index);
+    return analyzeObjects(objects);
+  };
+}
+
+function analyzeObjects(objects: WeightedObject[]): LLMResponse {
+  const flattenedObjects: {
+    [key: string]: { value: LLMResponseValue; totalWeight: number };
+  } = {};
+
+  // Flatten and aggregate weights
+  for (const obj of objects) {
+    const flattened = flattenObject(obj.value);
+    for (const [key, value] of Object.entries(flattened)) {
+      if (
+        !flattenedObjects[key] ||
+        obj.weight > flattenedObjects[key].totalWeight
+      ) {
+        flattenedObjects[key] = { value, totalWeight: obj.weight };
       }
-      voteCounts.set(pairKey, (voteCounts.get(pairKey) || 0) + obj.weight);
-    });
-  });
-
-  // Step 2 & 3: Aggregate Scores and Determine Maximum Scores
-  const maxScores = new Map<
-    string,
-    {
-      value:
-        | string
-        | number
-        | boolean
-        | Date
-        | MultiCorrectOrMultipleOption[]
-        | MultiCorrectOrMultipleOption
-        | LinearScaleResponse
-        | RowColumn[]
-        | RowColumnOption[];
-      score: number;
-      index: number;
     }
-  >();
+  }
 
-  voteCounts.forEach((score, pairKey) => {
-    const [key, value] = JSON.parse(pairKey) as [
-      string,
-      (
-        | string
-        | number
-        | boolean
-        | Date
-        | MultiCorrectOrMultipleOption[]
-        | MultiCorrectOrMultipleOption
-        | LinearScaleResponse
-        | RowColumn[]
-        | RowColumnOption[]
-      ),
-    ];
-    if (
-      !maxScores.has(key) ||
-      score > maxScores.get(key)!.score ||
-      (score === maxScores.get(key)!.score &&
-        firstAppearance.get(pairKey)! < maxScores.get(key)!.index)
-    ) {
-      maxScores.set(key, {
-        value,
-        score,
-        index: firstAppearance.get(pairKey)!,
-      });
+  // Reconstruct the nested object
+  return unflattenObject(
+    Object.fromEntries(
+      Object.entries(flattenedObjects).map(([key, { value }]) => [key, value]),
+    ),
+  );
+}
+
+function flattenObject(obj: LLMResponse, prefix = ''): FlattenedLLMResponse {
+  return Object.entries(obj).reduce(
+    (acc: FlattenedLLMResponse, [key, value]) => {
+      const propKey = prefix ? `${prefix}.${key}` : key;
+      if (
+        Array.isArray(value) ||
+        value instanceof Date ||
+        typeof value !== 'object' ||
+        value === null
+      ) {
+        acc[propKey] = value as LLMResponseValue;
+      } else {
+        Object.assign(acc, flattenObject(value as LLMResponse, propKey));
+      }
+      return acc;
+    },
+    {},
+  );
+}
+
+function unflattenObject(obj: FlattenedLLMResponse): LLMResponse {
+  const result = {} as LLMResponse;
+  for (const [key, value] of Object.entries(obj)) {
+    const keys = key.split('.');
+    let current: any = result;
+    if (typeof current !== 'object') {
+      continue;
     }
-  });
-
-  // Step 4: Construct and Format Result
-  const result: Partial<LLMResponse> = {};
-  maxScores.forEach((data, key) => {
-    if (data.score > 0) {
-      setNestedValue(result, key.split('.'), data.value);
+    for (let i = 0; i < keys.length; i++) {
+      const iteratedKey = keys[i];
+      if (!iteratedKey) {
+        continue;
+      }
+      if (i === keys.length - 1) {
+        current[iteratedKey] = value;
+      } else {
+        current[iteratedKey] = current[iteratedKey] || {};
+        current = current[iteratedKey];
+      }
     }
-  });
-
+  }
   return result;
 }
 
-// Helper function to flatten nested objects
-function flattenObject(obj: LLMResponse, prefix: string = ''): FlattenedPair[] {
-  return Object.entries(obj).flatMap(([key, value]): FlattenedPair[] => {
-    const newKey = prefix ? `${prefix}.${key}` : key;
-    if (
-      typeof value === 'object' &&
-      value !== null &&
-      !(value instanceof Date)
-    ) {
-      return flattenObject(value as LLMResponse, newKey);
-    } else {
-      return [
-        [
-          newKey,
-          value as
-            | string
-            | number
-            | boolean
-            | Date
-            | MultiCorrectOrMultipleOption[]
-            | MultiCorrectOrMultipleOption
-            | LinearScaleResponse
-            | RowColumn[]
-            | RowColumnOption[],
-        ],
-      ];
-    }
-  });
-}
-
-// Helper function to set nested value in an object
-function setNestedValue(
-  obj: Partial<LLMResponse>,
-  path: string[],
-  value:
-    | string
-    | number
-    | boolean
-    | Date
-    | MultiCorrectOrMultipleOption[]
-    | MultiCorrectOrMultipleOption
-    | LinearScaleResponse
-    | RowColumn[]
-    | RowColumnOption[],
-): void {
-  const lastKey = path.pop()!;
-  const lastObj = path.reduce(
-    (acc: Record<string, unknown>, key) => {
-      if (!acc[key]) {
-        acc[key] = {};
-      }
-      return acc[key] as Record<string, unknown>;
-    },
-    obj as Record<string, unknown>,
-  );
-  lastObj[lastKey] = value;
-}
+const analyzeWeightedObjects = createWeightedObjectAnalyzer();
 
 export { analyzeWeightedObjects };
