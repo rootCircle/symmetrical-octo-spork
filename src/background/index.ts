@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import LLMEngineType from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
@@ -26,7 +27,9 @@ chrome.runtime.onMessage.addListener(
           sendResponse({ value: response });
         })
         .then(() => {})
-        .catch(() => {});
+        .catch((error) => {
+          console.error('Error getting response:', error);
+        });
     }
 
     return true;

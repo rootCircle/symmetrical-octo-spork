@@ -98,9 +98,8 @@ export class LLMEngine {
       return await chrome.runtime.sendMessage(item).then((response) => {
         return response?.value;
       });
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     } catch (error) {
-      // console.error('Error getting response:', error);
+      console.error('Error getting response:', error);
       return null;
     }
   }

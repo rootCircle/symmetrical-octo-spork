@@ -21,56 +21,64 @@ async function runDocFillerEngine() {
   const filler = new FillerEngine();
 
   for (const question of questions) {
-    const fieldType = checker.detectType(question);
+    try {
+      const fieldType = checker.detectType(question);
 
-    if (fieldType !== null) {
-      const fieldValue = fields.getFields(question, fieldType);
-      const promptString = prompts.getPrompt(fieldType, fieldValue);
+      if (fieldType !== null) {
+        const fieldValue = fields.getFields(question, fieldType);
+        const promptString = prompts.getPrompt(fieldType, fieldValue);
 
-      console.log(question);
+        console.log(question);
 
-      console.log(`Field Type : ${fieldType}`);
-      console.log('Fields ↴');
+        console.log(`Field Type : ${fieldType}`);
+        console.log('Fields ↴');
 
-      console.log('Field Value ↴');
-      console.log(fieldValue);
+        console.log('Field Value ↴');
+        console.log(fieldValue);
 
-      console.log('Prompt ↴');
-      console.log(promptString);
+        console.log('Prompt ↴');
+        console.log(promptString);
 
-      let response = null;
+        let response = null;
 
-      if (ENABLE_CONSENSUS) {
-        const consensusEngine = ConsensusEngine.getInstance();
-        response = await consensusEngine.generateAndValidate(
-          promptString,
-          fieldValue,
+        if (ENABLE_CONSENSUS) {
+          const consensusEngine = ConsensusEngine.getInstance();
+          response = await consensusEngine.generateAndValidate(
+            promptString,
+            fieldValue,
+            fieldType,
+          );
+        } else {
+          response = await llm.getResponse(promptString, fieldType);
+        }
+
+        console.log('LLM Response ↴');
+        console.log(response);
+
+        if (response === null) {
+          console.log('No response from LLM');
+          continue;
+        }
+        const parsed_response = validator.validate(
           fieldType,
+          fieldValue,
+          response,
         );
-      } else {
-        response = await llm.getResponse(promptString, fieldType);
+        console.log(`Parsed Response : ${parsed_response}`);
+
+        if (parsed_response) {
+          const fillerStatus = await filler.fill(
+            fieldType,
+            fieldValue,
+            response,
+          );
+          console.log(`Filler Status ${fillerStatus}`);
+        }
+
+        console.log();
       }
-
-      console.log('LLM Response ↴');
-      console.log(response);
-
-      if (response === null) {
-        console.log('No response from LLM');
-        continue;
-      }
-      const parsed_response = validator.validate(
-        fieldType,
-        fieldValue,
-        response,
-      );
-      console.log(`Parsed Response : ${parsed_response}`);
-
-      if (parsed_response) {
-        const fillerStatus = await filler.fill(fieldType, fieldValue, response);
-        console.log(`Filler Status ${fillerStatus}`);
-      }
-
-      console.log();
+    } catch (e) {
+      console.error(e);
     }
   }
 }

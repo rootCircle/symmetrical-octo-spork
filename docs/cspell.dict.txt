@@ -26,5 +26,6 @@ radiogroup
 Sarvepalli
 scrapy
 tseslint
+unflatten
 webext
 webextension
