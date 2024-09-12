@@ -21,15 +21,21 @@ chrome.runtime.onMessage.addListener(
     //     message.data = null;
     //   }
     if (message.type === 'API_CALL') {
-      LLMEngine.getInstance(message.model)
-        .invokeLLM(message.prompt, message.questionType)
-        .then((response) => {
-          sendResponse({ value: response });
-        })
-        .then(() => {})
-        .catch((error) => {
-          console.error('Error getting response:', error);
-        });
+      try {
+        const instance = LLMEngine.getInstance(message.model);
+
+        instance
+          .invokeLLM(message.prompt, message.questionType)
+          .then((response) => {
+            sendResponse({ value: response });
+          })
+          .then(() => {})
+          .catch((error) => {
+            console.error('Error getting response:', error);
+          });
+      } catch (error) {
+        console.error('Error creating LLMEngine instance:', error);
+      }
     }
 
     return true;

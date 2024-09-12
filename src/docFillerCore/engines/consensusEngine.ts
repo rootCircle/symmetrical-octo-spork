@@ -1,33 +1,34 @@
+/* eslint-disable no-console */
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
 import { analyzeWeightedObjects } from '@utils/consensusUtil';
+import { Settings } from '@utils/settings';
 import LLMEngineType from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
 
 class ConsensusEngine {
   private static instance: ConsensusEngine;
   private validateEngine: ValidatorEngine;
-  private llmWeights: Map<LLMEngineType, number> = new Map();
+  private static llmWeights: Map<LLMEngineType, number> = new Map();
 
   private constructor() {
     this.validateEngine = new ValidatorEngine();
-
-    // this.llmWeights.set(LLMEngineType.ChatGPT, 0.42);
-    this.llmWeights.set(LLMEngineType.Gemini, 0.42);
-    this.llmWeights.set(LLMEngineType.Ollama, 0.16);
-    this.distributeWeights();
   }
 
-  public static getInstance(): ConsensusEngine {
+  public static async getInstance(): Promise<ConsensusEngine> {
     if (!ConsensusEngine.instance) {
       ConsensusEngine.instance = new ConsensusEngine();
+      ConsensusEngine.llmWeights = new Map(
+        await Settings.getInstance().getConsensusWeights(),
+      );
+      ConsensusEngine.distributeWeights();
     }
 
     return ConsensusEngine.instance;
   }
 
-  private distributeWeights() {
-    const currentSum = Array.from(this.llmWeights.values()).reduce(
+  private static distributeWeights() {
+    const currentSum = Array.from(ConsensusEngine.llmWeights.values()).reduce(
       (sum, weight) => sum + weight,
       0,
     );
@@ -36,10 +37,10 @@ class ConsensusEngine {
       return;
     }
 
-    const adjustment = (1 - currentSum) / this.llmWeights.size;
+    const adjustment = (1 - currentSum) / ConsensusEngine.llmWeights.size;
 
-    this.llmWeights.forEach((value, key) => {
-      this.llmWeights.set(key, value + adjustment);
+    ConsensusEngine.llmWeights.forEach((value, key) => {
+      ConsensusEngine.llmWeights.set(key, value + adjustment);
     });
   }
 
@@ -49,22 +50,28 @@ class ConsensusEngine {
     fieldType: QType,
   ): Promise<LLMResponse | null> {
     const responses = [];
-    for (const [llmType, weight] of this.llmWeights.entries()) {
-      const llm = LLMEngine.getInstance(llmType);
-      const response = await llm.getResponse(promptString, fieldType);
-      if (response !== null) {
-        const parsedResponse = this.validateEngine.validate(
-          fieldType,
-          extractedValue,
-          response,
-        );
-        if (parsedResponse === true) {
-          responses.push({
-            source: llmType,
-            weight,
-            value: response ?? {},
-          });
+    for (const [llmType, weight] of ConsensusEngine.llmWeights.entries()) {
+      try {
+        const llm = LLMEngine.getInstance(llmType);
+        const response = await llm.getResponse(promptString, fieldType);
+        if (response !== null) {
+          const parsedResponse = this.validateEngine.validate(
+            fieldType,
+            extractedValue,
+            response,
+          );
+          if (parsedResponse === true) {
+            responses.push({
+              source: llmType,
+              weight,
+              value: response ?? {},
+            });
+          }
         }
+      } catch (error) {
+        // Handle the error here
+        console.error(error);
+        continue;
       }
     }
 

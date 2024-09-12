@@ -6,7 +6,7 @@ import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtracto
 import { PromptEngine } from '@docFillerCore/engines/promptEngine';
 import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
-import { CURRENT_LLM_MODEL, ENABLE_CONSENSUS } from '@utils/constant';
+import { Settings } from '@utils/settings';
 import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
 
 async function runDocFillerEngine() {
@@ -16,9 +16,24 @@ async function runDocFillerEngine() {
   const checker = new DetectBoxType();
   const fields = new FieldExtractorEngine();
   const prompts = new PromptEngine();
-  const llm = LLMEngine.getInstance(CURRENT_LLM_MODEL);
   const validator = new ValidatorEngine();
   const filler = new FillerEngine();
+
+  const enableConsensus = await Settings.getInstance().getEnableConsensus();
+  let consensusEngine;
+  let llm;
+  if (enableConsensus) {
+    consensusEngine = await ConsensusEngine.getInstance();
+  } else {
+    try {
+      llm = LLMEngine.getInstance(
+        await Settings.getInstance().getCurrentLLMModel(),
+      );
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+  }
 
   for (const question of questions) {
     try {
@@ -41,14 +56,13 @@ async function runDocFillerEngine() {
 
         let response = null;
 
-        if (ENABLE_CONSENSUS) {
-          const consensusEngine = ConsensusEngine.getInstance();
+        if (enableConsensus && consensusEngine) {
           response = await consensusEngine.generateAndValidate(
             promptString,
             fieldValue,
             fieldType,
           );
-        } else {
+        } else if (llm) {
           response = await llm.getResponse(promptString, fieldType);
         }
 

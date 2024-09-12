@@ -1,4 +1,4 @@
-import { EMPTY_STRING } from '@utils/constant';
+import { EMPTY_STRING } from '@utils/settings';
 import { QType } from '@utils/questionTypes';
 
 export class PromptEngine {
