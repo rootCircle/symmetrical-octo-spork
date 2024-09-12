@@ -1,6 +1,6 @@
 import { DetectBoxTypeTimeCacher } from '@docFillerCore/detectors/detectBoxTypeTimeCacher';
 import { QType } from '@utils/questionTypes';
-import { EMPTY_STRING } from '@utils/constant';
+import { EMPTY_STRING } from '@utils/settings';
 
 export class DetectBoxType {
   private timeCacher: DetectBoxTypeTimeCacher;

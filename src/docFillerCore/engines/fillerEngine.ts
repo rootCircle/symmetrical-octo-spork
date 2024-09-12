@@ -1,5 +1,5 @@
 import { QType } from '@utils/questionTypes.ts';
-import { SLEEP_DURATION } from '@utils/constant';
+import { Settings } from '@utils/settings';
 
 // Sleep utility function
 function sleep(milliseconds: number): Promise<void> {
@@ -175,7 +175,7 @@ export class FillerEngine {
     if (isNaN(date.valueOf())) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -227,7 +227,7 @@ export class FillerEngine {
     if (isNaN(date.valueOf())) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -267,7 +267,7 @@ export class FillerEngine {
         meridiemDropdown.getAttribute('aria-expanded') !== 'true'
       ) {
         meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
-        await sleep(SLEEP_DURATION);
+        await sleep(await Settings.getInstance().getSleepDuration());
       }
 
       const optionElements = Array.from(
@@ -308,7 +308,7 @@ export class FillerEngine {
     if (isNaN(date.valueOf())) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -335,7 +335,7 @@ export class FillerEngine {
         meridiemDropdown.getAttribute('aria-expanded') !== 'true'
       ) {
         meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
-        await sleep(SLEEP_DURATION);
+        await sleep(await Settings.getInstance().getSleepDuration());
       }
 
       const optionElements = Array.from(
@@ -374,7 +374,7 @@ export class FillerEngine {
     if (isNaN(date.valueOf())) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -418,7 +418,7 @@ export class FillerEngine {
         meridiemDropdown.getAttribute('aria-expanded') !== 'true'
       ) {
         meridiemDropdown.dispatchEvent(new Event('click', { bubbles: true }));
-        await sleep(SLEEP_DURATION);
+        await sleep(await Settings.getInstance().getSleepDuration());
       }
 
       const optionElements = Array.from(
@@ -557,7 +557,7 @@ export class FillerEngine {
     if (isNaN(date.valueOf())) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -596,7 +596,7 @@ export class FillerEngine {
     if (!value.multiCorrect) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     for (const element of fieldValue.options || []) {
       for (const option of value.multiCorrect) {
@@ -636,7 +636,7 @@ export class FillerEngine {
     if (!value.multipleChoice) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     for (const element of fieldValue.options || []) {
       if (value.multipleChoice.optionText && !value.multipleChoice.isOther) {
@@ -679,7 +679,7 @@ export class FillerEngine {
     if (!value.linearScale) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
     for (const index in fieldValue.options) {
       if (index in fieldValue.options) {
         const scale = fieldValue.options[Number(index)];
@@ -703,7 +703,7 @@ export class FillerEngine {
     if (!options.checkboxGrid) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     fieldValue.rowColumnOption?.forEach((row) => {
       const matchingOptionRow = options.checkboxGrid?.find(
@@ -739,7 +739,7 @@ export class FillerEngine {
     if (!options.multipleChoiceGrid) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     fieldValue.rowColumnOption?.forEach((row) => {
       const matchingOptionRow = options.multipleChoiceGrid?.find(
@@ -771,7 +771,7 @@ export class FillerEngine {
     if (!value.genericResponse) {
       return false;
     }
-    await sleep(SLEEP_DURATION);
+    await sleep(await Settings.getInstance().getSleepDuration());
 
     for (const option of fieldValue.options || []) {
       if (option.data === value.genericResponse?.answer) {
@@ -780,7 +780,7 @@ export class FillerEngine {
             fieldValue.dom
               ?.querySelector('div[role=presentation]')
               ?.dispatchEvent(new Event('click', { bubbles: true }));
-            await sleep(SLEEP_DURATION);
+            await sleep(await Settings.getInstance().getSleepDuration());
           }
 
           const allOptions =

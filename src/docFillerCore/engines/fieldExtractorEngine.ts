@@ -1,5 +1,5 @@
 import { QType } from '@utils/questionTypes';
-import { EMPTY_STRING } from '@utils/constant';
+import { EMPTY_STRING } from '@utils/settings';
 
 export class FieldExtractorEngine {
   /**

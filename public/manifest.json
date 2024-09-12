@@ -9,7 +9,7 @@
     "64": "assets/icons/icon-form-64.png",
     "96": "assets/icons/icon-form-96.png"
   },
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": [
     "http://*.docs.google.com/*",
     "https://*.docs.google.com/*"
