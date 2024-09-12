@@ -176,3 +176,6 @@ dist
 
 # IntelliJ based IDEs
 .idea
+
+# web-ext build
+/web-ext-artifacts/
