@@ -1,32 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
-	</head>
-	<body>
-		<div class="root">
-			<div style="background-color: aquamarine; padding: 20px; width: 200px">
-				<center
-					style="
-						padding-top: 80px;
-						color: grey;
-						font-weight: 600;
-						font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-							'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-					"
-				>
-					This is test Extension Page yay!!
-
-					<br />
-					<br />
-
-					<button id="filler_button">execute</button>
-				</center>
-			</div>
-			<div></div>
-		</div>
-		<script src="index.js"></script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocFiller Extension</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <img src="../../assets/icons/icon-form-96.png" alt="DocFiller Logo" class="logo">
+        <div class="content">
+            <h1>DocFiller</h1>
+            <p>Automated Google Docs Filling Web Extension written in JS. Filling boring Google forms done easy!</p>
+            <div id="statusMessage" class="status-message">Checking page...</div>
+            <button id="toggleButton">Enable</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
 </html>
