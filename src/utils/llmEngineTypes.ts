@@ -32,8 +32,8 @@ function getModelTypeFromName(modelName: string): LLMEngineType | null {
       return LLMEngineType.Ollama;
     case 'Mistral':
       return LLMEngineType.Mistral;
-    // case 'Anthropic':
-    //   return LLMEngineType.Anthropic;
+    case 'Anthropic':
+      return LLMEngineType.Anthropic;
   }
 
   return null;
