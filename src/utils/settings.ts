@@ -68,7 +68,7 @@ class Settings {
             }
           });
         } else {
-          this.consensusWeights.set(LLMEngineType.Anthropic, 0.6);
+          // this.consensusWeights.set(LLMEngineType.Anthropic, 0.6);
           this.consensusWeights.set(LLMEngineType.ChatGPT, 0.4);
           this.consensusWeights.set(LLMEngineType.Gemini, 0.3);
           this.consensusWeights.set(LLMEngineType.Ollama, 0.15);
