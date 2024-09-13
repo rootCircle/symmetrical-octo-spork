@@ -64,7 +64,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@langchain/anthropic": "^0.2.18",
     "@langchain/google-genai": "^0.0.26",
+    "@langchain/mistralai": "^0.0.29",
     "@langchain/ollama": "^0.0.4",
     "@langchain/openai": "^0.2.10",
     "@types/firefox-webext-browser": "^120.0.4",

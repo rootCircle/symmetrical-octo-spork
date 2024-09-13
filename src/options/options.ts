@@ -25,6 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const weightOllamaInput = document.getElementById(
     'weightOllama',
   ) as HTMLInputElement;
+  const weightMistralInput = document.getElementById(
+    'weightMistral',
+  ) as HTMLInputElement;
+  const weightAnthropicInput = document.getElementById(
+    'weightAnthropic',
+  ) as HTMLInputElement;
   const saveButton = document.getElementById('saveButton') as HTMLButtonElement;
 
   // Load saved options
@@ -44,8 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         weightChatGPTInput.value = String(
           weights[LLMEngineType.ChatGPT] || 0.42,
         );
-        weightGeminiInput.value = String(weights[LLMEngineType.Gemini] || 0.42);
+        weightGeminiInput.value = String(weights[LLMEngineType.Gemini] || 0.32);
         weightOllamaInput.value = String(weights[LLMEngineType.Ollama] || 0.16);
+        weightMistralInput.value = String(
+          weights[LLMEngineType.Mistral] || 0.21,
+        );
+        weightAnthropicInput.value = String(
+          weights[LLMEngineType.Anthropic] || 0.31,
+        );
       } else {
         consensusWeightsDiv.classList.add('hidden');
       }
@@ -68,6 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
           ChatGPT: parseFloat(weightChatGPTInput.value),
           Gemini: parseFloat(weightGeminiInput.value),
           Ollama: parseFloat(weightOllamaInput.value),
+          Mistral: parseFloat(weightMistralInput.value),
+          Anthropic: parseFloat(weightAnthropicInput.value),
         }
       : {};
 

@@ -20,6 +20,8 @@
                 <option value="Gemini">Gemini</option>
                 <option value="ChatGPT">ChatGPT</option>
                 <option value="Ollama">Ollama</option>
+                <option value="Mistral">Mistral</option>
+                <option value="Anthropic">Anthropic</option>
             </select>
         </div>
 
@@ -40,6 +42,14 @@
             <div class="form-group">
                 <label for="weightOllama">Ollama Weight:</label>
                 <input type="number" id="weightOllama" name="weightOllama" min="0" max="1" step="0.01" value="0.16">
+            </div>
+            <div class="form-group">
+                <label for="weightMistral">Mistral Weight:</label>
+                <input type="number" id="weightMistral" name="weightMistral" min="0" max="1" step="0.01" value="0.16">
+            </div>
+            <div class="form-group"></div>
+                <label for="weightAnthropic">Anthropic Weight:</label>
+                <input type="number" id="weightAnthropic" name="weightAnthropic" min="0" max="1" step="0.01" value="0.16">
             </div>
         </div>
 

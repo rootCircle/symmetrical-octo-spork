@@ -7,7 +7,7 @@ const build = async () => {
   const buildStatus = await Bun.build({
     entrypoints,
     outdir: './build',
-    minify: true,
+    // minify: true,
     target: 'browser',
   });
 

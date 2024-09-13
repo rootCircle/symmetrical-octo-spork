@@ -3,6 +3,8 @@ enum LLMEngineType {
   ChatGPT = 'gpt4-o',
   Gemini = 'gemini-pro',
   Ollama = 'code-gemma2:2b',
+  Anthropic = 'claude',
+  Mistral = 'mistral',
 }
 
 function getModelName(modelType: LLMEngineType): string {
@@ -13,6 +15,10 @@ function getModelName(modelType: LLMEngineType): string {
       return 'Gemini';
     case LLMEngineType.Ollama:
       return 'Ollama';
+    case LLMEngineType.Anthropic:
+      return 'Anthropic';
+    case LLMEngineType.Mistral:
+      return 'Mistral';
   }
 }
 
@@ -24,6 +30,10 @@ function getModelTypeFromName(modelName: string): LLMEngineType | null {
       return LLMEngineType.Gemini;
     case 'Ollama':
       return LLMEngineType.Ollama;
+    case 'Mistral':
+      return LLMEngineType.Mistral;
+    // case 'Anthropic':
+    //   return LLMEngineType.Anthropic;
   }
 
   return null;
