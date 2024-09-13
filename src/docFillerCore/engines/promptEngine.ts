@@ -192,15 +192,9 @@ export class PromptEngine {
     otherOption: string,
   ): string {
     return (
-      "Prompt:\nYou are given a multiple-correct question with an 'Other' option. Your task is to " +
-      "identify all correct options from the list provided. You may select multiple options, including the 'Other' option. " +
-      "If you choose 'Other', provide your custom answer on a new line, starting with 'Other:'.\n" +
-      '\nExample Response:\nOption 1\nOption 3\nOther: Your custom answer here\n' +
-      '\nInstructions:\n- Return all correct options as separate lines of text.\n' +
-      "- If 'Other' is selected, provide your custom answer in the format 'Other: <Your Answer>' on the next line.\n" +
-      "- Only include the selected options and your 'Other' answer if applicable; avoid including any extra text.\n" +
-      `\nQuestion:\n${title}\n${description}\n` +
-      `\nOptions:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}\n${otherOption}`
+      "You are tasked with solving a `multiple-correct with other` question. With good precision ,return only the options which are correct. The 'Other' option can be selected alongside one or more of the listed options. If 'Other' is chosen, provide an explanation for what additional correct option(s) should be included." +
+      `\n**Question**: ${title}\n${description}\n` +
+      `\n**Options**:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}\n${options.length + 1}. ${otherOption}\n`
     );
   }
 
@@ -224,13 +218,13 @@ export class PromptEngine {
     columnOptions: string,
   ): string {
     return (
-      'You are given a checkbox grid question with sub-questions and the same options for all.\n\n' +
-      'Instructions:\n1. For each sub-question, choose the most appropriate option from the list.\n' +
-      '2. Respond with only the correct options, one per line, in the same order as the sub-questions.\n' +
+      'You are given a checkbox grid question with rows and columns.\n\n' +
+      'Instructions:\n1. For each row, list the columns that apply to it.\n' +
+      '2. Respond with only the correct columns for each row in the format Row: [Columns].\n' +
       '3. Do not include any extra text, explanations, or the question itself.\n\n' +
-      'Example:\nOptions: [Scientist, Writer, Journalist, Teacher]\nSub-questions: Charles Darwin, Lewis Carroll, Dr Sarvepalli Radhakrishnan, Barkha Dutt\n' +
-      'Expected Answer:\nScientist\nWriter\nTeacher\nJournalist\n\n' +
-      `Question: ${title}\nDescription: ${description}\nOptions: [${columnOptions}]\nSub-questions:\n${rowOptions}`
+      'Example:\nRows: [Can Fly, Lives in Water, Is a Mammal, Has a Tail]\nColumns: [Lion, Eagle, Dolphin, Kangaroo]\n' +
+      'Expected Answer:\nCan Fly: [Eagle]\nLives in Water: [Dolphin]\nIs a Mammal: [Lion, Dolphin, Kangaroo]\nHas a Tail: [Lion, Eagle, Dolphin, Kangaroo]\n\n' +
+      `Question: ${title}\nDescription: ${description}\nRows: [${rowOptions}]\nColumns: [${columnOptions}]`
     );
   }
 
@@ -285,7 +279,9 @@ export class PromptEngine {
 
   // Duration Prompt
   private getDurationPrompt(title: string, description: string): string {
-    return `Provide only the duration based on your response to the following question: ${title} - ${description}. Ensure to return Date object with zero-padding where applicable. Return only duration in form of date object with no additional text or formatting.`;
+    return `Based on the following question, provide the duration as a Date object, ensuring to zero-pad where applicable: ${title} - ${description}. 
+    Example: If the duration is 52 seconds, return it as a Date object like this: { date: Date Tue Jan 24 1950 5:30:52 GMT+0530 (India Standard Time) }. 
+    Please return only the duration in the specified format, without any additional text or formatting.`;
   }
 
   // Date Without Year Prompt

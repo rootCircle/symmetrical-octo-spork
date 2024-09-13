@@ -18,6 +18,8 @@ import { PromptTemplate } from '@langchain/core/prompts';
 import { QType } from '@utils/questionTypes';
 import { DatetimeOutputParser } from 'langchain/output_parsers';
 import { z } from 'zod';
+import { ChatAnthropic } from '@langchain/anthropic';
+import { ChatMistralAI } from '@langchain/mistralai';
 
 export class LLMEngine {
   private static instance: LLMEngine;
@@ -25,16 +27,23 @@ export class LLMEngine {
   private static openai: ChatOpenAI;
   private static ollama: Ollama;
   private static gemini: ChatGoogleGenerativeAI;
+  private static antropic: ChatAnthropic;
+  private static mistral: ChatMistralAI;
 
   private constructor(engine: LLMEngineType) {
     LLMEngine.engine = engine;
 
-    LLMEngine.getEngine(LLMEngine.engine);
+    LLMEngine.instantiateEngine(LLMEngine.engine);
   }
 
-  public static getEngine(
+  public static instantiateEngine(
     engine: LLMEngineType,
-  ): ChatOpenAI | Ollama | ChatGoogleGenerativeAI {
+  ):
+    | ChatOpenAI
+    | Ollama
+    | ChatGoogleGenerativeAI
+    | ChatAnthropic
+    | ChatMistralAI {
     switch (engine) {
       case LLMEngineType.ChatGPT: {
         if (LLMEngine.openai) {
@@ -72,6 +81,32 @@ export class LLMEngine {
         });
         return LLMEngine.ollama;
       }
+      case LLMEngineType.Mistral: {
+        if (LLMEngine.mistral) {
+          return LLMEngine.mistral;
+        }
+        LLMEngine.mistral = new ChatMistralAI({
+          model: 'mistral-large-latest',
+          temperature: 0,
+          maxRetries: 2,
+          // eslint-disable-next-line dot-notation
+          apiKey: process.env['MISTRAL_API_KEY'] as string,
+        });
+        return LLMEngine.mistral;
+      }
+      case LLMEngineType.Anthropic: {
+        if (LLMEngine.antropic) {
+          return LLMEngine.antropic;
+        }
+        LLMEngine.antropic = new ChatAnthropic({
+          model: 'claude-3-haiku-20240307',
+          temperature: 0,
+          maxRetries: 2,
+          // eslint-disable-next-line dot-notation
+          apiKey: process.env['ANTHROPIC_API_KEY'] as string,
+        });
+        return LLMEngine.antropic;
+      }
     }
   }
 
@@ -108,64 +143,63 @@ export class LLMEngine {
     promptText: string,
     questionType: QType,
   ): Promise<LLMResponse | null> {
-    if (promptText !== null) {
-      try {
-        let response = null;
-        const parser = LLMEngine.getParser(questionType);
-        switch (LLMEngine.engine) {
-          case LLMEngineType.ChatGPT: {
-            if (LLMEngine.openai) {
-              const chain = RunnableSequence.from([
-                PromptTemplate.fromTemplate(
-                  'Answer the users question as best as possible.\n{format_instructions}\n{question}',
-                ),
-                LLMEngine.openai,
-                parser,
-              ]);
-              response = await chain.invoke({
-                question: promptText,
-                format_instructions: parser.getFormatInstructions(),
-              });
-            }
-            break;
+    if (!promptText) {
+      return null;
+    }
+    try {
+      let response = null;
+      const parser = LLMEngine.getParser(questionType);
+      let modelInstance;
+      switch (LLMEngine.engine) {
+        case LLMEngineType.ChatGPT: {
+          if (LLMEngine.openai) {
+            modelInstance = LLMEngine.openai;
           }
-          case LLMEngineType.Gemini: {
-            if (LLMEngine.gemini) {
-              const chain = RunnableSequence.from([
-                PromptTemplate.fromTemplate(
-                  'Answer the users question as best as possible.\n{format_instructions}\n{question}',
-                ),
-                LLMEngine.gemini,
-                parser,
-              ]);
-              response = await chain.invoke({
-                question: promptText,
-                format_instructions: parser.getFormatInstructions(),
-              });
-            }
-            break;
-          }
-          case LLMEngineType.Ollama: {
-            if (LLMEngine.ollama) {
-              const chain = RunnableSequence.from([
-                PromptTemplate.fromTemplate(
-                  'Answer the users question as best as possible.\n{format_instructions}\n{question}',
-                ),
-                LLMEngine.ollama,
-                parser,
-              ]);
-              response = await chain.invoke({
-                question: promptText,
-                format_instructions: parser.getFormatInstructions(),
-              });
-            }
-            break;
-          }
+          break;
         }
-        return this.patchResponse(response, questionType);
-      } catch (error) {
-        console.error('Error getting response:', error);
+        case LLMEngineType.Gemini: {
+          if (LLMEngine.gemini) {
+            modelInstance = LLMEngine.gemini;
+          }
+          break;
+        }
+        case LLMEngineType.Ollama: {
+          if (LLMEngine.ollama) {
+            modelInstance = LLMEngine.ollama;
+          }
+          break;
+        }
+        case LLMEngineType.Mistral: {
+          if (LLMEngine.mistral) {
+            modelInstance = LLMEngine.mistral;
+          }
+          break;
+        }
+        case LLMEngineType.Anthropic: {
+          if (LLMEngine.antropic) {
+            modelInstance = LLMEngine.antropic;
+          }
+          break;
+        }
       }
+      if (modelInstance) {
+        const chain = RunnableSequence.from([
+          PromptTemplate.fromTemplate(
+            'Answer the users question as best as possible.\n{format_instructions}\n{question}',
+          ),
+          modelInstance,
+          parser,
+        ]);
+
+        response = await chain.invoke({
+          question: promptText,
+          format_instructions: parser.getFormatInstructions(),
+        });
+        return this.patchResponse(response, questionType);
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting response:', error);
     }
     return null;
   }
