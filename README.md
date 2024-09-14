@@ -1,8 +1,15 @@
-# 🚀 docFiller
+<p align="center">
+  <img src="./public/assets/icons/icon-form-96.png" alt="docFiller logo">
+<h1 align="center">🚀 docFiller</h1>
+<a align="center" href="https://discord.gg/Sa4JPe4FWT">
+  <p align="center"><img align="center" src="https://img.shields.io/discord/1129752670287184022?logo=discord"
+      alt="Discord"></p>
+</a>
+<p align="center">Automated <em>Google Docs</em> Filling Web Extension written in JS. Filling boring google form done
+  easy!</p>
+</p>
 
-[![Discord](https://img.shields.io/discord/1129752670287184022?logo=discord)](https://discord.gg/aExAhPd64X)
-
-Automated Google Docs Filling Web Extension written in JS. Filling boring google form done easy!
+<https://github.com/user-attachments/assets/55691cdf-6065-42bd-81fc-008be7422071>
 
 ## Project Overview
 
@@ -45,9 +52,9 @@ For support, bug reports, and feature requests, please refer to the [SUPPORT.md]
 
 To understand the governance model and decision-making processes for our project, please refer to the [GOVERNANCE.md](docs/GOVERNANCE.md) file.
 
-## Roadmap
+## Architecture
 
-For our project roadmap, please refer to the [roadmap.pdf](docs/roadmap.pdf) file.
+For our project architecture, please refer to the [ARCHITECTURE.md](docs/ARCHITECTURE.md) file.
 
 ## License
 
