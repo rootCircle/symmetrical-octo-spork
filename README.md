@@ -40,25 +40,15 @@ Once the extension is installed, you can start using it immediately. Simply clic
 
 We welcome contributions! If you would like to contribute to the development of this web extension, please follow the guidelines outlined in the [CONTRIBUTING.md](docs/CONTRIBUTING.md) file.
 
-## Security
+## Meta
 
-For information about our security policy, please refer to the [SECURITY.md](docs/SECURITY.md) file.
-
-## Support
-
-For support, bug reports, and feature requests, please refer to the [SUPPORT.md](docs/SUPPORT.md) file.
-
-## Governance
-
-To understand the governance model and decision-making processes for our project, please refer to the [GOVERNANCE.md](docs/GOVERNANCE.md) file.
-
-## Architecture
-
-For our project architecture, please refer to the [ARCHITECTURE.md](docs/ARCHITECTURE.md) file.
-
-## License
-
-This project is licensed under the [GNU GPL 3.0](LICENSE).
+| **Category**     | **Description**                                                                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Architecture** | For our project architecture, please refer to the [ARCHITECTURE.md](docs/ARCHITECTURE.md) file.                                                 |
+| **License**      | This project is licensed under the [GNU GPL 3.0](LICENSE).                                                                                      |
+| **Security**     | For information about our security policy, please refer to the [SECURITY.md](docs/SECURITY.md) file.                                            |
+| **Support**      | For support, bug reports, and feature requests, please refer to the [SUPPORT.md](docs/SUPPORT.md) file.                                         |
+| **Governance**   | To understand the governance model and decision-making processes for our project, please refer to the [GOVERNANCE.md](docs/GOVERNANCE.md) file. |
 
 ## Resources 🔍
 
