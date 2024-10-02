@@ -1,7 +1,13 @@
 interface LLMWeights {
   ChatGPT?: number;
+
   Gemini?: number;
+
   Ollama?: number;
+
+  Mistral?: number;
+
+  Anthropic?: number;
 }
 
 function getSetting<T>(key: string): Promise<T | undefined> {
@@ -31,5 +37,29 @@ async function getEnableConsensus(): Promise<boolean | undefined> {
 async function getLLMWeights(): Promise<LLMWeights | undefined> {
   return await getSetting<LLMWeights>('llmWeights');
 }
+async function getChatGptApiKey(): Promise<string | undefined> {
+  return await getSetting<string>('chatGptApiKey');
+}
 
-export { getSleepDuration, getLLMModel, getEnableConsensus, getLLMWeights };
+async function getGeminiApiKey(): Promise<string | undefined> {
+  return await getSetting<string>('geminiApiKey');
+}
+
+async function getMistralApiKey(): Promise<string | undefined> {
+  return await getSetting<string>('mistralApiKey');
+}
+
+async function getAnthropicApiKey(): Promise<string | undefined> {
+  return await getSetting<string>('anthropicApiKey');
+}
+
+export {
+  getSleepDuration,
+  getLLMModel,
+  getEnableConsensus,
+  getLLMWeights,
+  getChatGptApiKey,
+  getGeminiApiKey,
+  getMistralApiKey,
+  getAnthropicApiKey,
+};
