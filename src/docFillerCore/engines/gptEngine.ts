@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import process from 'process';
 
 import { Ollama } from '@langchain/ollama';
@@ -20,6 +15,12 @@ import { DatetimeOutputParser } from 'langchain/output_parsers';
 import { z } from 'zod';
 import { ChatAnthropic } from '@langchain/anthropic';
 import { ChatMistralAI } from '@langchain/mistralai';
+import {
+  getChatGptApiKey,
+  getGeminiApiKey,
+  getMistralApiKey,
+  getAnthropicApiKey,
+} from '@utils/getProperties';
 
 export class LLMEngine {
   private static instance: LLMEngine;
@@ -30,10 +31,35 @@ export class LLMEngine {
   private static antropic: ChatAnthropic;
   private static mistral: ChatMistralAI;
 
+  private chatGptApiKey: string | undefined;
+  private geminiApiKey: string | undefined;
+  private mistralApiKey: string | undefined;
+  private anthropicApiKey: string | undefined;
+
   private constructor(engine: LLMEngineType) {
     LLMEngine.engine = engine;
 
-    LLMEngine.instantiateEngine(LLMEngine.engine);
+    this.fetchApiKeys()
+      .then(() => {
+        console.log('API keys fetched:', {
+          chatGptApiKey: this.chatGptApiKey,
+          geminiApiKey: this.geminiApiKey,
+          mistralApiKey: this.mistralApiKey,
+          anthropicApiKey: this.anthropicApiKey,
+        });
+
+        LLMEngine.instantiateEngine(LLMEngine.engine);
+      })
+      .catch((error) => {
+        console.error('Error fetching API keys:', error);
+      });
+  }
+
+  private async fetchApiKeys(): Promise<void> {
+    this.chatGptApiKey = await getChatGptApiKey();
+    this.geminiApiKey = await getGeminiApiKey();
+    this.mistralApiKey = await getMistralApiKey();
+    this.anthropicApiKey = await getAnthropicApiKey();
   }
 
   public static instantiateEngine(
@@ -49,10 +75,12 @@ export class LLMEngine {
         if (LLMEngine.openai) {
           return LLMEngine.openai;
         }
+        if (!LLMEngine.instance.chatGptApiKey) {
+          throw new Error('ChatGPT API key is not defined');
+        }
         LLMEngine.openai = new ChatOpenAI({
           model: 'gpt-4',
-          // eslint-disable-next-line dot-notation
-          apiKey: process.env['CHATGPT_API_KEY'] as string,
+          apiKey: LLMEngine.instance.chatGptApiKey,
         });
         return LLMEngine.openai;
       }
@@ -61,15 +89,18 @@ export class LLMEngine {
         if (LLMEngine.gemini) {
           return LLMEngine.gemini;
         }
+        if (!LLMEngine.instance.geminiApiKey) {
+          throw new Error('Gemini API key is not defined');
+        }
         LLMEngine.gemini = new ChatGoogleGenerativeAI({
           model: 'gemini-pro',
           temperature: 0,
           maxRetries: 2,
-          // eslint-disable-next-line dot-notation
-          apiKey: process.env['GEMINI_API_KEY'] as string,
+          apiKey: LLMEngine.instance.geminiApiKey,
         });
         return LLMEngine.gemini;
       }
+
       case LLMEngineType.Ollama: {
         if (LLMEngine.ollama) {
           return LLMEngine.ollama;
@@ -81,29 +112,35 @@ export class LLMEngine {
         });
         return LLMEngine.ollama;
       }
+
       case LLMEngineType.Mistral: {
         if (LLMEngine.mistral) {
           return LLMEngine.mistral;
+        }
+        if (!LLMEngine.instance.mistralApiKey) {
+          throw new Error('Mistral API key is not defined');
         }
         LLMEngine.mistral = new ChatMistralAI({
           model: 'mistral-large-latest',
           temperature: 0,
           maxRetries: 2,
-          // eslint-disable-next-line dot-notation
-          apiKey: process.env['MISTRAL_API_KEY'] as string,
+          apiKey: LLMEngine.instance.mistralApiKey,
         });
         return LLMEngine.mistral;
       }
+
       case LLMEngineType.Anthropic: {
         if (LLMEngine.antropic) {
           return LLMEngine.antropic;
+        }
+        if (!LLMEngine.instance.anthropicApiKey) {
+          throw new Error('Anthropic API key is not defined');
         }
         LLMEngine.antropic = new ChatAnthropic({
           model: 'claude-3-haiku-20240307',
           temperature: 0,
           maxRetries: 2,
-          // eslint-disable-next-line dot-notation
-          apiKey: process.env['ANTHROPIC_API_KEY'] as string,
+          apiKey: LLMEngine.instance.anthropicApiKey,
         });
         return LLMEngine.antropic;
       }

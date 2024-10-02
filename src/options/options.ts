@@ -31,18 +31,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const weightAnthropicInput = document.getElementById(
     'weightAnthropic',
   ) as HTMLInputElement;
+  const chatGptApiKeyInput = document.getElementById(
+    'chatGptApiKey',
+  ) as HTMLInputElement;
+  const geminiApiKeyInput = document.getElementById(
+    'geminiApiKey',
+  ) as HTMLInputElement;
+  const mistralApiKeyInput = document.getElementById(
+    'mistralApiKey',
+  ) as HTMLInputElement;
+  const anthropicApiKeyInput = document.getElementById(
+    'anthropicApiKey',
+  ) as HTMLInputElement;
   const saveButton = document.getElementById('saveButton') as HTMLButtonElement;
 
   // Load saved options
   chrome.storage.sync.get(
-    ['sleepDuration', 'llmModel', 'enableConsensus', 'llmWeights'],
+    [
+      'sleepDuration',
+      'llmModel',
+      'enableConsensus',
+      'llmWeights',
+      'chatGptApiKey',
+      'geminiApiKey',
+      'mistralApiKey',
+      'anthropicApiKey',
+    ],
     (items) => {
+      console.log('Loaded items:', items); // Debug log
       sleepDurationInput.value = String(items['sleepDuration'] || 2000);
       llmModelSelect.value =
         String(items['llmModel']) ||
         getModelName(Settings.getInstance().getDefaultLLMModel());
       enableConsensusCheckbox.checked =
         (items['enableConsensus'] as boolean) || false;
+      chatGptApiKeyInput.value = String(items['chatGptApiKey'] || '');
+      geminiApiKeyInput.value = String(items['geminiApiKey'] || '');
+      mistralApiKeyInput.value = String(items['mistralApiKey'] || '');
+      anthropicApiKeyInput.value = String(items['anthropicApiKey'] || '');
+
       if (items['enableConsensus']) {
         consensusWeightsDiv.classList.remove('hidden');
         const weights =
@@ -71,10 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Save options
-  saveButton.addEventListener('click', () => {
+  saveButton.addEventListener('click', async () => {
     const sleepDuration = parseInt(sleepDurationInput.value, 10);
     const llmModel = llmModelSelect.value;
     const enableConsensus = enableConsensusCheckbox.checked;
+    const chatGptApiKey = chatGptApiKeyInput.value;
+    const geminiApiKey = geminiApiKeyInput.value;
+    const mistralApiKey = mistralApiKeyInput.value;
+    const anthropicApiKey = anthropicApiKeyInput.value;
     const llmWeights: Record<string, number> = enableConsensus
       ? {
           ChatGPT: parseFloat(weightChatGPTInput.value),
@@ -85,16 +116,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       : {};
 
-    chrome.storage.sync.set(
-      {
-        sleepDuration,
-        llmModel,
-        enableConsensus,
-        llmWeights,
-      },
-      () => {
-        alert('Options saved.');
-      },
-    );
+    // Debug: Log the API key to the console
+    console.log('ChatGPT API Key:', chatGptApiKey);
+    console.log('GEMINI API Key:', geminiApiKey);
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        chrome.storage.sync.set(
+          {
+            sleepDuration,
+            llmModel,
+            enableConsensus,
+            llmWeights,
+            chatGptApiKey,
+            geminiApiKey,
+            mistralApiKey,
+            anthropicApiKey,
+          },
+          () => {
+            if (chrome.runtime.lastError) {
+              reject(chrome.runtime.lastError);
+            } else {
+              resolve();
+            }
+          },
+        );
+      });
+
+      // Debug: Log after saving
+      console.log('Options saved successfully.');
+
+      // Retrieve and log the saved items
+      chrome.storage.sync.get(
+        [
+          'sleepDuration',
+          'llmModel',
+          'enableConsensus',
+          'llmWeights',
+          'chatGptApiKey',
+          'geminiApiKey',
+          'mistralApiKey',
+          'anthropicApiKey',
+        ],
+        (items) => {
+          console.log('Retrieved items after save:', items);
+          alert('Options saved and retrieved successfully.');
+        },
+      );
+    } catch (error) {
+      console.error('Error saving options:', error);
+      alert('Error saving options. Please try again.');
+    }
   });
 });
