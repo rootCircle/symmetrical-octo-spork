@@ -1,7 +1,3 @@
-/* eslint-disable dot-notation */
-import { Settings } from '@utils/settings';
-import LLMEngineType, { getModelName } from '@utils/llmEngineTypes';
-
 document.addEventListener('DOMContentLoaded', () => {
   // Get elements from the DOM
   const sleepDurationInput = document.getElementById(
@@ -37,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const geminiApiKeyInput = document.getElementById(
     'geminiApiKey',
   ) as HTMLInputElement;
+  const ollamaApiKeyInput = document.getElementById(
+    'ollamaApiKey',
+  ) as HTMLInputElement;
   const mistralApiKeyInput = document.getElementById(
     'mistralApiKey',
   ) as HTMLInputElement;
@@ -44,6 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     'anthropicApiKey',
   ) as HTMLInputElement;
   const saveButton = document.getElementById('saveButton') as HTMLButtonElement;
+  const singleApiKeyInput = document.getElementById(
+    'singleApiKey',
+  ) as HTMLInputElement;
 
   // Load saved options
   chrome.storage.sync.get(
@@ -54,47 +56,113 @@ document.addEventListener('DOMContentLoaded', () => {
       'llmWeights',
       'chatGptApiKey',
       'geminiApiKey',
+      'ollamaApiKey',
       'mistralApiKey',
       'anthropicApiKey',
     ],
     (items) => {
-      console.log('Loaded items:', items); // Debug log
+      console.log('Loaded items from storage:', items);
       sleepDurationInput.value = String(items['sleepDuration'] || 2000);
-      llmModelSelect.value =
-        String(items['llmModel']) ||
-        getModelName(Settings.getInstance().getDefaultLLMModel());
-      enableConsensusCheckbox.checked =
-        (items['enableConsensus'] as boolean) || false;
-      chatGptApiKeyInput.value = String(items['chatGptApiKey'] || '');
-      geminiApiKeyInput.value = String(items['geminiApiKey'] || '');
-      mistralApiKeyInput.value = String(items['mistralApiKey'] || '');
-      anthropicApiKeyInput.value = String(items['anthropicApiKey'] || '');
+      llmModelSelect.value = items['llmModel'] || 'Gemini';
+      enableConsensusCheckbox.checked = Boolean(items['enableConsensus']);
+      chatGptApiKeyInput.value = items['chatGptApiKey'] || '';
+      geminiApiKeyInput.value = items['geminiApiKey'] || '';
+      ollamaApiKeyInput.value = items['ollamaApiKey'] || '';
+      mistralApiKeyInput.value = items['mistralApiKey'] || '';
+      anthropicApiKeyInput.value = items['anthropicApiKey'] || '';
 
-      if (items['enableConsensus']) {
-        consensusWeightsDiv.classList.remove('hidden');
-        const weights =
-          (items['llmWeights'] as Record<LLMEngineType, number>) || {};
-        weightChatGPTInput.value = String(
-          weights[LLMEngineType.ChatGPT] || 0.42,
-        );
-        weightGeminiInput.value = String(weights[LLMEngineType.Gemini] || 0.32);
-        weightOllamaInput.value = String(weights[LLMEngineType.Ollama] || 0.16);
-        weightMistralInput.value = String(
-          weights[LLMEngineType.Mistral] || 0.21,
-        );
-        weightAnthropicInput.value = String(
-          weights[LLMEngineType.Anthropic] || 0.31,
-        );
-      } else {
-        consensusWeightsDiv.classList.add('hidden');
-      }
+      // Show or hide elements based on consensus setting
+      toggleConsensusOptions(enableConsensusCheckbox.checked);
+      updateSingleApiKeyInput();
     },
   );
+
+  // Toggle visibility of elements based on consensus state
+  const toggleConsensusOptions = (enableConsensus: boolean) => {
+    console.log(`Toggling consensus options: ${enableConsensus}`);
+    if (enableConsensus) {
+      consensusWeightsDiv.classList.remove('hidden');
+      llmModelSelect.classList.add('hidden');
+      singleApiKeyInput.classList.add('hidden');
+    } else {
+      consensusWeightsDiv.classList.add('hidden');
+      llmModelSelect.classList.remove('hidden');
+      singleApiKeyInput.classList.remove('hidden');
+    }
+  };
+
+  // Update single API key input based on selected model
+  const updateSingleApiKeyInput = () => {
+    const selectedModel = llmModelSelect.value;
+    let apiKeyValue = '';
+
+    switch (selectedModel) {
+      case 'ChatGPT':
+        apiKeyValue = chatGptApiKeyInput.value;
+        break;
+      case 'Gemini':
+        apiKeyValue = geminiApiKeyInput.value;
+        break;
+      case 'Ollama':
+        console.log('Ollama model selected: no API key required');
+        apiKeyValue = '';
+        break;
+      case 'Mistral':
+        apiKeyValue = mistralApiKeyInput.value;
+        break;
+      case 'Anthropic':
+        apiKeyValue = anthropicApiKeyInput.value;
+        break;
+      default:
+        console.warn('Unknown model selected:', selectedModel);
+        break;
+    }
+
+    singleApiKeyInput.value = apiKeyValue;
+    console.log(`API key for ${selectedModel}:`, apiKeyValue);
+  };
+
+  // Save the API key to the corresponding model input when changed
+  singleApiKeyInput.addEventListener('input', () => {
+    const selectedModel = llmModelSelect.value;
+    const apiKeyValue = singleApiKeyInput.value;
+
+    switch (selectedModel) {
+      case 'ChatGPT':
+        chatGptApiKeyInput.value = apiKeyValue;
+        break;
+      case 'Gemini':
+        geminiApiKeyInput.value = apiKeyValue;
+        break;
+      case 'Ollama':
+        console.log(
+          "Ignoring input for Ollama model as it doesn't require an API key",
+        );
+        break;
+      case 'Mistral':
+        mistralApiKeyInput.value = apiKeyValue;
+        break;
+      case 'Anthropic':
+        anthropicApiKeyInput.value = apiKeyValue;
+        break;
+      default:
+        console.warn('Unknown model selected:', selectedModel);
+        break;
+    }
+    console.log(`Updated API key for ${selectedModel}:`, apiKeyValue);
+  });
 
   // Handle checkbox change
   enableConsensusCheckbox.addEventListener('change', (e: Event) => {
     const target = e.target as HTMLInputElement;
-    consensusWeightsDiv.classList.toggle('hidden', !target.checked);
+    console.log(`Enable consensus changed to: ${target.checked}`);
+    toggleConsensusOptions(target.checked);
+  });
+
+  // Handle model selection change to update API key input
+  llmModelSelect.addEventListener('change', () => {
+    console.log('Model selection changed to:', llmModelSelect.value);
+    updateSingleApiKeyInput();
   });
 
   // Save options
@@ -104,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const enableConsensus = enableConsensusCheckbox.checked;
     const chatGptApiKey = chatGptApiKeyInput.value;
     const geminiApiKey = geminiApiKeyInput.value;
+    const ollamaApiKey = ollamaApiKeyInput.value;
     const mistralApiKey = mistralApiKeyInput.value;
     const anthropicApiKey = anthropicApiKeyInput.value;
     const llmWeights: Record<string, number> = enableConsensus
@@ -116,9 +185,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       : {};
 
-    // Debug: Log the API key to the console
-    console.log('ChatGPT API Key:', chatGptApiKey);
-    console.log('GEMINI API Key:', geminiApiKey);
+    // Log the entire data object for debugging
+    console.log('Attempting to save options:', {
+      sleepDuration,
+      llmModel,
+      enableConsensus,
+      llmWeights,
+      apiKeys: {
+        ChatGPT: chatGptApiKey,
+        Gemini: geminiApiKey,
+        Ollama: ollamaApiKey, // This will be ignored if it's Ollama
+        Mistral: mistralApiKey,
+        Anthropic: anthropicApiKey,
+      },
+    });
 
     try {
       await new Promise<void>((resolve, reject) => {
@@ -130,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             llmWeights,
             chatGptApiKey,
             geminiApiKey,
+            ollamaApiKey,
             mistralApiKey,
             anthropicApiKey,
           },
@@ -143,26 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
       });
 
-      // Debug: Log after saving
       console.log('Options saved successfully.');
-
-      // Retrieve and log the saved items
-      chrome.storage.sync.get(
-        [
-          'sleepDuration',
-          'llmModel',
-          'enableConsensus',
-          'llmWeights',
-          'chatGptApiKey',
-          'geminiApiKey',
-          'mistralApiKey',
-          'anthropicApiKey',
-        ],
-        (items) => {
-          console.log('Retrieved items after save:', items);
-          alert('Options saved and retrieved successfully.');
-        },
-      );
     } catch (error) {
       console.error('Error saving options:', error);
       alert('Error saving options. Please try again.');

@@ -50,7 +50,9 @@ class ConsensusEngine {
     fieldType: QType,
   ): Promise<LLMResponse | null> {
     const responses = [];
-    for (const [llmType, weight] of ConsensusEngine.llmWeights.entries()) {
+    const entries = Array.from(ConsensusEngine.llmWeights.entries());
+    for (let i = 0; i < entries.length; i++) {
+      const [llmType, weight] = entries[i] as [LLMEngineType, number];
       try {
         const llm = LLMEngine.getInstance(llmType);
         const response = await llm.getResponse(promptString, fieldType);
@@ -67,9 +69,10 @@ class ConsensusEngine {
               value: response ?? {},
             });
           }
+        } else {
+          console.log(response);
         }
       } catch (error) {
-        // Handle the error here
         console.error(error);
         continue;
       }
