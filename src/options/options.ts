@@ -1,51 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Get elements from the DOM
-  const sleepDurationInput = document.getElementById(
-    'sleepDuration',
-  ) as HTMLInputElement;
-  const llmModelSelect = document.getElementById(
-    'llmModel',
-  ) as HTMLSelectElement;
-  const enableConsensusCheckbox = document.getElementById(
-    'enableConsensus',
-  ) as HTMLInputElement;
-  const consensusWeightsDiv = document.getElementById(
-    'consensusWeights',
-  ) as HTMLDivElement;
-  const weightChatGPTInput = document.getElementById(
-    'weightChatGPT',
-  ) as HTMLInputElement;
-  const weightGeminiInput = document.getElementById(
-    'weightGemini',
-  ) as HTMLInputElement;
-  const weightOllamaInput = document.getElementById(
-    'weightOllama',
-  ) as HTMLInputElement;
-  const weightMistralInput = document.getElementById(
-    'weightMistral',
-  ) as HTMLInputElement;
-  const weightAnthropicInput = document.getElementById(
-    'weightAnthropic',
-  ) as HTMLInputElement;
-  const chatGptApiKeyInput = document.getElementById(
-    'chatGptApiKey',
-  ) as HTMLInputElement;
-  const geminiApiKeyInput = document.getElementById(
-    'geminiApiKey',
-  ) as HTMLInputElement;
-  const ollamaApiKeyInput = document.getElementById(
-    'ollamaApiKey',
-  ) as HTMLInputElement;
-  const mistralApiKeyInput = document.getElementById(
-    'mistralApiKey',
-  ) as HTMLInputElement;
-  const anthropicApiKeyInput = document.getElementById(
-    'anthropicApiKey',
-  ) as HTMLInputElement;
+  const sleepDurationInput = document.getElementById('sleepDuration') as HTMLInputElement;
+  const llmModelSelect = document.getElementById('llmModel') as HTMLSelectElement;
+  const enableConsensusCheckbox = document.getElementById('enableConsensus') as HTMLInputElement;
+  const consensusWeightsDiv = document.getElementById('consensusWeights') as HTMLDivElement;
+  const weightChatGPTInput = document.getElementById('weightChatGPT') as HTMLInputElement;
+  const weightGeminiInput = document.getElementById('weightGemini') as HTMLInputElement;
+  const weightOllamaInput = document.getElementById('weightOllama') as HTMLInputElement;
+  const weightMistralInput = document.getElementById('weightMistral') as HTMLInputElement;
+  const weightAnthropicInput = document.getElementById('weightAnthropic') as HTMLInputElement;
+  const chatGptApiKeyInput = document.getElementById('chatGptApiKey') as HTMLInputElement;
+  const geminiApiKeyInput = document.getElementById('geminiApiKey') as HTMLInputElement;
+  const ollamaApiKeyInput = document.getElementById('ollamaApiKey') as HTMLInputElement;
+  const mistralApiKeyInput = document.getElementById('mistralApiKey') as HTMLInputElement;
+  const anthropicApiKeyInput = document.getElementById('anthropicApiKey') as HTMLInputElement;
   const saveButton = document.getElementById('saveButton') as HTMLButtonElement;
-  const singleApiKeyInput = document.getElementById(
-    'singleApiKey',
-  ) as HTMLInputElement;
+  const singleApiKeyInput = document.getElementById('singleApiKey') as HTMLInputElement;
 
   // Load saved options
   chrome.storage.sync.get(
@@ -104,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKeyValue = geminiApiKeyInput.value;
         break;
       case 'Ollama':
-        console.log('Ollama model selected: no API key required');
+        console.log("Ollama model selected: no API key required");
         apiKeyValue = '';
         break;
       case 'Mistral':
@@ -114,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKeyValue = anthropicApiKeyInput.value;
         break;
       default:
-        console.warn('Unknown model selected:', selectedModel);
+        console.warn("Unknown model selected:", selectedModel);
         break;
     }
 
@@ -135,9 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geminiApiKeyInput.value = apiKeyValue;
         break;
       case 'Ollama':
-        console.log(
-          "Ignoring input for Ollama model as it doesn't require an API key",
-        );
+        console.log("Ignoring input for Ollama model as it doesn't require an API key");
         break;
       case 'Mistral':
         mistralApiKeyInput.value = apiKeyValue;
@@ -146,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         anthropicApiKeyInput.value = apiKeyValue;
         break;
       default:
-        console.warn('Unknown model selected:', selectedModel);
+        console.warn("Unknown model selected:", selectedModel);
         break;
     }
     console.log(`Updated API key for ${selectedModel}:`, apiKeyValue);
@@ -161,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle model selection change to update API key input
   llmModelSelect.addEventListener('change', () => {
-    console.log('Model selection changed to:', llmModelSelect.value);
+    console.log("Model selection changed to:", llmModelSelect.value);
     updateSingleApiKeyInput();
   });
 
@@ -186,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : {};
 
     // Log the entire data object for debugging
-    console.log('Attempting to save options:', {
+    console.log("Attempting to save options:", {
       sleepDuration,
       llmModel,
       enableConsensus,
