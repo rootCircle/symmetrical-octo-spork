@@ -15,39 +15,14 @@
             <label for="sleepDuration">Sleep Duration (ms):</label>
             <input type="number" id="sleepDuration" name="sleepDuration" min="100" step="100" value="2000">
         </div>
-        <div class="form-group">
-
-            <label for="chatGptApiKey">ChatGPT API Key:</label>
-          
-            <input type="text" id="chatGptApiKey" name="chatGptApiKey">
-          
-          </div>
-          
-          <div class="form-group">
-          
-            <label for="geminiApiKey">Gemini API Key:</label>
-          
-            <input type="text" id="geminiApiKey" name="geminiApiKey"  value="thsiisthekey">
-          
-          </div>
-          
-          <div class="form-group">
-          
-            <label for="text">Mistral API Key:</label>
-          
-            <input type="password" id="mistralApiKey" name="mistralApiKey">
-          
-          </div>
-          
-          <div class="form-group">
-          
-            <label for="text">Anthropic API Key:</label>
-          
-            <input type="password" id="anthropicApiKey" name="anthropicApiKey">
-          
-          </div>
 
         <div class="form-group">
+            <label for="enableConsensus">Enable Consensus:</label>
+            <input type="checkbox" id="enableConsensus" name="enableConsensus">
+        </div>
+
+        <!-- Single Model API Key and Selection (only visible if consensus is off) -->
+        <div id="singleModelOptions" class="form-group">
             <label for="llmModel">LLM Model:</label>
             <select id="llmModel" name="llmModel">
                 <option value="Gemini">Gemini</option>
@@ -56,34 +31,42 @@
                 <option value="Mistral">Mistral</option>
                 <option value="Anthropic">Anthropic</option>
             </select>
+            <label for="singleApiKey">API Key:</label>
+            <input type="text" id="singleApiKey" name="singleApiKey">
         </div>
 
-        <div class="form-group">
-            <label for="enableConsensus">Enable Consensus:</label>
-            <input type="checkbox" id="enableConsensus" name="enableConsensus">
-        </div>
-
+        <!-- Consensus Mode Weights and API Keys (only visible if consensus is on) -->
         <div id="consensusWeights" class="hidden">
             <div class="form-group">
+                <label for="weightChatGPT">ChatGPT API Key:</label>
+                <input type="text" id="chatGptApiKey" name="chatGptApiKey">
                 <label for="weightChatGPT">ChatGPT Weight:</label>
                 <input type="number" id="weightChatGPT" name="weightChatGPT" min="0" max="1" step="0.01" value="0.42">
             </div>
             <div class="form-group">
+                <label for="geminiApiKey">Gemini API Key:</label>
+                <input type="text" id="geminiApiKey" name="geminiApiKey">
                 <label for="weightGemini">Gemini Weight:</label>
                 <input type="number" id="weightGemini" name="weightGemini" min="0" max="1" step="0.01" value="0.42">
             </div>
             <div class="form-group">
+                <label for="ollamaApiKey">Ollama API Key:</label>
+                <input type="text" id="ollamaApiKey" name="ollamaApiKey">
                 <label for="weightOllama">Ollama Weight:</label>
                 <input type="number" id="weightOllama" name="weightOllama" min="0" max="1" step="0.01" value="0.16">
             </div>
             <div class="form-group">
+                <label for="mistralApiKey">Mistral API Key:</label>
+                <input type="text" id="mistralApiKey" name="mistralApiKey">
                 <label for="weightMistral">Mistral Weight:</label>
                 <input type="number" id="weightMistral" name="weightMistral" min="0" max="1" step="0.01" value="0.16">
             </div>
-            <div class="form-group"></div>
-            <label for="weightAnthropic">Anthropic Weight:</label>
-            <input type="number" id="weightAnthropic" name="weightAnthropic" min="0" max="1" step="0.01" value="0.16">
-        </div>
+            <div class="form-group">
+                <label for="anthropicApiKey">Anthropic API Key:</label>
+                <input type="text" id="anthropicApiKey" name="anthropicApiKey">
+                <label for="weightAnthropic">Anthropic Weight:</label>
+                <input type="number" id="weightAnthropic" name="weightAnthropic" min="0" max="1" step="0.01" value="0.16">
+            </div>
         </div>
 
         <button type="button" id="saveButton">Save</button>

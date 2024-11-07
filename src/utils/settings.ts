@@ -50,7 +50,7 @@ class Settings {
 
   public async getEnableConsensus(): Promise<boolean> {
     if (!this.enableConsensus) {
-      this.enableConsensus = (await getEnableConsensus()) || true;
+      this.enableConsensus = (await getEnableConsensus()) || false;
     }
     return this.enableConsensus;
   }

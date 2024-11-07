@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import process from 'process';
 
 import { Ollama } from '@langchain/ollama';
@@ -21,138 +26,125 @@ import {
   getMistralApiKey,
   getAnthropicApiKey,
 } from '@utils/getProperties';
+import { LLM } from '@langchain/core/language_models/llms';
+
+type LLMInstance =
+  | ChatOpenAI
+  | Ollama
+  | ChatGoogleGenerativeAI
+  | ChatAnthropic
+  | ChatMistralAI;
 
 export class LLMEngine {
   private static instance: LLMEngine;
   private static engine: LLMEngineType;
-  private static openai: ChatOpenAI;
-  private static ollama: Ollama;
-  private static gemini: ChatGoogleGenerativeAI;
-  private static antropic: ChatAnthropic;
-  private static mistral: ChatMistralAI;
+  private static instances: Record<LLMEngineType, LLMInstance | undefined> = {
+    [LLMEngineType.ChatGPT]: undefined,
+    [LLMEngineType.Gemini]: undefined,
+    [LLMEngineType.Ollama]: undefined,
+    [LLMEngineType.Mistral]: undefined,
+    [LLMEngineType.Anthropic]: undefined,
+  };
 
-  private chatGptApiKey: string | undefined;
-  private geminiApiKey: string | undefined;
-  private mistralApiKey: string | undefined;
-  private anthropicApiKey: string | undefined;
+  private static apiKeys: Record<string, string | undefined> = {
+    chatGptApiKey: undefined,
+    geminiApiKey: undefined,
+    mistralApiKey: undefined,
+    anthropicApiKey: undefined,
+  };
 
   private constructor(engine: LLMEngineType) {
     LLMEngine.engine = engine;
 
-    this.fetchApiKeys()
+    LLMEngine.fetchApiKeys()
       .then(() => {
-        console.log('API keys fetched:', {
-          chatGptApiKey: this.chatGptApiKey,
-          geminiApiKey: this.geminiApiKey,
-          mistralApiKey: this.mistralApiKey,
-          anthropicApiKey: this.anthropicApiKey,
-        });
+        console.log('API keys fetched:', LLMEngine.apiKeys);
 
-        LLMEngine.instantiateEngine(LLMEngine.engine);
+        try {
+          LLMEngine.instantiateEngine(LLMEngine.engine);
+        } catch (error) {
+          console.error('Error instantiating engine:', error);
+        }
       })
       .catch((error) => {
         console.error('Error fetching API keys:', error);
       });
   }
 
-  private async fetchApiKeys(): Promise<void> {
-    this.chatGptApiKey = await getChatGptApiKey();
-    this.geminiApiKey = await getGeminiApiKey();
-    this.mistralApiKey = await getMistralApiKey();
-    this.anthropicApiKey = await getAnthropicApiKey();
+  private static async fetchApiKeys(): Promise<void> {
+    LLMEngine.apiKeys['chatGptApiKey'] = await getChatGptApiKey();
+    LLMEngine.apiKeys['geminiApiKey'] = await getGeminiApiKey();
+    LLMEngine.apiKeys['mistralApiKey'] = await getMistralApiKey();
+    LLMEngine.apiKeys['anthropicApiKey'] = await getAnthropicApiKey();
+    console.log(
+      LLMEngine.apiKeys['chatGptApiKey'],
+      LLMEngine.apiKeys['geminiApiKey'],
+    );
   }
 
-  public static instantiateEngine(
-    engine: LLMEngineType,
-  ):
-    | ChatOpenAI
-    | Ollama
-    | ChatGoogleGenerativeAI
-    | ChatAnthropic
-    | ChatMistralAI {
-    switch (engine) {
-      case LLMEngineType.ChatGPT: {
-        if (LLMEngine.openai) {
-          return LLMEngine.openai;
-        }
-        if (!LLMEngine.instance.chatGptApiKey) {
-          throw new Error('ChatGPT API key is not defined');
-        }
-        LLMEngine.openai = new ChatOpenAI({
-          model: 'gpt-4',
-          apiKey: LLMEngine.instance.chatGptApiKey,
-        });
-        return LLMEngine.openai;
-      }
+  public static instantiateEngine(engine: LLMEngineType): LLMInstance {
+    // if (LLMEngine.instances[engine]) {
+    //   return LLMEngine.instances[engine];
+    // }
 
-      case LLMEngineType.Gemini: {
-        if (LLMEngine.gemini) {
-          return LLMEngine.gemini;
-        }
-        if (!LLMEngine.instance.geminiApiKey) {
-          throw new Error('Gemini API key is not defined');
-        }
-        LLMEngine.gemini = new ChatGoogleGenerativeAI({
+    // console.log(LLMEngineType);
+    // console.log("ENGINE",engine);
+    console.log(LLMEngine.apiKeys);
+    switch (engine) {
+      case LLMEngineType.ChatGPT:
+        console.log(LLMEngine.apiKeys);
+        LLMEngine.instances[engine] = new ChatOpenAI({
+          model: 'gpt-4',
+          apiKey: LLMEngine.apiKeys['chatGptApiKey'] as string,
+        });
+        break;
+      case LLMEngineType.Gemini:
+        console.log('gemini');
+        console.log(LLMEngine.apiKeys);
+        LLMEngine.instances[engine] = new ChatGoogleGenerativeAI({
           model: 'gemini-pro',
           temperature: 0,
           maxRetries: 2,
-          apiKey: LLMEngine.instance.geminiApiKey,
+          apiKey: LLMEngine.apiKeys['geminiApiKey'] as string,
         });
-        return LLMEngine.gemini;
-      }
-
-      case LLMEngineType.Ollama: {
-        if (LLMEngine.ollama) {
-          return LLMEngine.ollama;
-        }
-        LLMEngine.ollama = new Ollama({
+        break;
+      case LLMEngineType.Ollama:
+        LLMEngine.instances[engine] = new Ollama({
           model: 'gemma2:2b',
           temperature: 0,
           maxRetries: 2,
         });
-        return LLMEngine.ollama;
-      }
-
-      case LLMEngineType.Mistral: {
-        if (LLMEngine.mistral) {
-          return LLMEngine.mistral;
-        }
-        if (!LLMEngine.instance.mistralApiKey) {
-          throw new Error('Mistral API key is not defined');
-        }
-        LLMEngine.mistral = new ChatMistralAI({
+        break;
+      case LLMEngineType.Mistral:
+        console.log(LLMEngine.apiKeys);
+        LLMEngine.instances[engine] = new ChatMistralAI({
           model: 'mistral-large-latest',
           temperature: 0,
           maxRetries: 2,
-          apiKey: LLMEngine.instance.mistralApiKey,
+          apiKey: LLMEngine.apiKeys['mistralApiKey'] as string,
         });
-        return LLMEngine.mistral;
-      }
-
-      case LLMEngineType.Anthropic: {
-        if (LLMEngine.antropic) {
-          return LLMEngine.antropic;
-        }
-        if (!LLMEngine.instance.anthropicApiKey) {
-          throw new Error('Anthropic API key is not defined');
-        }
-        LLMEngine.antropic = new ChatAnthropic({
+        break;
+      case LLMEngineType.Anthropic:
+        console.log(LLMEngine.apiKeys);
+        console.log(LLMEngine.apiKeys['anthropicApiKey']);
+        LLMEngine.instances[engine] = new ChatAnthropic({
           model: 'claude-3-haiku-20240307',
           temperature: 0,
           maxRetries: 2,
-          apiKey: LLMEngine.instance.anthropicApiKey,
+          apiKey: LLMEngine.apiKeys['anthropicApiKey'] as string,
         });
-        return LLMEngine.antropic;
-      }
+        break;
     }
+
+    return LLMEngine.instances[engine];
   }
 
   public static getInstance(engine: LLMEngineType): LLMEngine {
-    if (LLMEngine.instance && LLMEngine.engine === engine) {
-      return LLMEngine.instance;
-    }
-
+    // if (!LLMEngine.instance) {
     LLMEngine.instance = new LLMEngine(engine);
+    // } else {
+    // LLMEngine.instantiateEngine(engine);
+    // }
     return LLMEngine.instance;
   }
 
@@ -180,45 +172,15 @@ export class LLMEngine {
     promptText: string,
     questionType: QType,
   ): Promise<LLMResponse | null> {
+    console.log(promptText);
+    console.log(questionType);
     if (!promptText) {
       return null;
     }
     try {
-      let response = null;
       const parser = LLMEngine.getParser(questionType);
-      let modelInstance;
-      switch (LLMEngine.engine) {
-        case LLMEngineType.ChatGPT: {
-          if (LLMEngine.openai) {
-            modelInstance = LLMEngine.openai;
-          }
-          break;
-        }
-        case LLMEngineType.Gemini: {
-          if (LLMEngine.gemini) {
-            modelInstance = LLMEngine.gemini;
-          }
-          break;
-        }
-        case LLMEngineType.Ollama: {
-          if (LLMEngine.ollama) {
-            modelInstance = LLMEngine.ollama;
-          }
-          break;
-        }
-        case LLMEngineType.Mistral: {
-          if (LLMEngine.mistral) {
-            modelInstance = LLMEngine.mistral;
-          }
-          break;
-        }
-        case LLMEngineType.Anthropic: {
-          if (LLMEngine.antropic) {
-            modelInstance = LLMEngine.antropic;
-          }
-          break;
-        }
-      }
+      const modelInstance = LLMEngine.instances[LLMEngine.engine];
+
       if (modelInstance) {
         const chain = RunnableSequence.from([
           PromptTemplate.fromTemplate(
@@ -228,7 +190,7 @@ export class LLMEngine {
           parser,
         ]);
 
-        response = await chain.invoke({
+        const response = await chain.invoke({
           question: promptText,
           format_instructions: parser.getFormatInstructions(),
         });
@@ -237,8 +199,8 @@ export class LLMEngine {
       return null;
     } catch (error) {
       console.error('Error getting response:', error);
+      return null;
     }
-    return null;
   }
 
   private patchResponse(response: any, questionType: QType): LLMResponse {
@@ -280,6 +242,7 @@ export class LLMEngine {
   ): StructuredOutputParser<any> | DatetimeOutputParser | StringOutputParser {
     switch (questionType) {
       case QType.TEXT:
+      case QType.PARAGRAPH:
         return new StringOutputParser();
       case QType.TEXT_EMAIL:
         return StructuredOutputParser.fromNamesAndDescriptions({
@@ -290,7 +253,6 @@ export class LLMEngine {
         return StructuredOutputParser.fromNamesAndDescriptions({
           answer: 'Give Correct Url corresponding to given question',
         });
-
       case QType.DATE:
       case QType.TIME:
       case QType.DATE_AND_TIME:
@@ -301,7 +263,6 @@ export class LLMEngine {
       case QType.TIME_WITH_MERIDIEM:
       case QType.DURATION:
         return new DatetimeOutputParser();
-
       case QType.LINEAR_SCALE:
         return StructuredOutputParser.fromZodSchema(
           z.object({
@@ -312,14 +273,10 @@ export class LLMEngine {
               ),
           }),
         );
-
       case QType.DROPDOWN:
         return StructuredOutputParser.fromNamesAndDescriptions({
           answer: "answer to the user's question",
         });
-      case QType.PARAGRAPH:
-        return new StringOutputParser();
-
       case QType.CHECKBOX_GRID: {
         const checkboxGridColSchema = z.object({
           data: z
@@ -348,7 +305,6 @@ export class LLMEngine {
 
         return StructuredOutputParser.fromZodSchema(checkboxGridArraySchema);
       }
-
       case QType.MULTIPLE_CHOICE_GRID: {
         const multipleChoiceGridRowSchema = z.object({
           row: z
@@ -373,7 +329,6 @@ export class LLMEngine {
           multipleChoiceGridArraySchema,
         );
       }
-
       case QType.MULTIPLE_CHOICE:
       case QType.MULTIPLE_CHOICE_WITH_OTHER:
       case QType.MULTI_CORRECT:
