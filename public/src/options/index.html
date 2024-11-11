@@ -4,165 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extension Options</title>
-    <style>
-        :root {
-            --primary-color: #22c55e;
-            --primary-hover: #16a34a;
-            --background: #f8fafc;
-            --card-bg: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
-            --input-bg: #f8fafc;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --warning-bg: #fee2e2;
-            --warning-border: #fecaca;
-            --warning-text: #991b1b;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 2rem;
-            line-height: 1.5;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-        }
-
-        h1 {
-            font-size: 1.875rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        input[type="text"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            background-color: var(--input-bg);
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            box-sizing: border-box;
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        input[type="checkbox"] {
-            width: 1.25rem;
-            height: 1.25rem;
-            border-radius: 0.25rem;
-            cursor: pointer;
-        }
-
-        #consensusWeights {
-            background-color: var(--input-bg);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        #consensusWeights .form-group {
-            display: grid;
-            grid-template-columns: 1fr 120px;
-            gap: 1rem;
-            align-items: start;
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            width: 100%;
-            margin-top: 1rem;
-        }
-
-        button:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        input[disabled] {
-            background-color: var(--warning-bg) !important;
-            border-color: var(--warning-border) !important;
-            color: var(--warning-text) !important;
-            cursor: not-allowed !important;
-        }
-
-        .warning-message {
-            display: none;
-            color: var(--warning-text);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        .api-key-input.warning .warning-message {
-            display: block;
-        }
-
-        @media (max-width: 640px) {
-            body {
-                padding: 1rem;
-            }
-
-            .container {
-                padding: 1.5rem;
-            }
-
-            #consensusWeights .form-group {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="options.css">
 </head>
 <body>
     <div class="container">
@@ -256,7 +98,6 @@
         </form>
     </div>
     <script>
-        // Handle consensus toggle
         document.getElementById('enableConsensus').addEventListener('change', function() {
             const consensusWeights = document.getElementById('consensusWeights');
             const singleModelOptions = document.getElementById('singleModelOptions');
@@ -270,36 +111,6 @@
             }
         });
         
-
-        // // Handle Ollama selection
-        // document.getElementById('llmModel').addEventListener('change', function() {
-        //     const apiKeyInput = document.getElementById('singleApiKey');
-        //     const apiKeyContainer = apiKeyInput.parentElement;
-            
-        //     if (this.value === 'Ollama') {
-        //         apiKeyInput.disabled = true;
-        //         apiKeyInput.placeholder = 'No API key required for Ollama';
-        //         apiKeyContainer.classList.add('warning');
-        //         apiKeyInput.value = ''; // Clear any existing value
-        //     } else {
-        //         apiKeyInput.disabled = false;
-        //         apiKeyInput.placeholder = '';
-        //         apiKeyContainer.classList.remove('warning');
-        //     }
-        // });
-
-        // Check initial state for Ollama
-        // window.addEventListener('load', function() {
-        //     const llmModel = document.getElementById('llmModel');
-        //     if (llmModel.value === 'Ollama') {
-        //         const apiKeyInput = document.getElementById('singleApiKey');
-        //         const apiKeyContainer = apiKeyInput.parentElement;
-        //         apiKeyInput.disabled = true;
-        //         apiKeyInput.placeholder = 'No API key required for Ollama';
-        //         apiKeyContainer.classList.add('warning');
-        //         apiKeyInput.value = '';
-        //     }
-        // });
     </script>
     <script src="options.js"></script>
 </body>

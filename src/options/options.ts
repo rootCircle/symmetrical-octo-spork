@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Get elements from the DOM
   const sleepDurationInput = document.getElementById(
     'sleepDuration',
   ) as HTMLInputElement;
@@ -44,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     'singleApiKey',
   ) as HTMLInputElement;
 
-  // Load saved options
   chrome.storage.sync.get(
     [
       'sleepDuration',
@@ -57,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
       'anthropicApiKey',
     ],
     (items) => {
-      console.log('Loaded items from storage:', items);
       sleepDurationInput.value = String(items['sleepDuration'] || 2000);
       llmModelSelect.value = items['llmModel'] || 'Gemini';
       enableConsensusCheckbox.checked = Boolean(items['enableConsensus']);
@@ -66,16 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
       mistralApiKeyInput.value = items['mistralApiKey'] || '';
       anthropicApiKeyInput.value = items['anthropicApiKey'] || '';
 
-      // Show or hide elements based on consensus setting
-      // toggleConsensusOptions(enableConsensusCheckbox.checked);
       updateSingleApiKeyInput();
     },
   );
-  // Add this to your existing llmModelSelect event listener
 
   llmModelSelect.addEventListener('change', () => {
-    console.log('Model selection changed to:', llmModelSelect.value);
-
     const apiKeyInput = document.getElementById(
       'singleApiKey',
     ) as HTMLInputElement;
@@ -101,8 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSingleApiKeyInput();
   });
 
-  // Also add this to check initial state
-
   window.addEventListener('load', () => {
     if (llmModelSelect.value === 'Ollama') {
       const apiKeyInput = document.getElementById(
@@ -121,12 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Toggle visibility of elements based on consensus state
   const toggleConsensusOptions = (enableConsensus: boolean) => {
-    console.log(`Toggling consensus options: ${enableConsensus}`);
     if (enableConsensus) {
       consensusWeightsDiv.classList.remove('hidden');
-      // Hide both the select, input and their labels
       document.querySelector('label[for="llmModel"]')?.classList.add('hidden');
       document
         .querySelector('label[for="singleApiKey"]')
@@ -135,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
       singleApiKeyInput.parentElement?.classList.add('hidden');
     } else {
       consensusWeightsDiv.classList.add('hidden');
-      // Show both the select, input and their labels
       document
         .querySelector('label[for="llmModel"]')
         ?.classList.remove('hidden');
@@ -147,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Update single API key input based on selected model
   const updateSingleApiKeyInput = () => {
     const selectedModel = llmModelSelect.value;
     let apiKeyValue = '';
@@ -160,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKeyValue = geminiApiKeyInput.value;
         break;
       case 'Ollama':
-        console.log('Ollama model selected: no API key required');
         apiKeyValue = '';
         break;
       case 'Mistral':
@@ -175,10 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     singleApiKeyInput.value = apiKeyValue;
-    console.log(`API key for ${selectedModel}:`, apiKeyValue);
   };
 
-  // Save the API key to the corresponding model input when changed
   singleApiKeyInput.addEventListener('input', () => {
     const selectedModel = llmModelSelect.value;
     const apiKeyValue = singleApiKeyInput.value;
@@ -191,9 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
         geminiApiKeyInput.value = apiKeyValue;
         break;
       case 'Ollama':
-        console.log(
-          "Ignoring input for Ollama model as it doesn't require an API key",
-        );
         break;
       case 'Mistral':
         mistralApiKeyInput.value = apiKeyValue;
@@ -205,23 +184,17 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Unknown model selected:', selectedModel);
         break;
     }
-    console.log(`Updated API key for ${selectedModel}:`, apiKeyValue);
   });
 
-  // Handle checkbox change
   enableConsensusCheckbox.addEventListener('change', (e: Event) => {
     const target = e.target as HTMLInputElement;
-    console.log(`Enable consensus changed to: ${target.checked}`);
     toggleConsensusOptions(target.checked);
   });
 
-  // Handle model selection change to update API key input
   llmModelSelect.addEventListener('change', () => {
-    console.log('Model selection changed to:', llmModelSelect.value);
     updateSingleApiKeyInput();
   });
 
-  // Save options
   saveButton.addEventListener('click', async () => {
     const sleepDuration = parseInt(sleepDurationInput.value, 10);
     const llmModel = llmModelSelect.value;
@@ -239,20 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
           Anthropic: parseFloat(weightAnthropicInput.value),
         }
       : {};
-
-    // Log the entire data object for debugging
-    console.log('Attempting to save options:', {
-      sleepDuration,
-      llmModel,
-      enableConsensus,
-      llmWeights,
-      apiKeys: {
-        ChatGPT: chatGptApiKey,
-        Gemini: geminiApiKey,
-        Mistral: mistralApiKey,
-        Anthropic: anthropicApiKey,
-      },
-    });
 
     try {
       await new Promise<void>((resolve, reject) => {
@@ -276,7 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
           },
         );
       });
-
       console.log('Options saved successfully.');
     } catch (error) {
       console.error('Error saving options:', error);

@@ -124,17 +124,11 @@ button:hover {
     display: none !important;
 }
 
-/* API Key Warning Styles */
-.api-key-input {
-    position: relative;
-    margin-top: 1rem;
-}
-
-.api-key-input input[disabled] {
-    background-color: var(--warning-bg);
-    border-color: var(--warning-border);
-    color: var(--warning-text);
-    cursor: not-allowed;
+input[disabled] {
+    background-color: var(--warning-bg) !important;
+    border-color: var(--warning-border) !important;
+    color: var(--warning-text) !important;
+    cursor: not-allowed !important;
 }
 
 .warning-message {
@@ -148,19 +142,6 @@ button:hover {
     display: block;
 }
 
-.api-key-input.warning input {
-    background-color: var(--warning-bg);
-    border-color: var(--warning-border);
-}
-
-/* Weight only section for Ollama */
-.weight-only {
-    grid-template-columns: 1fr !important;
-    max-width: 120px;
-    margin-left: auto;
-}
-
-/* Responsive styles */
 @media (max-width: 640px) {
     body {
         padding: 1rem;
@@ -172,9 +153,5 @@ button:hover {
 
     #consensusWeights .form-group {
         grid-template-columns: 1fr;
-    }
-
-    .weight-only {
-        max-width: 100%;
     }
 }

@@ -58,8 +58,6 @@ export class LLMEngine {
 
     LLMEngine.fetchApiKeys()
       .then(() => {
-        console.log('API keys fetched:', LLMEngine.apiKeys);
-
         try {
           LLMEngine.instantiateEngine(LLMEngine.engine);
         } catch (error) {
@@ -76,31 +74,22 @@ export class LLMEngine {
     LLMEngine.apiKeys['geminiApiKey'] = await getGeminiApiKey();
     LLMEngine.apiKeys['mistralApiKey'] = await getMistralApiKey();
     LLMEngine.apiKeys['anthropicApiKey'] = await getAnthropicApiKey();
-    console.log(
-      LLMEngine.apiKeys['chatGptApiKey'],
-      LLMEngine.apiKeys['geminiApiKey'],
-    );
   }
 
   public static instantiateEngine(engine: LLMEngineType): LLMInstance {
+    // singleton instance workflow ( Pending )
     // if (LLMEngine.instances[engine]) {
     //   return LLMEngine.instances[engine];
     // }
 
-    // console.log(LLMEngineType);
-    // console.log("ENGINE",engine);
-    console.log(LLMEngine.apiKeys);
     switch (engine) {
       case LLMEngineType.ChatGPT:
-        console.log(LLMEngine.apiKeys);
         LLMEngine.instances[engine] = new ChatOpenAI({
           model: 'gpt-4',
           apiKey: LLMEngine.apiKeys['chatGptApiKey'] as string,
         });
         break;
       case LLMEngineType.Gemini:
-        console.log('gemini');
-        console.log(LLMEngine.apiKeys);
         LLMEngine.instances[engine] = new ChatGoogleGenerativeAI({
           model: 'gemini-pro',
           temperature: 0,
@@ -116,7 +105,6 @@ export class LLMEngine {
         });
         break;
       case LLMEngineType.Mistral:
-        console.log(LLMEngine.apiKeys);
         LLMEngine.instances[engine] = new ChatMistralAI({
           model: 'mistral-large-latest',
           temperature: 0,
@@ -125,8 +113,6 @@ export class LLMEngine {
         });
         break;
       case LLMEngineType.Anthropic:
-        console.log(LLMEngine.apiKeys);
-        console.log(LLMEngine.apiKeys['anthropicApiKey']);
         LLMEngine.instances[engine] = new ChatAnthropic({
           model: 'claude-3-haiku-20240307',
           temperature: 0,
@@ -172,8 +158,6 @@ export class LLMEngine {
     promptText: string,
     questionType: QType,
   ): Promise<LLMResponse | null> {
-    console.log(promptText);
-    console.log(questionType);
     if (!promptText) {
       return null;
     }
@@ -376,7 +360,6 @@ export class LLMEngine {
             multiCorrectOptionsArraySchema,
           );
         } else {
-          // For multiple-choice with optional 'other' option
           return StructuredOutputParser.fromZodSchema(
             multiCorrectOrMultipleOptionSchema.describe(
               "Schema for a single option in multiple-choice with an optional 'other' option",
