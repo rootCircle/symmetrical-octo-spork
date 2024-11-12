@@ -51,6 +51,7 @@
   "scripts": {
     "watch": "bun tsc && bun watcher.ts",
     "build": "bun bundler.ts",
+    "package": "bun bundler.ts && web-ext build --source-dir=build --overwrite-dest",
     "dev:firefox": "bun bundler.ts && concurrently --kill-others \"bun watcher.ts\" \"web-ext run --source-dir=build\"",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
     "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'",
