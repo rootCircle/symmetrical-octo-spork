@@ -34,8 +34,7 @@ type LLMInstance =
   | ChatMistralAI;
 
 export class LLMEngine {
-  private static instance: LLMEngine;
-  private static engine: LLMEngineType;
+  public engine: LLMEngineType;
   private static instances: Record<LLMEngineType, LLMInstance | undefined> = {
     [LLMEngineType.ChatGPT]: undefined,
     [LLMEngineType.Gemini]: undefined,
@@ -51,13 +50,13 @@ export class LLMEngine {
     anthropicApiKey: undefined,
   };
 
-  private constructor(engine: LLMEngineType) {
-    LLMEngine.engine = engine;
+  constructor(engine: LLMEngineType) {
+    this.engine = engine;
 
     LLMEngine.fetchApiKeys()
       .then(() => {
         try {
-          LLMEngine.instantiateEngine(LLMEngine.engine);
+          LLMEngine.instantiateEngine(this.engine);
         } catch (error) {
           console.error('Error instantiating engine:', error);
         }
@@ -74,17 +73,10 @@ export class LLMEngine {
     LLMEngine.apiKeys['anthropicApiKey'] = await getAnthropicApiKey();
   }
   public static instantiateEngine(engine: LLMEngineType): LLMInstance {
-    // singleton instance workflow ( Pending )
-    // if (LLMEngine.instances[engine]) {
-    //   return LLMEngine.instances[engine];
-    // }
-
-    console.log(LLMEngine);
-
     switch (engine) {
       case LLMEngineType.ChatGPT:
         LLMEngine.instances[engine] = new ChatOpenAI({
-          model: 'gpt-4',
+          model: 'gpt-4o',
           apiKey: LLMEngine.apiKeys['chatGptApiKey'] as string,
         });
         break;
@@ -113,7 +105,7 @@ export class LLMEngine {
         break;
       case LLMEngineType.Anthropic:
         LLMEngine.instances[engine] = new ChatAnthropic({
-          model: 'claude-3-haiku-20240307',
+          model: 'claude-3-5-sonnet-latest',
           temperature: 0,
           maxRetries: 2,
           apiKey: LLMEngine.apiKeys['anthropicApiKey'] as string,
@@ -121,23 +113,19 @@ export class LLMEngine {
         break;
     }
 
-    return LLMEngine.instances[engine];
-  }
-
-  public static getInstance(engine: LLMEngineType): LLMEngine {
-    LLMEngine.instance = new LLMEngine(engine);
-    return LLMEngine.instance;
+    return LLMEngine.instances[engine] as LLMInstance;
   }
 
   public async getResponse(
     promptText: string,
     questionType: QType,
+    engineType: LLMEngineType,
   ): Promise<LLMResponse | null> {
     const item = {
       type: 'API_CALL',
       prompt: promptText,
       questionType,
-      model: LLMEngine.engine,
+      model: engineType,
     };
     try {
       return await chrome.runtime.sendMessage(item).then((response) => {
@@ -158,7 +146,7 @@ export class LLMEngine {
     }
     try {
       const parser = LLMEngine.getParser(questionType);
-      const modelInstance = LLMEngine.instances[LLMEngine.engine];
+      const modelInstance = LLMEngine.instances[this.engine];
 
       if (modelInstance) {
         const chain = RunnableSequence.from([

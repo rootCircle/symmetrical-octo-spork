@@ -61,8 +61,12 @@ class ConsensusEngine {
     for (let i = 0; i < entries.length; i++) {
       const [llmType, weight] = entries[i] as [LLMEngineType, number];
       try {
-        const llm = LLMEngine.getInstance(llmType);
-        const response = await llm.getResponse(promptString, fieldType);
+        const llm = new LLMEngine(llmType);
+        const response = await llm.getResponse(
+          promptString,
+          fieldType,
+          llmType,
+        );
         if (response !== null) {
           const parsedResponse = this.validateEngine.validate(
             fieldType,

@@ -25,9 +25,7 @@ async function runDocFillerEngine() {
     consensusEngine = await ConsensusEngine.getInstance();
   } else {
     try {
-      llm = LLMEngine.getInstance(
-        await Settings.getInstance().getCurrentLLMModel(),
-      );
+      llm = new LLMEngine(await Settings.getInstance().getCurrentLLMModel());
     } catch (e) {
       console.error(e);
       return;
@@ -62,7 +60,7 @@ async function runDocFillerEngine() {
             fieldType,
           );
         } else if (llm) {
-          response = await llm.getResponse(promptString, fieldType);
+          response = await llm.getResponse(promptString, fieldType, llm.engine);
         }
 
         console.log('LLM Response ↴');
