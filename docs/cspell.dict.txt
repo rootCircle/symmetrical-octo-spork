@@ -31,3 +31,5 @@ tseslint
 unflatten
 webext
 webextension
+decompile
+
