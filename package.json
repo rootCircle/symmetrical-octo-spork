@@ -1,6 +1,6 @@
 {
   "name": "docfiller",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": " Automated Google Docs Filling Web Extension written in JS",
   "homepage": "https://github.com/rootCircle/docFiller",
   "keywords": [

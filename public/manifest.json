@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "docFiller",
-  "version": "0.2.0",
+  "version": "1.0.0",
 
   "description": "Automatically fills Google Docs entries, powered by ChatGPT.",
 
@@ -34,7 +34,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "addon@docfiller.com",
+      "id": "docFiller@rootcircle.github.io",
       "strict_min_version": "109.0"
     }
   }
