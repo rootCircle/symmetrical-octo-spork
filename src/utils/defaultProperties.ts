@@ -7,11 +7,11 @@ interface typeDefaultProperties {
   llmWeights: Record<LLMEngineType, number>;
 }
 const LLMWeightsMap = {
-  [LLMEngineType.Gemini]: 0.69,
-  [LLMEngineType.ChatGPT]: 0.3,
-  [LLMEngineType.Anthropic]: 1,
-  [LLMEngineType.Mistral]: 1,
-  [LLMEngineType.Ollama]: 0.4,
+  [LLMEngineType.Gemini]: 0.18,
+  [LLMEngineType.ChatGPT]: 0.26,
+  [LLMEngineType.Anthropic]: 0.35,
+  [LLMEngineType.Mistral]: 0.13,
+  [LLMEngineType.Ollama]: 0.08,
 };
 
 const DEFAULT_PROPERTIES: typeDefaultProperties = {
