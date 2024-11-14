@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import process from 'process';
 
 import { Ollama } from '@langchain/ollama';
 import { ChatOpenAI } from '@langchain/openai';
@@ -26,7 +25,6 @@ import {
   getMistralApiKey,
   getAnthropicApiKey,
 } from '@utils/getProperties';
-import { LLM } from '@langchain/core/language_models/llms';
 
 type LLMInstance =
   | ChatOpenAI
@@ -75,12 +73,13 @@ export class LLMEngine {
     LLMEngine.apiKeys['mistralApiKey'] = await getMistralApiKey();
     LLMEngine.apiKeys['anthropicApiKey'] = await getAnthropicApiKey();
   }
-
   public static instantiateEngine(engine: LLMEngineType): LLMInstance {
     // singleton instance workflow ( Pending )
     // if (LLMEngine.instances[engine]) {
     //   return LLMEngine.instances[engine];
     // }
+
+    console.log(LLMEngine);
 
     switch (engine) {
       case LLMEngineType.ChatGPT:
@@ -126,11 +125,7 @@ export class LLMEngine {
   }
 
   public static getInstance(engine: LLMEngineType): LLMEngine {
-    // if (!LLMEngine.instance) {
     LLMEngine.instance = new LLMEngine(engine);
-    // } else {
-    // LLMEngine.instantiateEngine(engine);
-    // }
     return LLMEngine.instance;
   }
 
@@ -360,6 +355,7 @@ export class LLMEngine {
             multiCorrectOptionsArraySchema,
           );
         } else {
+          // For multiple-choice with optional 'other' option
           return StructuredOutputParser.fromZodSchema(
             multiCorrectOrMultipleOptionSchema.describe(
               "Schema for a single option in multiple-choice with an optional 'other' option",

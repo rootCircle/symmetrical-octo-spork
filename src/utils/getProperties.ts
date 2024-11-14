@@ -1,14 +1,4 @@
-interface LLMWeights {
-  ChatGPT?: number;
-
-  Gemini?: number;
-
-  Ollama?: number;
-
-  Mistral?: number;
-
-  Anthropic?: number;
-}
+import LLMEngineType from './llmEngineTypes';
 
 function getSetting<T>(key: string): Promise<T | undefined> {
   return new Promise((resolve, reject) => {
@@ -34,8 +24,10 @@ async function getEnableConsensus(): Promise<boolean | undefined> {
   return await getSetting<boolean>('enableConsensus');
 }
 
-async function getLLMWeights(): Promise<LLMWeights | undefined> {
-  return await getSetting<LLMWeights>('llmWeights');
+async function getLLMWeights(): Promise<
+  Record<LLMEngineType, number> | undefined
+> {
+  return await getSetting<Record<LLMEngineType, number>>('llmWeights');
 }
 async function getChatGptApiKey(): Promise<string | undefined> {
   return await getSetting<string>('chatGptApiKey');

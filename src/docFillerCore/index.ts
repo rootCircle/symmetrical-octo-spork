@@ -18,7 +18,6 @@ async function runDocFillerEngine() {
   const prompts = new PromptEngine();
   const validator = new ValidatorEngine();
   const filler = new FillerEngine();
-  console.log('Valid questions:', questions);
   const enableConsensus = await Settings.getInstance().getEnableConsensus();
   let consensusEngine;
   let llm;
