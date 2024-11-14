@@ -15,6 +15,7 @@
     "https://*.docs.google.com/*"
   ],
   "background": {
+    "service_worker": "src/background/index.js",
     "scripts": ["src/background/index.js"]
   },
   "content_scripts": [
