@@ -36,7 +36,8 @@ function analyzeObjects(objects: WeightedObject[]): LLMResponse {
     for (const [key, value] of Object.entries(flattened)) {
       if (
         !flattenedObjects[key] ||
-        obj.weight > flattenedObjects[key].totalWeight
+        (flattenedObjects[key]?.totalWeight !== undefined &&
+          obj.weight > flattenedObjects[key].totalWeight)
       ) {
         flattenedObjects[key] = { value, totalWeight: obj.weight };
       }
