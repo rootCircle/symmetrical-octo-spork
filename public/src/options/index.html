@@ -97,21 +97,6 @@
             <button type="button" id="saveButton">Save Changes</button>
         </form>
     </div>
-    <script>
-        document.getElementById('enableConsensus').addEventListener('change', function() {
-            const consensusWeights = document.getElementById('consensusWeights');
-            const singleModelOptions = document.getElementById('singleModelOptions');
-            
-            if (this.checked) {
-                consensusWeights.classList.remove('hidden');
-                singleModelOptions.classList.add('hidden');
-            } else {
-                consensusWeights.classList.add('hidden');
-                singleModelOptions.classList.remove('hidden');
-            }
-        });
-        
-    </script>
     <script src="options.js"></script>
 </body>
 </html>

@@ -5,11 +5,15 @@ import { analyzeWeightedObjects } from '@utils/consensusUtil';
 import { Settings } from '@utils/settings';
 import LLMEngineType from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 class ConsensusEngine {
   private static instance: ConsensusEngine;
   private validateEngine: ValidatorEngine;
-  private static llmWeights: Map<LLMEngineType, number> = new Map();
+  private static llmWeights: Map<LLMEngineType, number> = new Map<
+    LLMEngineType,
+    number
+  >(Object.entries(DEFAULT_PROPERTIES.llmWeights) as [LLMEngineType, number][]);
 
   private constructor() {
     this.validateEngine = new ValidatorEngine();
@@ -18,8 +22,11 @@ class ConsensusEngine {
   public static async getInstance(): Promise<ConsensusEngine> {
     if (!ConsensusEngine.instance) {
       ConsensusEngine.instance = new ConsensusEngine();
-      ConsensusEngine.llmWeights = new Map(
-        await Settings.getInstance().getConsensusWeights(),
+      ConsensusEngine.llmWeights = new Map<LLMEngineType, number>(
+        Object.entries(await Settings.getInstance().getConsensusWeights()) as [
+          LLMEngineType,
+          number,
+        ][],
       );
       ConsensusEngine.distributeWeights();
     }
@@ -69,8 +76,6 @@ class ConsensusEngine {
               value: response ?? {},
             });
           }
-        } else {
-          console.log(response);
         }
       } catch (error) {
         console.error(error);

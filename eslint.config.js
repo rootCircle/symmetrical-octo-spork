@@ -66,7 +66,7 @@ export default [
       curly: [2, 'all'],
 
       'dot-notation': [
-        2,
+        0,
         {
           allowKeywords: true,
         },

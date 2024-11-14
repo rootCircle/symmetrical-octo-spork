@@ -1,3 +1,22 @@
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
+import LLMEngineType, { getModelName } from '@utils/llmEngineTypes';
+import { EMPTY_STRING } from '@utils/settings';
+
+(
+  document.getElementById('enableConsensus') as HTMLInputElement
+)?.addEventListener('change', function () {
+  const consensusWeights = document.getElementById('consensusWeights');
+  const singleModelOptions = document.getElementById('singleModelOptions');
+
+  if (this.checked) {
+    consensusWeights?.classList.remove('hidden');
+    singleModelOptions?.classList.add('hidden');
+  } else {
+    consensusWeights?.classList.add('hidden');
+    singleModelOptions?.classList.remove('hidden');
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const sleepDurationInput = document.getElementById(
     'sleepDuration',
@@ -55,14 +74,35 @@ document.addEventListener('DOMContentLoaded', () => {
       'anthropicApiKey',
     ],
     (items) => {
-      sleepDurationInput.value = String(items['sleepDuration'] || 2000);
-      llmModelSelect.value = items['llmModel'] || 'Gemini';
-      enableConsensusCheckbox.checked = Boolean(items['enableConsensus']);
-      chatGptApiKeyInput.value = items['chatGptApiKey'] || '';
-      geminiApiKeyInput.value = items['geminiApiKey'] || '';
-      mistralApiKeyInput.value = items['mistralApiKey'] || '';
-      anthropicApiKeyInput.value = items['anthropicApiKey'] || '';
+      sleepDurationInput.value = String(
+        (items['sleepDuration'] as number) || DEFAULT_PROPERTIES.sleep_duration,
+      );
+      llmModelSelect.value =
+        (items['llmModel'] as string) || getModelName(DEFAULT_PROPERTIES.model);
+      enableConsensusCheckbox.checked = Boolean(
+        (items['enableConsensus'] as boolean) ||
+          DEFAULT_PROPERTIES.enableConsensus,
+      );
 
+      const weights =
+        (items['llmWeights'] as Record<LLMEngineType, number>) ||
+        DEFAULT_PROPERTIES.llmWeights;
+      weightChatGPTInput.value = String(weights[LLMEngineType.ChatGPT]);
+      weightGeminiInput.value = String(weights[LLMEngineType.Gemini]);
+      weightOllamaInput.value = String(weights[LLMEngineType.Ollama]);
+      weightMistralInput.value = String(weights[LLMEngineType.Mistral]);
+      weightAnthropicInput.value = String(weights[LLMEngineType.Anthropic]);
+
+      chatGptApiKeyInput.value =
+        (items['chatGptApiKey'] as string) || EMPTY_STRING;
+      geminiApiKeyInput.value =
+        (items['geminiApiKey'] as string) || EMPTY_STRING;
+      mistralApiKeyInput.value =
+        (items['mistralApiKey'] as string) || EMPTY_STRING;
+      anthropicApiKeyInput.value =
+        (items['anthropicApiKey'] as string) || EMPTY_STRING;
+
+      toggleConsensusOptions(enableConsensusCheckbox.checked);
       updateSingleApiKeyInput();
     },
   );
@@ -76,17 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (llmModelSelect.value === 'Ollama') {
       apiKeyInput.disabled = true;
-
       apiKeyInput.placeholder = 'No API key required for Ollama';
-
       apiKeyContainer?.classList.add('warning');
-
       apiKeyInput.value = '';
     } else {
       apiKeyInput.disabled = false;
-
       apiKeyInput.placeholder = '';
-
       apiKeyContainer?.classList.remove('warning');
     }
 
@@ -102,11 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const apiKeyContainer = apiKeyInput.parentElement;
 
       apiKeyInput.disabled = true;
-
       apiKeyInput.placeholder = 'No API key required for Ollama';
-
       apiKeyContainer?.classList.add('warning');
-
       apiKeyInput.value = '';
     }
   });
@@ -154,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKeyValue = anthropicApiKeyInput.value;
         break;
       default:
+        // eslint-disable-next-line no-console
         console.warn('Unknown model selected:', selectedModel);
         break;
     }
@@ -181,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         anthropicApiKeyInput.value = apiKeyValue;
         break;
       default:
+        // eslint-disable-next-line no-console
         console.warn('Unknown model selected:', selectedModel);
         break;
     }
@@ -195,50 +229,54 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSingleApiKeyInput();
   });
 
-  saveButton.addEventListener('click', async () => {
-    const sleepDuration = parseInt(sleepDurationInput.value, 10);
-    const llmModel = llmModelSelect.value;
-    const enableConsensus = enableConsensusCheckbox.checked;
-    const chatGptApiKey = chatGptApiKeyInput.value;
-    const geminiApiKey = geminiApiKeyInput.value;
-    const mistralApiKey = mistralApiKeyInput.value;
-    const anthropicApiKey = anthropicApiKeyInput.value;
-    const llmWeights: Record<string, number> = enableConsensus
-      ? {
-          ChatGPT: parseFloat(weightChatGPTInput.value),
-          Gemini: parseFloat(weightGeminiInput.value),
-          Ollama: parseFloat(weightOllamaInput.value),
-          Mistral: parseFloat(weightMistralInput.value),
-          Anthropic: parseFloat(weightAnthropicInput.value),
-        }
-      : {};
+  saveButton.addEventListener('click', () => {
+    const saveOptions = async () => {
+      const sleepDuration = parseInt(sleepDurationInput.value, 10);
+      const llmModel = llmModelSelect.value;
+      const enableConsensus = enableConsensusCheckbox.checked;
+      const chatGptApiKey = chatGptApiKeyInput.value;
+      const geminiApiKey = geminiApiKeyInput.value;
+      const mistralApiKey = mistralApiKeyInput.value;
+      const anthropicApiKey = anthropicApiKeyInput.value;
 
-    try {
-      await new Promise<void>((resolve, reject) => {
-        chrome.storage.sync.set(
-          {
-            sleepDuration,
-            llmModel,
-            enableConsensus,
-            llmWeights,
-            chatGptApiKey,
-            geminiApiKey,
-            mistralApiKey,
-            anthropicApiKey,
-          },
-          () => {
-            if (chrome.runtime.lastError) {
-              reject(chrome.runtime.lastError);
-            } else {
-              resolve();
-            }
-          },
+      const llmWeights = {
+        [LLMEngineType.ChatGPT]: parseFloat(weightChatGPTInput.value),
+        [LLMEngineType.Gemini]: parseFloat(weightGeminiInput.value),
+        [LLMEngineType.Ollama]: parseFloat(weightOllamaInput.value),
+        [LLMEngineType.Mistral]: parseFloat(weightMistralInput.value),
+        [LLMEngineType.Anthropic]: parseFloat(weightAnthropicInput.value),
+      };
+
+      try {
+        await new Promise<void>((resolve, reject) => {
+          chrome.storage.sync.set(
+            {
+              sleepDuration,
+              llmModel,
+              enableConsensus,
+              llmWeights,
+              chatGptApiKey,
+              geminiApiKey,
+              mistralApiKey,
+              anthropicApiKey,
+            },
+            () => {
+              if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError.message));
+              } else {
+                resolve();
+              }
+            },
+          );
+        });
+        alert('Options saved successfully!');
+      } catch (error) {
+        alert(
+          `Error saving options. Please try again. ${error instanceof Error ? error.message : String(error)}`,
         );
-      });
-      console.log('Options saved successfully.');
-    } catch (error) {
-      console.error('Error saving options:', error);
-      alert('Error saving options. Please try again.');
-    }
+      }
+    };
+
+    void saveOptions();
   });
 });
