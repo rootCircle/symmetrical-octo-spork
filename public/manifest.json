@@ -3,11 +3,15 @@
   "name": "docFiller",
   "version": "1.0.0",
 
-  "description": "Automatically fills Google Docs entries, powered by ChatGPT.",
-
+  "description": "Automatically fills Google Forms entries, powered by GenAI.",
+  "homepage_url": "https://addons.mozilla.org/en-US/firefox/addon/docfiller/",
   "icons": {
     "64": "assets/icons/icon-form-64.png",
     "96": "assets/icons/icon-form-96.png"
+  },
+  "developer": {
+    "name": "rootCircle",
+    "url": "https://github.com/rootCircle"
   },
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": [

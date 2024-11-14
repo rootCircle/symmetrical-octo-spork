@@ -1,7 +1,7 @@
 {
   "name": "docfiller",
   "version": "1.0.0",
-  "description": " Automated Google Docs Filling Web Extension written in JS",
+  "description": "Automated Google forms filling using genai",
   "homepage": "https://github.com/rootCircle/docFiller",
   "keywords": [
     "extension",
