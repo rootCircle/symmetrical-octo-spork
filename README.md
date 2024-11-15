@@ -9,6 +9,10 @@
   easy!</p>
 </p>
 
+<a href="https://addons.mozilla.org/en-US/firefox/addon/docfiller">
+  <img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get the docFiller extension">
+</a>
+
 <https://github.com/user-attachments/assets/55691cdf-6065-42bd-81fc-008be7422071>
 
 ## Project Overview
