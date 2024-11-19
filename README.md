@@ -19,18 +19,18 @@
 
 ### Features
 
-- **Automated Google Docs Filling**: Fill Google Docs forms automatically with predefined data using AI.
+- **Automated Google Forms Filling**: Fill Google forms automatically with predefined data using AI.
 - **Cross-Browser Compatibility**: Supports major browsers including Mozilla Firefox, Google Chrome, and Microsoft Edge.
 - **Customizable**: Easily configurable to adapt to different use cases and requirements.
 
 ### How It Works
 
-The Web Extension simplifies the process of filling Google Docs forms by automating repetitive tasks. Users can configure the extension with predefined data and settings, allowing them to quickly populate Google Docs without manual input.
+The Web Extension simplifies the process of filling Google forms by automating repetitive tasks. Users can configure the extension with predefined data and settings, allowing them to quickly populate Google forms without manual input.
 
 ### Use Cases
 
-- **Form Filling**: Ideal for individuals or organizations that frequently fill out standardized forms or templates in Google Docs.
-- **Data Entry Automation**: Streamline data entry processes by automating the input of common information into Google Docs.
+- **Form Filling**: Ideal for individuals or organizations that frequently fill out standardized forms or templates in Google Forms.
+- **Data Entry Automation**: Streamline data entry processes by automating the input of common information into Google Forms.
 
 ## Installation
 

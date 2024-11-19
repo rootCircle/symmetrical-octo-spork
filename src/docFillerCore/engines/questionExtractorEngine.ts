@@ -10,7 +10,7 @@ export class QuestionExtractorEngine {
   }
 
   /**
-   * Retrieves all the question DOM elements from Google Docs.
+   * Retrieves all the question DOM elements from Google Forms.
    * Note: This may include false positives like checkboxes.
    * @returns A NodeList of DOM elements containing complete information for questions.
    */

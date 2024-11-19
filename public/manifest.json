@@ -15,8 +15,8 @@
   },
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": [
-    "http://*.docs.google.com/*",
-    "https://*.docs.google.com/*"
+    "http://docs.google.com/forms/d/e/*",
+    "https://docs.google.com/forms/d/e/*"
   ],
   "background": {
     "service_worker": "src/background/index.js",
@@ -24,7 +24,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.docs.google.com/*"],
+      "matches": [
+        "http://docs.google.com/forms/d/e/*",
+        "https://docs.google.com/forms/d/e/*"
+      ],
       "js": ["src/contentScript/index.js"]
     }
   ],
