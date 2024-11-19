@@ -304,6 +304,7 @@ export class LLMEngine {
           .object({
             optionText: z
               .string()
+              .nullable()
               .optional()
               .describe(
                 "The text of the option. Optional if 'isOther' is true.",
@@ -315,6 +316,7 @@ export class LLMEngine {
               ),
             otherOptionValue: z
               .string()
+              .nullable()
               .optional()
               .describe(
                 "The value for the 'other' option. Must be provided if 'isOther' is true.",
