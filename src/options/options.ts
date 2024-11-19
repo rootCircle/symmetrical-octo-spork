@@ -120,7 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (llmModelSelect.value === 'Ollama') {
       apiKeyInput.disabled = true;
-      apiKeyInput.placeholder = 'No API key required for Ollama';
+      apiKeyInput.placeholder =
+        'No API key required for Ollama! Ensure Ollama is installed locally on your system.';
       apiKeyContainer?.classList.add('warning');
       apiKeyInput.value = '';
     } else {
