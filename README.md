@@ -5,7 +5,7 @@
   <p align="center"><img align="center" src="https://img.shields.io/discord/1129752670287184022?logo=discord"
       alt="Discord"></p>
 </a>
-<p align="center">Automated <em>Google Docs</em> Filling Web Extension written in JS. Filling boring google form done
+<p align="center">Automated <em>Google Forms</em> Filling Web Extension using GenAI. Filling boring google form done
   easy!</p>
 </p>
 

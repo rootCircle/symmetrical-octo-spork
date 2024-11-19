@@ -142,6 +142,16 @@ input[disabled] {
     display: block;
 }
 
+.get-api-key {
+    margin-left: 8px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.get-api-key:hover {
+    text-decoration: underline;
+}
+
 @media (max-width: 640px) {
     body {
         padding: 1rem;

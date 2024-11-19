@@ -1,5 +1,9 @@
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import LLMEngineType, { getModelName } from '@utils/llmEngineTypes';
+import LLMEngineType, {
+  getAPIPlatformSourceLink,
+  getModelName,
+  getModelTypeFromName,
+} from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
 
 (
@@ -279,4 +283,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
     void saveOptions();
   });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const modelSelect = document.getElementById('llmModel') as HTMLSelectElement;
+  const apiKeyInputLink = document.getElementById(
+    'singleApiKeyLink',
+  ) as HTMLAnchorElement;
+  const enableConsensusCheckbox = document.getElementById(
+    'enableConsensus',
+  ) as HTMLInputElement;
+
+  function updateApiKeyLink(): void {
+    const selectedModel = modelSelect.value;
+    const selectedModelType = getModelTypeFromName(selectedModel);
+
+    if (!selectedModelType) {
+      return;
+    }
+
+    const warningMessage = document.querySelector(
+      '.warning-message',
+    ) as HTMLElement;
+
+    const apiLink = getAPIPlatformSourceLink(selectedModelType);
+    if (apiLink === '') {
+      apiKeyInputLink.style.display = 'none';
+      warningMessage.style.display = 'block';
+    } else {
+      apiKeyInputLink.href = apiLink;
+      apiKeyInputLink.textContent = 'Get API Key';
+      apiKeyInputLink.style.display = 'block';
+      warningMessage.style.display = 'none';
+    }
+  }
+
+  function updateConsensusApiLinks() {
+    const consensusSection = document.getElementById(
+      'consensusWeights',
+    ) as HTMLElement;
+
+    if (enableConsensusCheckbox.checked) {
+      consensusSection.classList.remove('hidden');
+
+      updateConsensusApiLink('chatGptApiKey', 'ChatGPT');
+      updateConsensusApiLink('geminiApiKey', 'Gemini');
+      updateConsensusApiLink('ollamaApiKey', 'Ollama');
+      updateConsensusApiLink('mistralApiKey', 'Mistral');
+      updateConsensusApiLink('anthropicApiKey', 'Anthropic');
+    } else {
+      consensusSection.classList.add('hidden');
+    }
+  }
+
+  function updateConsensusApiLink(apiKeyElementId: string, modelName: string) {
+    const apiKeyInput = document.getElementById(
+      apiKeyElementId,
+    ) as HTMLInputElement;
+    const modelDetected = getModelTypeFromName(modelName);
+    if (!modelDetected) {
+      return;
+    }
+    const apiLink = getAPIPlatformSourceLink(modelDetected);
+
+    if (apiLink) {
+      apiKeyInput.disabled = false;
+      const apiLinkElement =
+        apiKeyInput.nextElementSibling as HTMLAnchorElement;
+      apiLinkElement.href = apiLink;
+      apiLinkElement.style.display = 'block';
+    } else {
+      apiKeyInput.disabled = true;
+      const apiLinkElement =
+        apiKeyInput.nextElementSibling as HTMLAnchorElement;
+      apiLinkElement.style.display = 'none';
+    }
+  }
+
+  modelSelect.addEventListener('change', updateApiKeyLink);
+  enableConsensusCheckbox.addEventListener('change', updateConsensusApiLinks);
+
+  // Initial call to set up the form when it loads
+  updateApiKeyLink();
+  updateConsensusApiLinks();
 });

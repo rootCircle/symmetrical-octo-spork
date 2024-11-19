@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "docFiller",
-  "version": "1.0.1",
+  "version": "1.0.2",
 
   "description": "Automatically fills Google Forms entries, powered by GenAI.",
   "homepage_url": "https://addons.mozilla.org/en-US/firefox/addon/docfiller/",
@@ -30,7 +30,7 @@
   ],
   "action": {
     "default_popup": "src/popup/index.html",
-    "default_title": "Home"
+    "default_title": "docFiller"
   },
   "options_ui": {
     "page": "src/options/index.html",

@@ -1,102 +1,163 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Extension Options</title>
-    <link rel="stylesheet" href="options.css">
-</head>
-<body>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+
+  <body>
     <div class="container">
-        <h1>Extension Options</h1>
-        <form id="optionsForm">
-            <div class="form-group">
-                <label for="sleepDuration">Sleep Duration (ms)</label>
-                <input type="number" id="sleepDuration" name="sleepDuration" min="100" step="100" value="2000">
+      <h1>Extension Options</h1>
+      <form id="optionsForm">
+        <div class="form-group">
+          <label for="sleepDuration">Sleep Duration (ms)</label>
+          <input
+            type="number"
+            id="sleepDuration"
+            name="sleepDuration"
+            min="100"
+            step="100"
+            value="2000"
+          />
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="enableConsensus" name="enableConsensus" />
+          <label for="enableConsensus">Enable Consensus</label>
+        </div>
+
+        <div id="singleModelOptions" class="form-group">
+          <label for="llmModel">LLM Model</label>
+          <select id="llmModel" name="llmModel">
+            <option value="Gemini">Gemini</option>
+            <option value="ChatGPT">ChatGPT</option>
+            <option value="Ollama">Ollama</option>
+            <option value="Mistral">Mistral</option>
+            <option value="Anthropic">Anthropic</option>
+          </select>
+          <div class="api-key-input">
+            <label for="singleApiKey">API Key</label>
+            <input type="text" id="singleApiKey" name="singleApiKey" />
+            <div class="warning-message">Ollama doesn't require an API key</div>
+            <a id="singleApiKeyLink" target="_blank" class="get-api-key"
+              >Get API Key</a
+            >
+          </div>
+        </div>
+
+        <div id="consensusWeights" class="hidden">
+          <div class="form-group">
+            <div>
+              <label for="chatGptApiKey">ChatGPT API Key</label>
+              <input type="text" id="chatGptApiKey" name="chatGptApiKey" />
+              <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="enableConsensus" name="enableConsensus">
-                <label for="enableConsensus">Enable Consensus</label>
+            <div>
+              <label for="weightChatGPT">Weight</label>
+              <input
+                type="number"
+                id="weightChatGPT"
+                name="weightChatGPT"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.42"
+              />
             </div>
+          </div>
 
-            <div id="singleModelOptions" class="form-group">
-                <label for="llmModel">LLM Model</label>
-                <select id="llmModel" name="llmModel">
-                    <option value="Gemini">Gemini</option>
-                    <option value="ChatGPT">ChatGPT</option>
-                    <option value="Ollama">Ollama</option>
-                    <option value="Mistral">Mistral</option>
-                    <option value="Anthropic">Anthropic</option>
-                </select>
-                <div class="api-key-input">
-                    <label for="singleApiKey">API Key</label>
-                    <input type="text" id="singleApiKey" name="singleApiKey">
-                    <div class="warning-message">Ollama doesn't require an API key</div>
-                </div>
+          <div class="form-group">
+            <div>
+              <label for="geminiApiKey">Gemini API Key</label>
+              <input type="text" id="geminiApiKey" name="geminiApiKey" />
+              <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
-
-            <div id="consensusWeights" class="hidden">
-                <div class="form-group">
-                    <div>
-                        <label for="chatGptApiKey">ChatGPT API Key</label>
-                        <input type="text" id="chatGptApiKey" name="chatGptApiKey">
-                    </div>
-                    <div>
-                        <label for="weightChatGPT">Weight</label>
-                        <input type="number" id="weightChatGPT" name="weightChatGPT" min="0" max="1" step="0.01" value="0.42">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <label for="geminiApiKey">Gemini API Key</label>
-                        <input type="text" id="geminiApiKey" name="geminiApiKey">
-                    </div>
-                    <div>
-                        <label for="weightGemini">Weight</label>
-                        <input type="number" id="weightGemini" name="weightGemini" min="0" max="1" step="0.01" value="0.42">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <label for="ollamaApiKey">Ollama API Key</label>
-                        <input type="text" id="ollamaApiKey" name="ollamaApiKey" disabled 
-                               placeholder="No API key required for Ollama">
-                    </div>
-                    <div>
-                        <label for="weightOllama">Weight</label>
-                        <input type="number" id="weightOllama" name="weightOllama" min="0" max="1" step="0.01" value="0.16">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <label for="mistralApiKey">Mistral API Key</label>
-                        <input type="text" id="mistralApiKey" name="mistralApiKey">
-                    </div>
-                    <div>
-                        <label for="weightMistral">Weight</label>
-                        <input type="number" id="weightMistral" name="weightMistral" min="0" max="1" step="0.01" value="0.16">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <label for="anthropicApiKey">Anthropic API Key</label>
-                        <input type="text" id="anthropicApiKey" name="anthropicApiKey">
-                    </div>
-                    <div>
-                        <label for="weightAnthropic">Weight</label>
-                        <input type="number" id="weightAnthropic" name="weightAnthropic" min="0" max="1" step="0.01" value="0.16">
-                    </div>
-                </div>
+            <div>
+              <label for="weightGemini">Weight</label>
+              <input
+                type="number"
+                id="weightGemini"
+                name="weightGemini"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.42"
+              />
             </div>
+          </div>
 
-            <button type="button" id="saveButton">Save Changes</button>
-        </form>
+          <div class="form-group">
+            <div>
+              <label for="ollamaApiKey">Ollama API Key</label>
+              <input
+                type="text"
+                id="ollamaApiKey"
+                name="ollamaApiKey"
+                disabled
+                placeholder="No API key required for Ollama"
+              />
+              <a target="_blank" class="get-api-key">Get API Key</a>
+            </div>
+            <div>
+              <label for="weightOllama">Weight</label>
+              <input
+                type="number"
+                id="weightOllama"
+                name="weightOllama"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.16"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div>
+              <label for="mistralApiKey">Mistral API Key</label>
+              <input type="text" id="mistralApiKey" name="mistralApiKey" />
+              <a target="_blank" class="get-api-key">Get API Key</a>
+            </div>
+            <div>
+              <label for="weightMistral">Weight</label>
+              <input
+                type="number"
+                id="weightMistral"
+                name="weightMistral"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.16"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div>
+              <label for="anthropicApiKey">Anthropic API Key</label>
+              <input type="text" id="anthropicApiKey" name="anthropicApiKey" />
+              <a target="_blank" class="get-api-key">Get API Key</a>
+            </div>
+            <div>
+              <label for="weightAnthropic">Weight</label>
+              <input
+                type="number"
+                id="weightAnthropic"
+                name="weightAnthropic"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.16"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="saveButton">Save Changes</button>
+      </form>
     </div>
     <script src="options.js"></script>
-</body>
+  </body>
 </html>

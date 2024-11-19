@@ -61,3 +61,21 @@ button:hover {
     color: #FF0000; /* Red color for disabled message */
     margin: 10px 0;
 }
+
+.terms-privacy {
+    margin-top: 20px;
+    font-size: 0.9em;
+    text-align: center;
+    color: #555;
+}
+
+.terms-privacy a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.terms-privacy a:hover {
+    text-decoration: underline;
+}
+

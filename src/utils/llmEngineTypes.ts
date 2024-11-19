@@ -39,5 +39,22 @@ function getModelTypeFromName(modelName: string): LLMEngineType | null {
   return null;
 }
 
+function getAPIPlatformSourceLink(modelType: LLMEngineType): string {
+  switch (modelType) {
+    case LLMEngineType.ChatGPT:
+      return 'https://platform.openai.com/settings/organization/api-keys';
+    case LLMEngineType.Gemini:
+      return 'https://makersuite.google.com/app/apikey';
+    case LLMEngineType.Ollama:
+      return ''; // Ollama doesn't need an API key link
+    case LLMEngineType.Mistral:
+      return 'https://console.mistral.ai/api-keys/';
+    case LLMEngineType.Anthropic:
+      return 'https://console.anthropic.com/settings/keys';
+    default:
+      return '';
+  }
+}
+
 export default LLMEngineType;
-export { getModelName, getModelTypeFromName };
+export { getModelName, getModelTypeFromName, getAPIPlatformSourceLink };
