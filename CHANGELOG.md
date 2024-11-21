@@ -3,6 +3,7 @@
 ## Unreleased (as of 2024-11-19)
 
 - **Fix**: Now `docFiller` doesn't fill on editable Google Forms as well.
+- Remove unused dependencies from `package.json`
 
 ## v1.0.2 (2024-11-19)
 
