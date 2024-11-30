@@ -8,7 +8,7 @@ import _import from 'eslint-plugin-import';
 export default [
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   {
-    ignores: ['build/', 'node_modules/', 'docs/', 'eslint.config.js'],
+    ignores: ['build/', 'node_modules/', 'docs/', 'eslint.config.js', 'web-ext-artifacts'],
   },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,

@@ -13,6 +13,10 @@
   <img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get the docFiller extension">
 </a>
 
+<a href="https://microsoftedge.microsoft.com/addons/detail/docfiller/hkcldpodmllikgghmplcbbocikadoljl">
+  <img src="https://user-images.githubusercontent.com/585534/107280673-a5ece780-6a26-11eb-9cc7-9fa9f9f81180.png" alt="Get the docFiller extension">
+</a>
+
 <https://github.com/user-attachments/assets/55691cdf-6065-42bd-81fc-008be7422071>
 
 ## Project Overview
