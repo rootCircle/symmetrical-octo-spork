@@ -34,13 +34,14 @@
             <option value="Gemini">Gemini</option>
             <option value="ChatGPT">ChatGPT</option>
             <option value="Ollama">Ollama</option>
+            <option value="ChromeAI">Chrome AI</option>
             <option value="Mistral">Mistral</option>
             <option value="Anthropic">Anthropic</option>
           </select>
           <div class="api-key-input">
             <label for="singleApiKey">API Key</label>
             <input type="text" id="singleApiKey" name="singleApiKey" />
-            <div class="warning-message">Ollama doesn't require an API key</div>
+            <div class="warning-message">Ollama/Chrome AI doesn't require an API key</div>
             <a id="singleApiKeyLink" target="_blank" class="get-api-key"
               >Get API Key</a
             >
@@ -106,6 +107,32 @@
                 type="number"
                 id="weightOllama"
                 name="weightOllama"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.16"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div>
+              <label for="chromeApiKey">Chrome AI API Key</label>
+              <input
+                type="text"
+                id="chromeAIApiKey"
+                name="chromeApiKey"
+                disabled
+                placeholder="No API key required for Chrome AI. Enable in chrome://flags"
+              />
+              <a target="_blank" class="get-api-key">Get API Key</a>
+            </div>
+            <div>
+              <label for="weightChromeAI">Weight</label>
+              <input
+                type="number"
+                id="weightChromeAI"
+                name="weightChromeAI"
                 min="0"
                 max="1"
                 step="0.01"

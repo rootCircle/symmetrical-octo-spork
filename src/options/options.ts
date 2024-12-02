@@ -43,6 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const weightOllamaInput = document.getElementById(
     'weightOllama',
   ) as HTMLInputElement;
+  const weightChromeAIInput = document.getElementById(
+    'weightChromeAI',
+  ) as HTMLInputElement;
   const weightMistralInput = document.getElementById(
     'weightMistral',
   ) as HTMLInputElement;
@@ -94,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       weightChatGPTInput.value = String(weights[LLMEngineType.ChatGPT]);
       weightGeminiInput.value = String(weights[LLMEngineType.Gemini]);
       weightOllamaInput.value = String(weights[LLMEngineType.Ollama]);
+      weightChromeAIInput.value = String(weights[LLMEngineType.ChromeAI]);
       weightMistralInput.value = String(weights[LLMEngineType.Mistral]);
       weightAnthropicInput.value = String(weights[LLMEngineType.Anthropic]);
 
@@ -117,11 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ) as HTMLInputElement;
 
     const apiKeyContainer = apiKeyInput.parentElement;
-
-    if (llmModelSelect.value === 'Ollama') {
+    if (llmModelSelect.value === 'Ollama' || llmModelSelect.value === 'ChromeAI') {
       apiKeyInput.disabled = true;
-      apiKeyInput.placeholder =
-        'No API key required for Ollama! Ensure Ollama is installed locally on your system.';
+      apiKeyInput.placeholder = llmModelSelect.value === 'Ollama' ? 'No API key required for Ollama! Ensure Ollama is installed locally on your system.' : 'No API key required for Chrome AI';
       apiKeyContainer?.classList.add('warning');
       apiKeyInput.value = '';
     } else {
@@ -134,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   window.addEventListener('load', () => {
-    if (llmModelSelect.value === 'Ollama') {
+    if (llmModelSelect.value === 'Ollama' || llmModelSelect.value === 'ChromeAI') {
       const apiKeyInput = document.getElementById(
         'singleApiKey',
       ) as HTMLInputElement;
@@ -142,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const apiKeyContainer = apiKeyInput.parentElement;
 
       apiKeyInput.disabled = true;
-      apiKeyInput.placeholder = 'No API key required for Ollama';
+      apiKeyInput.placeholder = llmModelSelect.value === 'Ollama' ? 'No API key required for Ollama' : 'No API key required for Chrome AI';
       apiKeyContainer?.classList.add('warning');
       apiKeyInput.value = '';
     }
@@ -182,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKeyValue = geminiApiKeyInput.value;
         break;
       case 'Ollama':
+      case 'ChromeAI':
         apiKeyValue = '';
         break;
       case 'Mistral':
@@ -211,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geminiApiKeyInput.value = apiKeyValue;
         break;
       case 'Ollama':
+      case 'ChromeAI':
         break;
       case 'Mistral':
         mistralApiKeyInput.value = apiKeyValue;
@@ -248,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [LLMEngineType.ChatGPT]: parseFloat(weightChatGPTInput.value),
         [LLMEngineType.Gemini]: parseFloat(weightGeminiInput.value),
         [LLMEngineType.Ollama]: parseFloat(weightOllamaInput.value),
+        [LLMEngineType.ChromeAI]: parseFloat(weightChromeAIInput.value),
         [LLMEngineType.Mistral]: parseFloat(weightMistralInput.value),
         [LLMEngineType.Anthropic]: parseFloat(weightAnthropicInput.value),
       };
@@ -330,6 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
       updateConsensusApiLink('chatGptApiKey', 'ChatGPT');
       updateConsensusApiLink('geminiApiKey', 'Gemini');
       updateConsensusApiLink('ollamaApiKey', 'Ollama');
+      updateConsensusApiLink('chromeAIApiKey', 'ChromeAI');
       updateConsensusApiLink('mistralApiKey', 'Mistral');
       updateConsensusApiLink('anthropicApiKey', 'Anthropic');
     } else {
