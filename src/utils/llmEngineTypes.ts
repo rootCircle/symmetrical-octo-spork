@@ -5,6 +5,7 @@ enum LLMEngineType {
   Ollama = 'code-gemma2:2b',
   Anthropic = 'claude',
   Mistral = 'mistral',
+  ChromeAI = 'chrome-gemini-nano',
 }
 
 function getModelName(modelType: LLMEngineType): string {
@@ -19,6 +20,8 @@ function getModelName(modelType: LLMEngineType): string {
       return 'Anthropic';
     case LLMEngineType.Mistral:
       return 'Mistral';
+    case LLMEngineType.ChromeAI:
+      return 'ChromeAI';
   }
 }
 
@@ -30,6 +33,8 @@ function getModelTypeFromName(modelName: string): LLMEngineType | null {
       return LLMEngineType.Gemini;
     case 'Ollama':
       return LLMEngineType.Ollama;
+    case 'ChromeAI':
+      return LLMEngineType.ChromeAI;
     case 'Mistral':
       return LLMEngineType.Mistral;
     case 'Anthropic':
@@ -47,6 +52,8 @@ function getAPIPlatformSourceLink(modelType: LLMEngineType): string {
       return 'https://makersuite.google.com/app/apikey';
     case LLMEngineType.Ollama:
       return ''; // Ollama doesn't need an API key link
+    case LLMEngineType.ChromeAI:
+      return ''; // ChromeAI doesn't need an API key link
     case LLMEngineType.Mistral:
       return 'https://console.mistral.ai/api-keys/';
     case LLMEngineType.Anthropic:

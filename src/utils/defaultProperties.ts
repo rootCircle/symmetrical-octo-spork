@@ -12,6 +12,7 @@ const LLMWeightsMap = {
   [LLMEngineType.Anthropic]: 0.35,
   [LLMEngineType.Mistral]: 0.13,
   [LLMEngineType.Ollama]: 0.08,
+  [LLMEngineType.ChromeAI]: 0.2,
 };
 
 const DEFAULT_PROPERTIES: typeDefaultProperties = {
