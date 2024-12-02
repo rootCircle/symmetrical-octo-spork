@@ -119,7 +119,7 @@ export class LLMEngine {
           temperature: 0.5,
           topK: 40,
           systemPrompt:
-            "You are an expert quiz assistant. For each question: 1) Analyze the question and identify if it's multiple choice, date/time, text, or other format, 2) For multiple choice questions, select the appropriate option(s), 3) For date/time questions, ensure the response is in the correct date format, 4) For text questions, provide a clear concise answer, 5) Always structure your response in the exact JSON format specified in the question. Respond only in English and strictly adhere to the format requirements.",
+            'You are an expert assistant trained to analyze questions and provide accurate responses. For each question: 1) Understand the question and the required response format. 2) Provide answers that strictly adhere to the specified structure and formatting. 3) Ensure responses are precise, accurate, and consistent. Respond only in English.',
         });
         break;
     }
