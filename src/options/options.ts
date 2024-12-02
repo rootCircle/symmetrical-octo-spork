@@ -121,9 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
     ) as HTMLInputElement;
 
     const apiKeyContainer = apiKeyInput.parentElement;
-    if (llmModelSelect.value === 'Ollama' || llmModelSelect.value === 'ChromeAI') {
+    if (
+      llmModelSelect.value === 'Ollama' ||
+      llmModelSelect.value === 'ChromeAI'
+    ) {
       apiKeyInput.disabled = true;
-      apiKeyInput.placeholder = llmModelSelect.value === 'Ollama' ? 'No API key required for Ollama! Ensure Ollama is installed locally on your system.' : 'No API key required for Chrome AI';
+      apiKeyInput.placeholder =
+        llmModelSelect.value === 'Ollama'
+          ? 'No API key required for Ollama! Ensure Ollama is installed locally on your system.'
+          : 'No API key required for Chrome AI';
       apiKeyContainer?.classList.add('warning');
       apiKeyInput.value = '';
     } else {
@@ -136,7 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   window.addEventListener('load', () => {
-    if (llmModelSelect.value === 'Ollama' || llmModelSelect.value === 'ChromeAI') {
+    if (
+      llmModelSelect.value === 'Ollama' ||
+      llmModelSelect.value === 'ChromeAI'
+    ) {
       const apiKeyInput = document.getElementById(
         'singleApiKey',
       ) as HTMLInputElement;
@@ -144,7 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const apiKeyContainer = apiKeyInput.parentElement;
 
       apiKeyInput.disabled = true;
-      apiKeyInput.placeholder = llmModelSelect.value === 'Ollama' ? 'No API key required for Ollama' : 'No API key required for Chrome AI';
+      apiKeyInput.placeholder =
+        llmModelSelect.value === 'Ollama'
+          ? 'No API key required for Ollama'
+          : 'No API key required for Chrome AI';
       apiKeyContainer?.classList.add('warning');
       apiKeyInput.value = '';
     }
