@@ -11,7 +11,7 @@ import {
   StructuredOutputParser,
   StringOutputParser,
 } from '@langchain/core/output_parsers';
-import { ChromeAI } from "@langchain/community/experimental/llms/chrome_ai";
+import { ChromeAI } from '@langchain/community/experimental/llms/chrome_ai';
 import LLMEngineType from '@utils/llmEngineTypes';
 import { RunnableSequence } from '@langchain/core/runnables';
 import { PromptTemplate } from '@langchain/core/prompts';
@@ -118,7 +118,8 @@ export class LLMEngine {
         LLMEngine.instances[engine] = new ChromeAI({
           temperature: 0.5,
           topK: 40,
-          systemPrompt: 'You are an expert quiz assistant. For each question: 1) Analyze the question and identify if it\'s multiple choice, date/time, text, or other format, 2) For multiple choice questions, select the appropriate option(s), 3) For date/time questions, ensure the response is in the correct date format, 4) For text questions, provide a clear concise answer, 5) Always structure your response in the exact JSON format specified in the question. Respond only in English and strictly adhere to the format requirements.',
+          systemPrompt:
+            "You are an expert quiz assistant. For each question: 1) Analyze the question and identify if it's multiple choice, date/time, text, or other format, 2) For multiple choice questions, select the appropriate option(s), 3) For date/time questions, ensure the response is in the correct date format, 4) For text questions, provide a clear concise answer, 5) Always structure your response in the exact JSON format specified in the question. Respond only in English and strictly adhere to the format requirements.",
         });
         break;
     }
