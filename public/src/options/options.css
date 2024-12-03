@@ -165,3 +165,288 @@ input[disabled] {
         grid-template-columns: 1fr;
     }
 }
+.profiles-container {
+    margin-bottom: 40px;
+  }
+  
+  .profile-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .profile-card {
+    position: relative; /* Add this line */
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  .profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+  }
+  
+  .profile-card h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.2em;
+  }
+  
+  .profile-card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.4;
+  }
+  
+  .add-profile {
+    border: 2px dashed #ccc;
+    background: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  .add-profile:hover {
+    border-color: #999;
+    background: #f5f5f5;
+  }
+  
+  .add-icon {
+    font-size: 40px;
+    color: #666;
+    margin-bottom: 1px;
+  }
+
+
+  /* Tick mark styles */
+
+  
+  .profile-card.selected {
+    border: 2px solid #4CAF50;
+  }
+  
+  .tick-mark {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #4CAF50;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    z-index: 1;
+}
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  /* Modal styles */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .close-button:hover {
+    color: #333;
+  }
+  
+  /* Form styles */
+  #addProfileForm {
+    margin-top: 20px;
+  }
+  
+  #addProfileForm .form-group {
+    margin-bottom: 20px;
+  }
+  
+  #addProfileForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  #addProfileForm input,
+  #addProfileForm textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  #addProfileForm textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  
+  .submit-button,
+  .cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .submit-button {
+    background: #4CAF50;
+    color: white;
+  }
+  
+  .submit-button:hover {
+    background: #45a049;
+  }
+  
+  .cancel-button {
+    background: #f5f5f5;
+    color: #666;
+  }
+  
+  .cancel-button:hover {
+    background: #e5e5e5;
+  }.card-icons {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    z-index: 1;
+  }
+  
+  .delete-mark {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #ff4444;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .profile-card:hover .delete-mark {
+    opacity: 1;
+  }
+  
+  .tick-mark {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #4CAF50;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    z-index: 1;
+  }
+
+  .add-profile {
+    position: relative;  /* Add this to enable absolute positioning of children */
+    border: 2px dashed #ccc;
+    background: transparent;
+    min-height: 200px;  /* Add a minimum height to match other profile cards */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .add-profile:hover {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.05);
+  }
+  
+  .add-profile-content {
+    position: absolute;  /* Position absolutely within the card */
+    bottom: 45px;       /* Distance from bottom */
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;          /* Space between icon and text */
+  }
+  
+  .add-icon {
+    font-size: 32px;
+    color: #4CAF50;
+    line-height: 1;
+    margin-bottom: 40px;
+    scale: 2;
+  }
+  
+  .add-profile p {
+    color: #666;
+    margin: 0;
+    font-size: 14px;
+  }
