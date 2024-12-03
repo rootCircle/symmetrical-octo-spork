@@ -8,53 +8,67 @@
   </head>
 
   <body>
+    <h1>Settings</h1>
     <div class="container">
-
       <div class="profiles-container">
-        <div class="profile-cards">
-          
-         
-        </div>
+        <div class="profile-cards"></div>
       </div>
       <!-- Add Profile Modal -->
-<div id="addProfileModal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-button">&times;</span>
-    <h2>Add New Profile</h2>
-    <form id="addProfileForm">
-      <div class="form-group">
-        <label for="profileName">Name</label>
-        <input type="text" id="profileName" name="profileName" required>
+      <div id="addProfileModal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Add New Profile</h2>
+          <form id="addProfileForm">
+            <div class="form-group">
+              <label for="profileName">Name</label>
+              <input type="text" id="profileName" name="profileName" required />
+            </div>
+
+            <div class="form-group">
+              <label for="profileImage">Image URL</label>
+              <input
+                type="text"
+                id="profileImage"
+                name="profileImage"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="profilePrompt">Prompt</label>
+              <textarea
+                id="profilePrompt"
+                name="profilePrompt"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="profileDescription">Description</label>
+              <textarea
+                id="profileDescription"
+                name="profileDescription"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="profileShortDescription">Short Description</label>
+              <input
+                type="text"
+                id="profileShortDescription"
+                name="profileShortDescription"
+                required
+              />
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="submit-button">Add Profile</button>
+              <button type="button" class="cancel-button">Cancel</button>
+            </div>
+          </form>
+        </div>
       </div>
-      
-      <div class="form-group">
-        <label for="profileImage">Image URL</label>
-        <input type="text" id="profileImage" name="profileImage" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="profilePrompt">Prompt</label>
-        <textarea id="profilePrompt" name="profilePrompt" required></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label for="profileDescription">Description</label>
-        <textarea id="profileDescription" name="profileDescription" required></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label for="profileShortDescription">Short Description</label>
-        <input type="text" id="profileShortDescription" name="profileShortDescription" required>
-      </div>
-      
-      <div class="form-actions">
-        <button type="submit" class="submit-button">Add Profile</button>
-        <button type="button" class="cancel-button">Cancel</button>
-      </div>
-    </form>
-  </div>
-</div>
-      <h1>Extension Options</h1>
       <form id="optionsForm">
         <div class="form-group">
           <label for="sleepDuration">Sleep Duration (ms)</label>
@@ -86,7 +100,9 @@
           <div class="api-key-input">
             <label for="singleApiKey">API Key</label>
             <input type="text" id="singleApiKey" name="singleApiKey" />
-            <div class="warning-message">Ollama/Chrome AI doesn't require an API key</div>
+            <div class="warning-message">
+              Ollama/Chrome AI doesn't require an API key
+            </div>
             <a id="singleApiKeyLink" target="_blank" class="get-api-key"
               >Get API Key</a
             >
