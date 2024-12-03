@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 function listenFillFormAction(): void {
-  const fillerButton = document.querySelector<HTMLButtonElement>('#filler_button');
+  const fillerButton =
+    document.querySelector<HTMLButtonElement>('#filler_button');
 
   if (!fillerButton) {
     console.error('Filler button not found.');
@@ -105,8 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   refreshButton.addEventListener('click', () => {
-    // refreshButton.style.display = 'none';
-    // Add your refresh logic here
+    chrome.tabs.reload();
   });
 
   function updateToggleState(isEnabled: boolean): void {

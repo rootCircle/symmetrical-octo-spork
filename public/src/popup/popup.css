@@ -23,14 +23,6 @@ body {
     text-align: center;
 }
 
-h1 {
-    font-size: 26px;
-    font-weight: 500; 
-    margin-top: 10px;
-    margin-bottom: -15px;
-    color: #5f5a5a;
-}
-
 p {
     font-size: 14px;
     margin: 10px 0;
@@ -60,6 +52,7 @@ p {
     text-decoration: none;
     margin: 0 5px;
 }
+
 .terms-privacy a:hover {
     text-decoration: underline;
 }
@@ -69,9 +62,8 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background-color: #007bff; */
     gap: 20px;
-    margin: 40px 0px;
+    margin: 20px 0px;
     position: relative;
     height: auto;
 }
@@ -89,7 +81,7 @@ p {
     align-items: center;
     justify-content: center;
     transition: background-color 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .button-section-vertical-left {
@@ -105,20 +97,13 @@ p {
     background-color: #84978d;
 }
 
-.refresh-icon {
-    width: 20px;
-    height: 20px;
-    scale: 1.2;
-    filter: brightness(0) invert(1);
-}
-
+.refresh-icon,
 .fill-icon {
     width: 20px;
     height: 20px;
     scale: 1.2;
     filter: brightness(0) invert(1);
 }
-
 
 .toggle-switch {
     width: 150px;
@@ -127,7 +112,6 @@ p {
     position: relative;
     margin: 0 auto;
     transition: all 0.3s ease;
-
 }
 
 .toggle-switch:hover {
@@ -141,7 +125,6 @@ p {
     top: 0;
     left: 0;
     transition: all 0.6s ease;
-
 }
 
 .toggle-on {
@@ -150,8 +133,8 @@ p {
 }
 
 .toggle-off {
-  filter: grayscale(100%) brightness(70%);
-  opacity: 0.5;
+    filter: grayscale(100%) brightness(70%);
+    opacity: 0.5;
 }
 
 .user-profile-section {
@@ -159,10 +142,8 @@ p {
     padding-top: 10px;
     padding-bottom: -10px;
     margin-top: 10px;
-    /* background-color: #2baf68; */
     border-bottom: 1px solid #e0e0e0;
     border-top: 1px solid #e0e0e0;
-
     margin-bottom: 0px;
 }
 
@@ -195,53 +176,6 @@ p {
     gap: 8px;
 }
 
-.profile-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.small-avatar {
-    width: 24px;
-    height: 24px;
-    background-color: #e0e0e0;
-    border-radius: 50%;
-}
-
-
-.support-button {
-    background-color: #f4f4f4;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    margin: 0 auto 15px;
-    cursor: pointer;
-    width: fit-content;
-}
-
-.support-button:hover {
-    background-color: #e8e8e8;
-}
-.api-message {
-    font-size: 18px;
-    color: #666;
-    padding: 20px 0;
-    border-bottom: 1px solid #e0e0e0;
-    margin-bottom: 20px;
-}
-.signin-text {
-    color: #666;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-.terms-privacy {
-    color: #666;
-    font-size: 14px;
-    text-align: center;
-    line-height: 1.5;
-}
 .more-button {
     display: inline-flex;
     align-items: center;
@@ -254,14 +188,13 @@ p {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     font-weight: normal;
     cursor: pointer;
-
+    text-decoration: none;
     transition: all 0.4s ease;
 }
 
 .more-button:hover {
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
-
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .more-button:focus {
@@ -273,11 +206,13 @@ p {
     content: "+";
     margin-right: 4px;
     color: #999;
-}.profile-stats {
+}
+
+.profile-stats {
     padding: 15px 20px;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
-    background-color: #ffffff;;
+    background-color: #ffffff;
     box-shadow: 0 2px 2px rgba(255, 255, 255, 0.1);
     margin: 10px auto;
     width: fit-content;
@@ -293,4 +228,18 @@ p {
 .profile-stats:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.api-message {
+    font-size: 18px;
+    color: #666;
+    padding: 20px 0;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.signin-text {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
