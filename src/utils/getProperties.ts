@@ -44,6 +44,9 @@ async function getMistralApiKey(): Promise<string | undefined> {
 async function getAnthropicApiKey(): Promise<string | undefined> {
   return await getSetting<string>('anthropicApiKey');
 }
+async function getIsEnabled(): Promise<boolean | undefined> {
+  return await getSetting<boolean>('isEnabled');
+}
 
 export {
   getSleepDuration,
@@ -54,4 +57,5 @@ export {
   getGeminiApiKey,
   getMistralApiKey,
   getAnthropicApiKey,
+  getIsEnabled,
 };
