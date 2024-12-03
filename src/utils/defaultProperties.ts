@@ -5,7 +5,7 @@ interface typeDefaultProperties {
   sleep_duration: number;
   enableConsensus: boolean;
   llmWeights: Record<LLMEngineType, number>;
-  isEnabled : boolean;
+  isEnabled: boolean;
 }
 const LLMWeightsMap = {
   [LLMEngineType.Gemini]: 0.18,
