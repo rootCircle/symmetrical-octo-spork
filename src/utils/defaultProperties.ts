@@ -6,6 +6,7 @@ interface typeDefaultProperties {
   enableConsensus: boolean;
   llmWeights: Record<LLMEngineType, number>;
   isEnabled: boolean;
+  avatarImage: string;
 }
 const LLMWeightsMap = {
   [LLMEngineType.Gemini]: 0.18,
@@ -22,6 +23,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   enableConsensus: false,
   llmWeights: LLMWeightsMap,
   isEnabled: true,
+  avatarImage: 'https://w.wallhaven.cc/full/5g/wallhaven-5gxvv3.png',
 };
 
 export { DEFAULT_PROPERTIES };
