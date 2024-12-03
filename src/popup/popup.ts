@@ -106,7 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   refreshButton.addEventListener('click', () => {
-    chrome.tabs.reload();
+    chrome.tabs.reload().catch((error) => {
+      console.error('Failed to reload tab:', error);
+    });
   });
 
   function updateToggleState(isEnabled: boolean): void {
