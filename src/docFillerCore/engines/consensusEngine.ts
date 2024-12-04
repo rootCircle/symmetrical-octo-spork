@@ -44,10 +44,15 @@ class ConsensusEngine {
       return;
     }
 
-    const adjustment = (1 - currentSum) / ConsensusEngine.llmWeights.size;
-
+    const nonZeroCount = Array.from(ConsensusEngine.llmWeights.values()).filter(
+      (w) => w > 0,
+    ).length;
+    const adjustment =
+      (1 - currentSum) / (nonZeroCount || ConsensusEngine.llmWeights.size);
     ConsensusEngine.llmWeights.forEach((value, key) => {
-      ConsensusEngine.llmWeights.set(key, value + adjustment);
+      if (value > 0) {
+        ConsensusEngine.llmWeights.set(key, value + adjustment);
+      }
     });
   }
 
@@ -61,6 +66,9 @@ class ConsensusEngine {
     for (let i = 0; i < entries.length; i++) {
       const [llmType, weight] = entries[i] as [LLMEngineType, number];
       try {
+        if (weight === 0) {
+          continue;
+        }
         const llm = new LLMEngine(llmType);
         const response = await llm.getResponse(
           promptString,
