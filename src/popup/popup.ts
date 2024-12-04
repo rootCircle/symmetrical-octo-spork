@@ -94,10 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     imageUrlInput.src =
       profiles[selectedProfileKey]?.image_url ||
-      DEFAULT_PROPERTIES.profileAvatarImage;
+      DEFAULT_PROPERTIES.defaultProfile.image_url;
 
     nameElement.textContent =
-      profiles[selectedProfileKey]?.name || DEFAULT_PROPERTIES.profileName;
+      profiles[selectedProfileKey]?.name ||
+      DEFAULT_PROPERTIES.defaultProfile.name;
   }
 
   fillProfile().catch(console.error);

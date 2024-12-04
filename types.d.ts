@@ -112,7 +112,7 @@ interface LLMResponse {
 }
 
 interface Profile {
-  prompt: string;
+  system_prompt: string;
   image_url: string;
   name: string;
   description: string;
