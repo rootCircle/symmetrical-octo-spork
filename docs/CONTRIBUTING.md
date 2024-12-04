@@ -153,7 +153,7 @@ If you're planning to contribute to the development of this web extension, here 
   3. Test the extension:
 
      ```bash
-     bun run dev
+     bun run dev:firefox
      ```
 
      This will open a new Firefox window with the extension loaded.

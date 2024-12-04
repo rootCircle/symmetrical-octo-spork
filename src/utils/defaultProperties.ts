@@ -5,7 +5,7 @@ interface typeDefaultProperties {
   sleep_duration: number;
   enableConsensus: boolean;
   llmWeights: Record<LLMEngineType, number>;
-  isEnabled: boolean;
+  automaticFillingEnabled: boolean;
   defaultProfile: Profile;
 }
 const LLMWeightsMap = {
@@ -22,7 +22,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   model: LLMEngineType.Gemini,
   enableConsensus: false,
   llmWeights: LLMWeightsMap,
-  isEnabled: true,
+  automaticFillingEnabled: true,
   defaultProfile: {
     name: 'Luna',
     image_url: 'https://w.wallhaven.cc/full/5g/wallhaven-5gxvv3.png',
