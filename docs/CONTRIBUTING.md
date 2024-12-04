@@ -143,20 +143,39 @@ If you're planning to contribute to the development of this web extension, here 
 - To get started, follow these steps:
 
   1. Clone the repository:
+
      ```bash
      git clone https://github.com/your-username/docFiller.git
      ```
+
   2. Install the required dependencies:
+
      ```bash
      bun i
      ```
+
   3. Test the extension:
 
-     ```bash
-     bun run dev:firefox
-     ```
+  - Firefox
 
-     This will open a new Firefox window with the extension loaded.
+      ```bash
+      bun run dev:firefox
+      ```
+
+      This will open a new Firefox window with the extension loaded.
+  - Chrome
+
+    - For Chrome, use the following command to watch for changes and load the extension:
+
+      ```bash
+      bun run watch
+      ```
+
+    - Open `chrome://extensions/` in Chrome.
+    - Enable **Developer mode**.
+    - Click **Load unpacked** and select the `build` directory.
+
+      Then, manually load the extension in Chrome.
 
   4. **Make your changes**: Make the changes you want in your local copy of the repository.
 
