@@ -110,3 +110,15 @@ interface LLMResponse {
   multipleChoiceGrid?: RowColumn[];
   checkboxGrid?: RowColumnOption[];
 }
+
+interface Profile {
+  prompt: string;
+  image_url: string;
+  name: string;
+  description: string;
+  short_description: string;
+}
+
+interface Profiles {
+  [key: string]: Profile;
+}

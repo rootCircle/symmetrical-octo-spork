@@ -1,47 +1,11 @@
 /* eslint-disable no-console */
-function listenFillFormAction(): void {
-  const fillerButton =
-    document.querySelector<HTMLButtonElement>('#filler_button');
 
-  if (!fillerButton) {
-    console.error('Filler button not found.');
-    return;
-  }
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
+import {
+  getSelectedProfileKey,
+  loadProfiles,
+} from '@utils/storage/profiles/profileManager';
 
-  chrome.tabs.query(
-    {
-      active: true,
-      currentWindow: true,
-      url: '*://*.docs.google.com/*',
-    },
-    (tabs) => {
-      if (tabs.length > 0) {
-        fillerButton.addEventListener('click', () => {
-          if (tabs && tabs[0] && tabs[0].id !== undefined) {
-            chrome.scripting
-              .executeScript({
-                target: { tabId: tabs[0].id },
-                func: () => {
-                  chrome.runtime
-                    .sendMessage({ data: 'FILL_FORM' })
-                    .then(() => {})
-                    .catch(() => {});
-                },
-              })
-              .then(() => {})
-              .catch(() => {});
-          } else {
-            console.error('Tab ID is undefined.');
-          }
-        });
-      } else {
-        const errorMsg = document.createElement('p');
-        errorMsg.textContent = 'Website not supported!!!';
-        document.body.appendChild(errorMsg);
-      }
-    },
-  );
-}
 document.addEventListener('DOMContentLoaded', () => {
   const toggleButton = document.getElementById('toggleButton');
   const toggleOn = toggleButton?.querySelector('.toggle-on') as HTMLElement;
@@ -118,6 +82,23 @@ document.addEventListener('DOMContentLoaded', () => {
       fillSection.style.display = isEnabled ? 'none' : 'flex';
     }
   }
-});
 
-document.addEventListener('DOMContentLoaded', listenFillFormAction);
+  async function fillProfile() {
+    const imageUrlInput = document.querySelector(
+      '.profile-avatar img',
+    ) as HTMLImageElement;
+    const nameElement = document.querySelector('.profile-name') as HTMLElement;
+
+    const selectedProfileKey = await getSelectedProfileKey();
+    const profiles = await loadProfiles();
+
+    imageUrlInput.src =
+      profiles[selectedProfileKey]?.image_url ||
+      DEFAULT_PROPERTIES.profileAvatarImage;
+
+    nameElement.textContent =
+      profiles[selectedProfileKey]?.name || DEFAULT_PROPERTIES.profileName;
+  }
+
+  fillProfile().catch(console.error);
+});

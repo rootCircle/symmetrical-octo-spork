@@ -232,7 +232,7 @@ p {
 }
 
 .api-message {
-  font-size: 18px;
+  font-size: 16px;
   color: #666;
   padding: 20px 0;
   border-bottom: 1px solid #e0e0e0;
@@ -241,6 +241,6 @@ p {
 
 .signin-text {
   color: #666;
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 5px;
 }
