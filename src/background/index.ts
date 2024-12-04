@@ -12,14 +12,6 @@ interface ChromeResponseMessage {
 
 chrome.runtime.onMessage.addListener(
   (message: ChromeResponseMessage, _sender, sendResponse) => {
-    // TODO:  Fix not working!
-
-    //   if (message.data === 'FILL_FORM') {
-    //     runDocFillerEngine().then(() => {
-    //       console.log('FILL_FORM message received');
-    //     });
-    //     message.data = null;
-    //   }
     if (message.type === 'API_CALL') {
       try {
         const instance = new LLMEngine(message.model);

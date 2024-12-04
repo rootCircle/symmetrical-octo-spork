@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 
+import { runDocFillerEngine } from '@docFillerCore/index';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import {
   getSelectedProfileKey,
@@ -65,6 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         );
       }
     };
+
+    fillSection.addEventListener('click', () => {
+      runDocFillerEngine().catch(console.error);
+    });
 
     void saveState();
   });
