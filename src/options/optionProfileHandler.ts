@@ -4,8 +4,8 @@ import {
   saveSelectedProfileKey,
   deleteProfile,
   saveCustomProfile,
-} from '@utils/profiles/profileManager';
-import { EMPTY_STRING } from '@utils/settings';
+  getSelectedProfileKey,
+} from '@utils/storage/profiles/profileManager';
 
 async function createProfileCards() {
   const container = document.querySelector('.container');
@@ -27,11 +27,7 @@ async function createProfileCards() {
   const cardsContainer = document.createElement('div');
   cardsContainer.className = 'profile-cards';
 
-  const selectedProfileKey = await new Promise<string>((resolve) => {
-    chrome.storage.sync.get(['selectedProfileKey'], (result) => {
-      resolve((result['selectedProfileKey'] as string) || EMPTY_STRING);
-    });
-  });
+  const selectedProfileKey = await getSelectedProfileKey();
 
   Object.entries(profiles).forEach(([profileKey, profile]) => {
     const card = document.createElement('div');
@@ -123,7 +119,7 @@ async function handleProfileFormSubmit(submitEvent: Event) {
     .value;
 
   // Use the dummy image URL if no image URL is provided
-  const defaultImageUrl = DEFAULT_PROPERTIES.avatarImage;
+  const defaultImageUrl = DEFAULT_PROPERTIES.profileAvatarImage;
 
   const newProfile: Profile = {
     name: (form.querySelector('#profileName') as HTMLInputElement).value,

@@ -6,7 +6,10 @@ import LLMEngineType, {
 } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
 
-import { createProfileCards, handleProfileFormSubmit } from './profileHandler';
+import {
+  createProfileCards,
+  handleProfileFormSubmit,
+} from './optionProfileHandler';
 
 document.addEventListener('DOMContentLoaded', () => {
   const modalHTML = `

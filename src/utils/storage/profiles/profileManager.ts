@@ -1,4 +1,5 @@
 import { v4 } from 'uuid';
+import { EMPTY_STRING } from '@utils/settings';
 
 import { profilesData } from './profilesData';
 
@@ -104,9 +105,18 @@ async function saveSelectedProfileKey(profileKey: string): Promise<void> {
   });
 }
 
+async function getSelectedProfileKey() {
+  return await new Promise<string>((resolve) => {
+    chrome.storage.sync.get(['selectedProfileKey'], (result) => {
+      resolve((result['selectedProfileKey'] as string) || EMPTY_STRING);
+    });
+  });
+}
+
 export {
   loadProfiles,
   saveCustomProfile,
   deleteProfile,
   saveSelectedProfileKey,
+  getSelectedProfileKey,
 };
