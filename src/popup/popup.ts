@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 
+import { runDocFillerEngine } from '@docFillerCore/index';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import {
   getSelectedProfileKey,
@@ -66,6 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
+    fillSection.addEventListener('click', () => {
+      runDocFillerEngine().catch(console.error);
+    });
+
     void saveState();
   });
 
@@ -94,10 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     imageUrlInput.src =
       profiles[selectedProfileKey]?.image_url ||
-      DEFAULT_PROPERTIES.profileAvatarImage;
+      DEFAULT_PROPERTIES.defaultProfile.image_url;
 
     nameElement.textContent =
-      profiles[selectedProfileKey]?.name || DEFAULT_PROPERTIES.profileName;
+      profiles[selectedProfileKey]?.name ||
+      DEFAULT_PROPERTIES.defaultProfile.name;
   }
 
   fillProfile().catch(console.error);

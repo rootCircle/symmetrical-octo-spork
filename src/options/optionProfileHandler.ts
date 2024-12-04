@@ -119,12 +119,13 @@ async function handleProfileFormSubmit(submitEvent: Event) {
     .value;
 
   // Use the dummy image URL if no image URL is provided
-  const defaultImageUrl = DEFAULT_PROPERTIES.profileAvatarImage;
+  const defaultImageUrl = DEFAULT_PROPERTIES.defaultProfile.image_url;
 
   const newProfile: Profile = {
     name: (form.querySelector('#profileName') as HTMLInputElement).value,
     image_url: imageUrl.trim() || defaultImageUrl, // Use default if empty
-    prompt: (form.querySelector('#profilePrompt') as HTMLTextAreaElement).value,
+    system_prompt: (form.querySelector('#profilePrompt') as HTMLTextAreaElement)
+      .value,
     description: (
       form.querySelector('#profileDescription') as HTMLTextAreaElement
     ).value,

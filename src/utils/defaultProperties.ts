@@ -6,8 +6,7 @@ interface typeDefaultProperties {
   enableConsensus: boolean;
   llmWeights: Record<LLMEngineType, number>;
   isEnabled: boolean;
-  profileAvatarImage: string;
-  profileName: string;
+  defaultProfile: Profile;
 }
 const LLMWeightsMap = {
   [LLMEngineType.Gemini]: 0.18,
@@ -24,8 +23,16 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   enableConsensus: false,
   llmWeights: LLMWeightsMap,
   isEnabled: true,
-  profileAvatarImage: 'https://w.wallhaven.cc/full/5g/wallhaven-5gxvv3.png',
-  profileName: 'Luna',
+  defaultProfile: {
+    name: 'Luna',
+    image_url: 'https://w.wallhaven.cc/full/5g/wallhaven-5gxvv3.png',
+    system_prompt:
+      'You are an helpful chatbot with great general knowledge. You are here to help users with their queries.',
+    description:
+      'Luna is a chatbot that is here to help you with your queries.',
+    short_description:
+      'Luna is a chatbot that is here to help you with your queries.',
+  },
 };
 
 export { DEFAULT_PROPERTIES };
