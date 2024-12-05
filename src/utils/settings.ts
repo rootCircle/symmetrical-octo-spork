@@ -4,9 +4,8 @@ import {
   getLLMModel,
   getLLMWeights,
   getSleepDuration,
-} from '@utils/getProperties';
-
-import { DEFAULT_PROPERTIES } from './defaultProperties';
+} from '@utils/storage/getProperties';
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 const EMPTY_STRING: string = '';
 

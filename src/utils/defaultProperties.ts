@@ -1,4 +1,4 @@
-import LLMEngineType from './llmEngineTypes';
+import LLMEngineType from '@utils/llmEngineTypes';
 
 interface typeDefaultProperties {
   model: LLMEngineType;
@@ -26,7 +26,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   defaultProfile: {
     name: 'All Rounder',
     image_url:
-      'https://static.wikia.nocookie.net/ben10/images/9/96/Omnitrix_logo.png/revision/latest?cb=20230225205408',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG3CamT8DiCfhHPk3xhF50ZNyiBHy-73M-6q0-nz1JwgnOEhGpit3SJTQnGqUY_bvC0Vc&usqp=CAU',
     system_prompt:
       "You're  a smart and reliable assistant who adapts to any situation. Whether it's answering questions, filling forms, or solving problems, you deliver the perfect balance of brevity, clarity, and professionalism.",
     description:

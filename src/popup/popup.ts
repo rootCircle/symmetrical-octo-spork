@@ -6,6 +6,7 @@ import {
   getSelectedProfileKey,
   loadProfiles,
 } from '@utils/storage/profiles/profileManager';
+import { validateLLMConfiguration } from '@utils/missingApiKey';
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggleButton = document.getElementById('toggleButton');
@@ -17,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const refreshButton = document.querySelector<HTMLElement>(
     '.button-section-vertical-left',
   );
+  const apiMessage = document.querySelector('.api-message') as HTMLElement;
+  const apiMessageText = apiMessage?.querySelector(
+    '.api-message-text',
+  ) as HTMLElement;
+
   let previousState = false;
 
   if (
@@ -24,7 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     !toggleOn ||
     !toggleOff ||
     !refreshButton ||
-    !fillSection
+    !fillSection ||
+    !apiMessage ||
+    !apiMessageText
   ) {
     console.error('Required elements not found');
     return;
@@ -32,6 +40,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   refreshButton.style.display = 'none';
   fillSection.style.display = 'none';
+
+  async function checkAndUpdateApiMessage() {
+    type ValidationResult = {
+      invalidEngines: string[];
+      isConsensusEnabled: boolean;
+    };
+    const validation = (await validateLLMConfiguration()) as ValidationResult;
+    let multiple = '';
+    if (validation.invalidEngines.length > 1) {
+      multiple = 's';
+    }
+    if (validation.invalidEngines.length > 0) {
+      apiMessage.style.display = 'block';
+      if (validation.isConsensusEnabled) {
+        apiMessageText.textContent = `Please add API keys in Options for the required model${multiple} (${validation.invalidEngines.join(', ')}) or set their weight${multiple} to 0 in consensus settings`;
+      } else {
+        apiMessageText.textContent =
+          'Please add an API key in Options to use DocFiller';
+      }
+      // Can't switch on extension
+      toggleButton?.classList.add('disabled');
+      if (toggleButton) {
+        toggleButton.style.pointerEvents = 'none';
+      }
+    } else {
+      apiMessage.style.display = 'none';
+      toggleButton?.classList.remove('disabled');
+      if (toggleButton) {
+        toggleButton.style.pointerEvents = 'auto';
+      }
+    }
+  }
 
   chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
     const automaticFillingEnabled =
@@ -64,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             );
           });
         });
+        await checkAndUpdateApiMessage();
       } catch (error) {
         console.error(
           `Error saving state. ${error instanceof Error ? error.message : String(error)}`,
@@ -71,13 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    fillSection.addEventListener('click', () => {
-      runDocFillerEngine().catch(console.error);
-    });
-
     void saveState();
   });
 
+  fillSection.addEventListener('click', () => {
+    runDocFillerEngine().catch(console.error);
+  });
   refreshButton.addEventListener('click', () => {
     chrome.tabs.reload().catch((error) => {
       console.error('Failed to reload tab:', error);
@@ -110,5 +150,5 @@ document.addEventListener('DOMContentLoaded', () => {
       DEFAULT_PROPERTIES.defaultProfile.name;
   }
 
-  fillProfile().catch(console.error);
+  Promise.all([checkAndUpdateApiMessage(), fillProfile()]).catch(console.error);
 });

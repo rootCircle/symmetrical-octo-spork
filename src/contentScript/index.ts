@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { runDocFillerEngine } from '@docFillerCore/index';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import { getIsEnabled } from '@utils/getProperties';
+import { getIsEnabled } from '@utils/storage/getProperties';
 
 let debugging = true;
 if (debugging) {

@@ -1,4 +1,4 @@
-import LLMEngineType from './llmEngineTypes';
+import LLMEngineType from '@utils/llmEngineTypes';
 
 function getSetting<T>(key: string): Promise<T | undefined> {
   return new Promise((resolve, reject) => {
