@@ -1,4 +1,4 @@
-export const profilesData: Record<string, Profile> = {
+export const profilesData: Profiles = {
   short: {
     system_prompt:
       'Provide very short, direct responses focusing only on essential information. Use concise language and get straight to the point.',

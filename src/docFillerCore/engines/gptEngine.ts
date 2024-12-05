@@ -166,7 +166,7 @@ export class LLMEngine {
 
       if (modelInstance) {
         const selectedProfileKey = (await getSelectedProfileKey()).trim();
-        const profiles = (await loadProfiles()) as Record<string, Profile>;
+        const profiles = await loadProfiles();
         const systemPrompt =
           profiles[selectedProfileKey]?.system_prompt ||
           DEFAULT_PROPERTIES.defaultProfile.system_prompt;
