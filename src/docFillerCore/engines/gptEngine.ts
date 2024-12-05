@@ -29,7 +29,7 @@ import {
   getGeminiApiKey,
   getMistralApiKey,
   getAnthropicApiKey,
-} from '@utils/getProperties';
+} from '@utils/storage/getProperties';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 type LLMInstance =

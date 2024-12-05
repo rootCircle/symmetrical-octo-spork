@@ -4,7 +4,7 @@ import {
   getLLMModel,
   getLLMWeights,
   getSleepDuration,
-} from '@utils/getProperties';
+} from '@utils/storage/getProperties';
 
 import { DEFAULT_PROPERTIES } from './defaultProperties';
 
