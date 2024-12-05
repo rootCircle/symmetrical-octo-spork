@@ -1,15 +1,16 @@
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import LLMEngineType, {
-  getAPIPlatformSourceLink,
-  getModelName,
-  getModelTypeFromName,
-} from '@utils/llmEngineTypes';
+import LLMEngineType, { getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
 
 import {
   createProfileCards,
   handleProfileFormSubmit,
 } from './optionProfileHandler';
+import {
+  updateApiKeyInputField,
+  updateApiKeyLink,
+  updateConsensusApiLinks,
+} from './optionApiHandler';
 
 document.addEventListener('DOMContentLoaded', () => {
   const modalHTML = `
@@ -162,6 +163,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const singleApiKeyInput = document.getElementById(
     'singleApiKey',
   ) as HTMLInputElement;
+  const modelSelect = document.getElementById('llmModel') as HTMLSelectElement;
+  const apiKeyInputLink = document.getElementById(
+    'singleApiKeyLink',
+  ) as HTMLAnchorElement;
+
+  modelSelect.addEventListener('change', () => {
+    updateApiKeyLink(modelSelect, apiKeyInputLink);
+  });
+  enableConsensusCheckbox.addEventListener('change', () => {
+    updateConsensusApiLinks(enableConsensusCheckbox);
+  });
 
   chrome.storage.sync.get(
     [
@@ -180,6 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
       );
       llmModelSelect.value =
         (items['llmModel'] as string) || getModelName(DEFAULT_PROPERTIES.model);
+
+      updateApiKeyInputField(singleApiKeyInput, llmModelSelect);
+
       enableConsensusCheckbox.checked = Boolean(
         (items['enableConsensus'] as boolean) ||
           DEFAULT_PROPERTIES.enableConsensus,
@@ -205,7 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
         (items['anthropicApiKey'] as string) || EMPTY_STRING;
 
       toggleConsensusOptions(enableConsensusCheckbox.checked);
-      updateSingleApiKeyInput();
+
+      // Initial call to set up the form when it loads
+      updateApiKeyLink(modelSelect, apiKeyInputLink);
+      updateConsensusApiLinks(enableConsensusCheckbox);
+      updateSingleApiKeyInput(llmModelSelect.value);
     },
   );
 
@@ -214,46 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
       'singleApiKey',
     ) as HTMLInputElement;
 
-    const apiKeyContainer = apiKeyInput.parentElement;
-    if (
-      llmModelSelect.value === 'Ollama' ||
-      llmModelSelect.value === 'ChromeAI'
-    ) {
-      apiKeyInput.disabled = true;
-      apiKeyInput.placeholder =
-        llmModelSelect.value === 'Ollama'
-          ? 'No API key required for Ollama! Ensure Ollama is installed locally on your system.'
-          : 'No API key required for Chrome AI';
-      apiKeyContainer?.classList.add('warning');
-      apiKeyInput.value = '';
-    } else {
-      apiKeyInput.disabled = false;
-      apiKeyInput.placeholder = '';
-      apiKeyContainer?.classList.remove('warning');
-    }
+    updateApiKeyInputField(apiKeyInput, llmModelSelect);
 
-    updateSingleApiKeyInput();
-  });
-
-  window.addEventListener('load', () => {
-    if (
-      llmModelSelect.value === 'Ollama' ||
-      llmModelSelect.value === 'ChromeAI'
-    ) {
-      const apiKeyInput = document.getElementById(
-        'singleApiKey',
-      ) as HTMLInputElement;
-
-      const apiKeyContainer = apiKeyInput.parentElement;
-
-      apiKeyInput.disabled = true;
-      apiKeyInput.placeholder =
-        llmModelSelect.value === 'Ollama'
-          ? 'No API key required for Ollama'
-          : 'No API key required for Chrome AI';
-      apiKeyContainer?.classList.add('warning');
-      apiKeyInput.value = '';
-    }
+    updateSingleApiKeyInput(llmModelSelect.value);
   });
 
   const toggleConsensusOptions = (enableConsensus: boolean) => {
@@ -278,8 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const updateSingleApiKeyInput = () => {
-    const selectedModel = llmModelSelect.value;
+  const updateSingleApiKeyInput = (selectedModel: string) => {
     let apiKeyValue = '';
 
     switch (selectedModel) {
@@ -341,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   llmModelSelect.addEventListener('change', () => {
-    updateSingleApiKeyInput();
+    updateSingleApiKeyInput(llmModelSelect.value);
   });
 
   saveButton.addEventListener('click', () => {
@@ -395,88 +376,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     void saveOptions();
   });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-  const modelSelect = document.getElementById('llmModel') as HTMLSelectElement;
-  const apiKeyInputLink = document.getElementById(
-    'singleApiKeyLink',
-  ) as HTMLAnchorElement;
-  const enableConsensusCheckbox = document.getElementById(
-    'enableConsensus',
-  ) as HTMLInputElement;
-
-  function updateApiKeyLink(): void {
-    const selectedModel = modelSelect.value;
-    const selectedModelType = getModelTypeFromName(selectedModel);
-
-    if (!selectedModelType) {
-      return;
-    }
-
-    const warningMessage = document.querySelector(
-      '.warning-message',
-    ) as HTMLElement;
-
-    const apiLink = getAPIPlatformSourceLink(selectedModelType);
-    if (apiLink === '') {
-      apiKeyInputLink.style.display = 'none';
-      warningMessage.style.display = 'block';
-    } else {
-      apiKeyInputLink.href = apiLink;
-      apiKeyInputLink.textContent = 'Get API Key';
-      apiKeyInputLink.style.display = 'block';
-      warningMessage.style.display = 'none';
-    }
-  }
-
-  function updateConsensusApiLinks() {
-    const consensusSection = document.getElementById(
-      'consensusWeights',
-    ) as HTMLElement;
-
-    if (enableConsensusCheckbox.checked) {
-      consensusSection.classList.remove('hidden');
-
-      updateConsensusApiLink('chatGptApiKey', 'ChatGPT');
-      updateConsensusApiLink('geminiApiKey', 'Gemini');
-      updateConsensusApiLink('ollamaApiKey', 'Ollama');
-      updateConsensusApiLink('chromeAIApiKey', 'ChromeAI');
-      updateConsensusApiLink('mistralApiKey', 'Mistral');
-      updateConsensusApiLink('anthropicApiKey', 'Anthropic');
-    } else {
-      consensusSection.classList.add('hidden');
-    }
-  }
-
-  function updateConsensusApiLink(apiKeyElementId: string, modelName: string) {
-    const apiKeyInput = document.getElementById(
-      apiKeyElementId,
-    ) as HTMLInputElement;
-    const modelDetected = getModelTypeFromName(modelName);
-    if (!modelDetected) {
-      return;
-    }
-    const apiLink = getAPIPlatformSourceLink(modelDetected);
-
-    if (apiLink) {
-      apiKeyInput.disabled = false;
-      const apiLinkElement =
-        apiKeyInput.nextElementSibling as HTMLAnchorElement;
-      apiLinkElement.href = apiLink;
-      apiLinkElement.style.display = 'block';
-    } else {
-      apiKeyInput.disabled = true;
-      const apiLinkElement =
-        apiKeyInput.nextElementSibling as HTMLAnchorElement;
-      apiLinkElement.style.display = 'none';
-    }
-  }
-
-  modelSelect.addEventListener('change', updateApiKeyLink);
-  enableConsensusCheckbox.addEventListener('change', updateConsensusApiLinks);
-
-  // Initial call to set up the form when it loads
-  updateApiKeyLink();
-  updateConsensusApiLinks();
 });

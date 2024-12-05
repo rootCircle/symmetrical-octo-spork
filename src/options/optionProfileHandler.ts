@@ -41,7 +41,7 @@ async function createProfileCards() {
     </div>
     <div class="tick-mark ${profileKey === selectedProfileKey ? '' : 'hidden'}">✓</div>
 </div>
-<img src="${profile.image_url}" alt="${profile.name}" class="profile-image">
+<img loading="lazy" src="${profile.image_url}" alt="${profile.name}" class="profile-image">
 <h3>${profile.name}</h3>
 <p>${profile.short_description}</p>`;
 
