@@ -117,6 +117,7 @@ interface Profile {
   name: string;
   description: string;
   short_description: string;
+  is_custom: boolean;
 }
 
 interface Profiles {

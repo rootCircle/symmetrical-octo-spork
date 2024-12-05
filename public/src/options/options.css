@@ -22,26 +22,28 @@ body {
   background-color: var(--background);
   color: var(--text-primary);
   margin: 0;
-  padding: 2rem;
+  padding: 1rem;
   line-height: 1.5;
 }
 
 .container {
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
   background: var(--card-bg);
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1rem;
   box-shadow: var(--shadow);
 }
 
 h1 {
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--border-color);
+  text-align: center;
 }
 
 .form-group {
@@ -58,7 +60,8 @@ label {
 
 input[type='text'],
 input[type='number'],
-select {
+select,
+textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid var(--border-color);
@@ -71,7 +74,8 @@ select {
 
 input[type='text']:focus,
 input[type='number']:focus,
-select:focus {
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
@@ -156,19 +160,6 @@ input[disabled] {
   text-decoration: underline;
 }
 
-@media (max-width: 640px) {
-  body {
-    padding: 1rem;
-  }
-
-  .container {
-    padding: 1.5rem;
-  }
-
-  #consensusWeights .form-group {
-    grid-template-columns: 1fr;
-  }
-}
 .profiles-container {
   margin-bottom: 40px;
 }
@@ -222,10 +213,12 @@ input[disabled] {
   line-height: 1.4;
 }
 
+/* Add Profile Card */
 .add-profile {
   border: 2px dashed #ccc;
   background: #f9f9f9;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .add-profile:hover {
@@ -280,19 +273,24 @@ input[disabled] {
 }
 
 .modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: white;
-  padding: 30px;
+  padding: 20px;
   border-radius: 12px;
   width: 90%;
   max-width: 500px;
-  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .close-button {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   font-size: 24px;
   cursor: pointer;
   color: #666;
@@ -302,7 +300,6 @@ input[disabled] {
   color: #333;
 }
 
-/* Form styles */
 #addProfileForm {
   margin-top: 20px;
 }
@@ -334,6 +331,7 @@ input[disabled] {
 
 .form-actions {
   display: flex;
+  flex-direction: column;
   gap: 10px;
   margin-top: 30px;
 }
@@ -398,22 +396,6 @@ input[disabled] {
   opacity: 1;
 }
 
-.tick-mark {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #4caf50;
-  color: white;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  z-index: 1;
-}
-
 .add-profile {
   position: relative; /* Add this to enable absolute positioning of children */
   border: 2px dashed #ccc;
@@ -432,14 +414,14 @@ input[disabled] {
 }
 
 .add-profile-content {
-  position: absolute; /* Position absolutely within the card */
-  bottom: 45px; /* Distance from bottom */
+  position: absolute;
+  bottom: 45px;
   left: 0;
   right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px; /* Space between icon and text */
+  gap: 5px;
 }
 
 .add-icon {
@@ -454,4 +436,60 @@ input[disabled] {
   color: #666;
   margin: 0;
   font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 0.5rem;
+  }
+
+  .container {
+    padding: 1rem;
+    border-radius: 0;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  #consensusWeights .form-group {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.25rem;
+  }
+
+  .profile-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    margin: 0 5px;
+  }
+
+  input[type='text'],
+  input[type='number'],
+  select,
+  textarea {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
 }

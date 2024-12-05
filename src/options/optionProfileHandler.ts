@@ -35,19 +35,15 @@ async function createProfileCards() {
     if (profileKey === selectedProfileKey) {
       card.classList.add('selected');
     }
-
-    card.innerHTML = `
-  
-        <div class="card-icons">
-          <div class="delete-mark ${profileKey === 'andy' ? 'hidden' : ''}">×</div>
-          <div class="tick-mark ${profileKey === selectedProfileKey ? '' : 'hidden'}">✓</div>
-        </div>
-  
-        <img src="${profile.image_url}" alt="${profile.name}" class="profile-image">
-        <h3>${profile.name}</h3>
-        <p>${profile.short_description}</p>
-  
-      `;
+    card.innerHTML = `<div class="card-icons">
+    <div class="delete-mark ${profiles[profileKey]?.is_custom === false ? 'hidden' : ''}">
+        ×
+    </div>
+    <div class="tick-mark ${profileKey === selectedProfileKey ? '' : 'hidden'}">✓</div>
+</div>
+<img src="${profile.image_url}" alt="${profile.name}" class="profile-image">
+<h3>${profile.name}</h3>
+<p>${profile.short_description}</p>`;
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     card.addEventListener('click', async () => {
@@ -132,6 +128,7 @@ async function handleProfileFormSubmit(submitEvent: Event) {
     short_description: (
       form.querySelector('#profileShortDescription') as HTMLInputElement
     ).value,
+    is_custom: true,
   };
 
   try {

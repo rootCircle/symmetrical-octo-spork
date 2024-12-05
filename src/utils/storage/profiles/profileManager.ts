@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 import { EMPTY_STRING } from '@utils/settings';
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 import { profilesData } from './profilesData';
 
@@ -10,6 +11,7 @@ async function loadProfiles(): Promise<Profiles> {
         (result['customProfiles'] as Profiles) || {};
 
       const mergedProfiles = {
+        default: DEFAULT_PROPERTIES.defaultProfile,
         ...profilesData,
         ...customProfiles,
       };
