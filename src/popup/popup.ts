@@ -117,6 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   fillSection.addEventListener('click', () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const tab = tabs[0];
+
+      chrome.scripting.executeScript({
+          target: { tabId: tab?.id || 0 },
+          func: runDocFillerEngine,
+      }).catch(console.error);
+  });
+
+
     runDocFillerEngine().catch(console.error);
   });
   refreshButton.addEventListener('click', () => {
