@@ -69,11 +69,11 @@
   "dependencies": {
     "@langchain/anthropic": "^0.3.1",
     "@langchain/community": "^0.3.16",
-    "@langchain/google-genai": "^0.0.26",
-    "@langchain/mistralai": "^0.0.29",
-    "@langchain/ollama": "^0.0.4",
-    "@langchain/openai": "^0.2.10",
-    "langchain": "^0.2.18",
+    "@langchain/google-genai": "^0.1.5",
+    "@langchain/mistralai": "^0.2.0",
+    "@langchain/ollama": "^0.1.2",
+    "@langchain/openai": "^0.3.14",
+    "langchain": "^0.3.6",
     "uuid": "^11.0.3"
   }
 }
