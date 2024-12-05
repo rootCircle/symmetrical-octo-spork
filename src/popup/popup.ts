@@ -9,6 +9,14 @@ import {
 import { validateLLMConfiguration } from '@utils/missingApiKey';
 
 document.addEventListener('DOMContentLoaded', () => {
+  let previousState = false;
+  chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
+    const automaticFillingEnabled =
+      (items['automaticFillingEnabled'] as boolean) ||
+      DEFAULT_PROPERTIES.automaticFillingEnabled;
+    previousState = automaticFillingEnabled;
+    updateToggleState(automaticFillingEnabled);
+  });
   const toggleButton = document.getElementById('toggleButton');
   const toggleOn = toggleButton?.querySelector('.toggle-on') as HTMLElement;
   const toggleOff = toggleButton?.querySelector('.toggle-off') as HTMLElement;
@@ -22,8 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const apiMessageText = apiMessage?.querySelector(
     '.api-message-text',
   ) as HTMLElement;
-
-  let previousState = false;
 
   if (
     !toggleButton ||
@@ -72,20 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-
-  chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
-    const automaticFillingEnabled =
-      (items['automaticFillingEnabled'] as boolean) ?? false;
-    previousState = automaticFillingEnabled;
-    updateToggleState(automaticFillingEnabled);
-  });
-
   toggleButton.addEventListener('click', () => {
     const saveState = async () => {
       try {
         await new Promise<void>((resolve, reject) => {
           chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
-            const newState = !(items['automaticFillingEnabled'] ?? true);
+            const newState = !(
+              items['automaticFillingEnabled'] ??
+              DEFAULT_PROPERTIES.automaticFillingEnabled
+            );
             chrome.storage.sync.set(
               { automaticFillingEnabled: newState },
               () => {

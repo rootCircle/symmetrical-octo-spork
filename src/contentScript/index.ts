@@ -14,7 +14,7 @@ if (debugging) {
         isEnabled === true ||
         DEFAULT_PROPERTIES.automaticFillingEnabled
       ) {
-        return runDocFillerEngine();
+        runDocFillerEngine().catch(console.error);
       }
       return Promise.resolve();
     })
