@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
   fillSection.style.display = 'none';
 
   chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
-    const automaticFillingEnabled = (items['automaticFillingEnabled'] as boolean) ?? false;
+    const automaticFillingEnabled =
+      (items['automaticFillingEnabled'] as boolean) ?? false;
     previousState = automaticFillingEnabled;
     updateToggleState(automaticFillingEnabled);
   });
@@ -45,19 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
         await new Promise<void>((resolve, reject) => {
           chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
             const newState = !(items['automaticFillingEnabled'] ?? true);
-            chrome.storage.sync.set({ automaticFillingEnabled: newState }, () => {
-              if (chrome.runtime.lastError) {
-                reject(new Error(chrome.runtime.lastError.message));
-              } else {
-                if (previousState !== newState) {
-                  refreshButton.style.display = 'flex';
+            chrome.storage.sync.set(
+              { automaticFillingEnabled: newState },
+              () => {
+                if (chrome.runtime.lastError) {
+                  reject(new Error(chrome.runtime.lastError.message));
+                } else {
+                  if (previousState !== newState) {
+                    refreshButton.style.display = 'flex';
+                  }
+                  previousState = newState;
+                  updateToggleState(newState);
+                  console.log('State successfully saved:', newState);
+                  resolve();
                 }
-                previousState = newState;
-                updateToggleState(newState);
-                console.log('State successfully saved:', newState);
-                resolve();
-              }
-            });
+              },
+            );
           });
         });
       } catch (error) {

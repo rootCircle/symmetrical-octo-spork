@@ -158,11 +158,12 @@ If you're planning to contribute to the development of this web extension, here 
 
   - Firefox
 
-      ```bash
-      bun run dev:firefox
-      ```
+    ```bash
+    bun run dev:firefox
+    ```
 
-      This will open a new Firefox window with the extension loaded.
+    This will open a new Firefox window with the extension loaded.
+
   - Chrome
 
     - For Chrome, use the following command to watch for changes and load the extension:

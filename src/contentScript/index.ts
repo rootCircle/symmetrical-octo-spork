@@ -10,7 +10,10 @@ if (debugging) {
       console.log('Enabled??', isEnabled);
       if (isEnabled === false) {
         console.log('Doc Filler is currently disabled');
-      } else if (isEnabled === true || DEFAULT_PROPERTIES.automaticFillingEnabled) {
+      } else if (
+        isEnabled === true ||
+        DEFAULT_PROPERTIES.automaticFillingEnabled
+      ) {
         return runDocFillerEngine();
       }
       return Promise.resolve();
