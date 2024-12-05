@@ -14,9 +14,13 @@ import {
 import { ChromeAI } from '@langchain/community/experimental/llms/chrome_ai';
 import LLMEngineType from '@utils/llmEngineTypes';
 import { RunnableSequence } from '@langchain/core/runnables';
-import { PromptTemplate } from '@langchain/core/prompts';
 import { QType } from '@utils/questionTypes';
 import { DatetimeOutputParser } from 'langchain/output_parsers';
+import {
+  getSelectedProfileKey,
+  loadProfiles,
+} from '@utils/storage/profiles/profileManager';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { z } from 'zod';
 import { ChatAnthropic } from '@langchain/anthropic';
 import { ChatMistralAI } from '@langchain/mistralai';
@@ -26,6 +30,7 @@ import {
   getMistralApiKey,
   getAnthropicApiKey,
 } from '@utils/getProperties';
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 type LLMInstance =
   | ChatOpenAI
@@ -160,10 +165,17 @@ export class LLMEngine {
       const modelInstance = LLMEngine.instances[this.engine];
 
       if (modelInstance) {
+        const selectedProfileKey = (await getSelectedProfileKey()).trim();
+        const profiles = (await loadProfiles()) as Record<string, Profile>;
+        const systemPrompt =
+          profiles[selectedProfileKey]?.system_prompt ||
+          DEFAULT_PROPERTIES.defaultProfile.system_prompt;
+        const promptTemplate = ChatPromptTemplate.fromMessages([
+          ['system', systemPrompt],
+          ['user', 'Format: {format_instructions}\n\nQuestion: {question}'],
+        ]);
         const chain = RunnableSequence.from([
-          PromptTemplate.fromTemplate(
-            'Answer the users question as best as possible.\n{format_instructions}\n{question}',
-          ),
+          promptTemplate,
           modelInstance,
           parser,
         ]);

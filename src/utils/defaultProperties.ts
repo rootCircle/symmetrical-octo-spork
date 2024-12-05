@@ -24,14 +24,15 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   llmWeights: LLMWeightsMap,
   isEnabled: true,
   defaultProfile: {
-    name: 'Luna',
-    image_url: 'https://w.wallhaven.cc/full/5g/wallhaven-5gxvv3.png',
+    name: 'All Rounder',
+    image_url:
+      'https://static.wikia.nocookie.net/ben10/images/9/96/Omnitrix_logo.png/revision/latest?cb=20230225205408',
     system_prompt:
-      'You are an helpful chatbot with great general knowledge. You are here to help users with their queries.',
+      "You're  a smart and reliable assistant who adapts to any situation. Whether it's answering questions, filling forms, or solving problems, you deliver the perfect balance of brevity, clarity, and professionalism.",
     description:
-      'Luna is a chatbot that is here to help you with your queries.',
-    short_description:
-      'Luna is a chatbot that is here to help you with your queries.',
+      'A versatile, friendly, and smart assistant ready to handle any task efficiently. Andy adapts to every scenario and provides the best experience.',
+    short_description: 'Your best all-rounder',
+    is_custom: false,
   },
 };
 
