@@ -22,7 +22,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   model: LLMEngineType.Gemini,
   enableConsensus: false,
   llmWeights: LLMWeightsMap,
-  automaticFillingEnabled: true,
+  automaticFillingEnabled: false,
   defaultProfile: {
     name: 'All Rounder',
     image_url:

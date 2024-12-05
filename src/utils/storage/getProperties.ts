@@ -14,21 +14,31 @@ function getSetting<T>(key: string): Promise<T | undefined> {
 }
 
 async function getSleepDuration(): Promise<number> {
-  return await getSetting<number>('sleepDuration') || DEFAULT_PROPERTIES.sleep_duration;
+  return (
+    (await getSetting<number>('sleepDuration')) ||
+    DEFAULT_PROPERTIES.sleep_duration
+  );
 }
 
 async function getLLMModel(): Promise<string> {
-  return await getSetting<string>('llmModel') || getModelName(DEFAULT_PROPERTIES.model);
+  return (
+    (await getSetting<string>('llmModel')) ||
+    getModelName(DEFAULT_PROPERTIES.model)
+  );
 }
 
 async function getEnableConsensus(): Promise<boolean> {
-  return await getSetting<boolean>('enableConsensus') || DEFAULT_PROPERTIES.enableConsensus;
+  return (
+    (await getSetting<boolean>('enableConsensus')) ||
+    DEFAULT_PROPERTIES.enableConsensus
+  );
 }
 
-async function getLLMWeights(): Promise<
-  Record<LLMEngineType, number>
-> {
-  return await getSetting<Record<LLMEngineType, number>>('llmWeights') || DEFAULT_PROPERTIES.llmWeights;
+async function getLLMWeights(): Promise<Record<LLMEngineType, number>> {
+  return (
+    (await getSetting<Record<LLMEngineType, number>>('llmWeights')) ||
+    DEFAULT_PROPERTIES.llmWeights
+  );
 }
 async function getChatGptApiKey(): Promise<string | undefined> {
   return await getSetting<string>('chatGptApiKey');
@@ -46,7 +56,10 @@ async function getAnthropicApiKey(): Promise<string | undefined> {
   return await getSetting<string>('anthropicApiKey');
 }
 async function getIsEnabled(): Promise<boolean> {
-  return await getSetting<boolean>('automaticFillingEnabled') || DEFAULT_PROPERTIES.automaticFillingEnabled;
+  return (
+    (await getSetting<boolean>('automaticFillingEnabled')) ||
+    DEFAULT_PROPERTIES.automaticFillingEnabled
+  );
 }
 
 export {
