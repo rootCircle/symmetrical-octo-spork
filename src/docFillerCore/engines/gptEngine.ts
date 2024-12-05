@@ -162,7 +162,12 @@ export class LLMEngine {
     }
     try {
       const parser = LLMEngine.getParser(questionType);
-      const modelInstance = LLMEngine.instances[this.engine];
+      let modelInstance = LLMEngine.instances[this.engine];
+
+      if (!modelInstance) {
+        await LLMEngine.fetchApiKeys();
+        modelInstance = LLMEngine.instantiateEngine(this.engine);
+      }
 
       if (modelInstance) {
         const selectedProfileKey = (await getSelectedProfileKey()).trim();
