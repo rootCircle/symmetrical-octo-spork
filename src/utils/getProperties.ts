@@ -45,7 +45,7 @@ async function getAnthropicApiKey(): Promise<string | undefined> {
   return await getSetting<string>('anthropicApiKey');
 }
 async function getIsEnabled(): Promise<boolean | undefined> {
-  return await getSetting<boolean>('isEnabled');
+  return await getSetting<boolean>('automaticFillingEnabled');
 }
 
 export {
