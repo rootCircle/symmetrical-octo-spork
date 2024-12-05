@@ -6,8 +6,7 @@ import {
   getSelectedProfileKey,
   loadProfiles,
 } from '@utils/storage/profiles/profileManager';
-
-import { validateLLMConfiguration } from '../utils/missingApiKey';
+import { validateLLMConfiguration } from '@utils/missingApiKey';
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggleButton = document.getElementById('toggleButton');

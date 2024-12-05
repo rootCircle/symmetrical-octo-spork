@@ -1,4 +1,4 @@
-import LLMEngineType from './llmEngineTypes';
+import LLMEngineType from '@utils/llmEngineTypes';
 
 interface typeDefaultProperties {
   model: LLMEngineType;
