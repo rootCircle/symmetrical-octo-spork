@@ -10,6 +10,7 @@ const watch = () => {
     .catch(() => {});
 
   // Watch directories
+  // eslint-disable-next-line import/no-named-as-default-member
   const watcher = chokidar.watch(['src/', 'public/'], {
     ignored: /node_modules/,
     persistent: true,
