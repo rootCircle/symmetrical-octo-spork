@@ -339,6 +339,8 @@ export class LLMEngine {
               ),
             isOther: z
               .boolean()
+              .nullable()
+              .optional()
               .describe(
                 "Indicates if this is an 'other' option. This field is required.",
               ),
