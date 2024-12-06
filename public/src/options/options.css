@@ -59,6 +59,7 @@ label {
 }
 
 input[type='text'],
+input[type='password'],
 input[type='number'],
 select,
 textarea {
@@ -73,6 +74,7 @@ textarea {
 }
 
 input[type='text']:focus,
+input[type='password']:focus,
 input[type='number']:focus,
 select:focus,
 textarea:focus {
@@ -486,10 +488,34 @@ input[disabled] {
   }
 
   input[type='text'],
+  input[type='password'],
   input[type='number'],
   select,
   textarea {
     font-size: 0.9rem;
     padding: 0.5rem;
   }
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  width: 100%;
+  padding: 10px;
+  padding-right: 35px; /* Space for the eye icon */
+  box-sizing: border-box;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

@@ -69,6 +69,7 @@
           </form>
         </div>
       </div>
+
       <form id="optionsForm">
         <div class="form-group">
           <label for="sleepDuration">Sleep Duration (ms)</label>
@@ -99,9 +100,19 @@
           </select>
           <div class="api-key-input">
             <label for="singleApiKey">API Key</label>
-            <input type="text" id="singleApiKey" name="singleApiKey" />
-            <div class="warning-message">
-              Ollama/Chrome AI doesn't require an API key
+            <div class="password-container">
+              <input
+                type="password"
+                id="singleApiKey"
+                name="singleApiKey"
+                class="password-input"
+              />
+              <span for="singleApiKey" id="togglesingleApiKey" class="eye-icon"
+                >👁️</span
+              >
+              <div class="warning-message">
+                Ollama/Chrome AI doesn't require an API key
+              </div>
             </div>
             <a id="singleApiKeyLink" target="_blank" class="get-api-key"
               >Get API Key</a
@@ -113,7 +124,20 @@
           <div class="form-group">
             <div>
               <label for="chatGptApiKey">ChatGPT API Key</label>
-              <input type="text" id="chatGptApiKey" name="chatGptApiKey" />
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="chatGptApiKey"
+                  name="chatGptApiKey"
+                  class="password-input"
+                />
+                <span
+                  for="chatGptApiKey"
+                  id="togglechatGptApiKey"
+                  class="eye-icon"
+                  >👁️</span
+                >
+              </div>
               <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
             <div>
@@ -133,7 +157,20 @@
           <div class="form-group">
             <div>
               <label for="geminiApiKey">Gemini API Key</label>
-              <input type="text" id="geminiApiKey" name="geminiApiKey" />
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="geminiApiKey"
+                  name="geminiApiKey"
+                  class="password-input"
+                />
+                <span
+                  for="geminiApiKey"
+                  id="togglegeminiApiKey"
+                  class="eye-icon"
+                  >👁️</span
+                >
+              </div>
               <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
             <div>
@@ -153,13 +190,19 @@
           <div class="form-group">
             <div>
               <label for="ollamaApiKey">Ollama API Key</label>
-              <input
-                type="text"
-                id="ollamaApiKey"
-                name="ollamaApiKey"
-                disabled
-                placeholder="No API key required for Ollama! Ensure Ollama is installed locally on your system."
-              />
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="ollamaApiKey"
+                  name="ollamaApiKey"
+                  class="password-input"
+                  disabled
+                  placeholder="No API key required for Ollama! Ensure Ollama is installed locally on your system."
+                />
+                <span for="ollamaApiKey" id="toggle" class="eye-icon" disabled
+                  >👁️</span
+                >
+              </div>
               <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
             <div>
@@ -179,13 +222,23 @@
           <div class="form-group">
             <div>
               <label for="chromeApiKey">Chrome AI API Key</label>
-              <input
-                type="text"
-                id="chromeAIApiKey"
-                name="chromeApiKey"
-                disabled
-                placeholder="No API key required for Chrome AI. Enable in chrome://flags"
-              />
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="chromeAIApiKey"
+                  name="chromeApiKey"
+                  class="password-input"
+                  disabled
+                  placeholder="No API key required for Chrome AI. Enable in chrome://flags"
+                />
+                <span
+                  for="chromeAIApiKey"
+                  id="toggleanthropicApiKey"
+                  class="eye-icon"
+                  disabled
+                  >👁️</span
+                >
+              </div>
               <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
             <div>
@@ -205,7 +258,20 @@
           <div class="form-group">
             <div>
               <label for="mistralApiKey">Mistral API Key</label>
-              <input type="text" id="mistralApiKey" name="mistralApiKey" />
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="mistralApiKey"
+                  name="mistralApiKey"
+                  class="password-input"
+                />
+                <span
+                  for="mistralApiKey"
+                  id="togglemistralApiKey"
+                  class="eye-icon"
+                  >👁️</span
+                >
+              </div>
               <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
             <div>
@@ -225,7 +291,20 @@
           <div class="form-group">
             <div>
               <label for="anthropicApiKey">Anthropic API Key</label>
-              <input type="text" id="anthropicApiKey" name="anthropicApiKey" />
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="anthropicApiKey"
+                  name="anthropicApiKey"
+                  class="password-input"
+                />
+                <span
+                  for="anthropicApiKey"
+                  id="toggleanthropicApiKey"
+                  class="eye-icon"
+                  >👁️</span
+                >
+              </div>
               <a target="_blank" class="get-api-key">Get API Key</a>
             </div>
             <div>

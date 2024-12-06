@@ -120,12 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
 
-      chrome.scripting.executeScript({
+      chrome.scripting
+        .executeScript({
           target: { tabId: tab?.id || 0 },
           func: runDocFillerEngine,
-      }).catch(console.error);
-  });
-
+        })
+        .catch(console.error);
+    });
 
     runDocFillerEngine().catch(console.error);
   });

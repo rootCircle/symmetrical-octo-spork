@@ -11,6 +11,7 @@ import {
   updateApiKeyLink,
   updateConsensusApiLinks,
 } from './optionApiHandler';
+import { initializeOptionPasswordField } from './optionPasswordField';
 
 document.addEventListener('DOMContentLoaded', () => {
   const modalHTML = `
@@ -167,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const apiKeyInputLink = document.getElementById(
     'singleApiKeyLink',
   ) as HTMLAnchorElement;
+
+  initializeOptionPasswordField();
 
   modelSelect.addEventListener('change', () => {
     updateApiKeyLink(modelSelect, apiKeyInputLink);
