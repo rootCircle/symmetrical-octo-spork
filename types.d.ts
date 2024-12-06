@@ -115,7 +115,6 @@ interface Profile {
   system_prompt: string;
   image_url: string;
   name: string;
-  description: string;
   short_description: string;
   is_custom: boolean;
 }

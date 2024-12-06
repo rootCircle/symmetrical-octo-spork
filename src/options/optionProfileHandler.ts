@@ -122,9 +122,6 @@ async function handleProfileFormSubmit(submitEvent: Event) {
     image_url: imageUrl.trim() || defaultImageUrl, // Use default if empty
     system_prompt: (form.querySelector('#profilePrompt') as HTMLTextAreaElement)
       .value,
-    description: (
-      form.querySelector('#profileDescription') as HTMLTextAreaElement
-    ).value,
     short_description: (
       form.querySelector('#profileShortDescription') as HTMLInputElement
     ).value,

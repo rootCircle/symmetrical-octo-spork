@@ -33,10 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <textarea id="profilePrompt" required></textarea>
           </div>
           <div class="form-group">
-            <label for="profileDescription">Description</label>
-            <textarea id="profileDescription" required></textarea>
-          </div>
-          <div class="form-group">
             <label for="profileShortDescription">Short Description</label>
             <input type="text" id="profileShortDescription" required>
           </div>
