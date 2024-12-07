@@ -6,6 +6,7 @@ interface typeDefaultProperties {
   enableConsensus: boolean;
   llmWeights: Record<LLMEngineType, number>;
   automaticFillingEnabled: boolean;
+  defaultProfileKey: string;
   defaultProfile: Profile;
 }
 const LLMWeightsMap = {
@@ -23,6 +24,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   enableConsensus: false,
   llmWeights: LLMWeightsMap,
   automaticFillingEnabled: true,
+  defaultProfileKey: 'default',
   defaultProfile: {
     name: 'All Rounder',
     image_url:

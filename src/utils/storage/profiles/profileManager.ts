@@ -1,5 +1,4 @@
 import { v4 } from 'uuid';
-import { EMPTY_STRING } from '@utils/settings';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 import { profilesData } from './profilesData';
@@ -11,7 +10,8 @@ async function loadProfiles(): Promise<Profiles> {
         (result['customProfiles'] as Profiles) || {};
 
       const mergedProfiles = {
-        default: DEFAULT_PROPERTIES.defaultProfile,
+        [DEFAULT_PROPERTIES.defaultProfileKey]:
+          DEFAULT_PROPERTIES.defaultProfile,
         ...profilesData,
         ...customProfiles,
       };
@@ -110,7 +110,10 @@ async function saveSelectedProfileKey(profileKey: string): Promise<void> {
 async function getSelectedProfileKey() {
   return await new Promise<string>((resolve) => {
     chrome.storage.sync.get(['selectedProfileKey'], (result) => {
-      resolve((result['selectedProfileKey'] as string) || EMPTY_STRING);
+      resolve(
+        (result['selectedProfileKey'] as string) ||
+          DEFAULT_PROPERTIES.defaultProfileKey,
+      );
     });
   });
 }
