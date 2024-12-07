@@ -143,8 +143,10 @@ async function createProfileCards() {
         e.stopPropagation();
         (async () => {
           try {
-            await deleteProfile(profileKey);
-            await createProfileCards();
+            if (confirm('Are you sure you want to delete this profile?')) {
+              await deleteProfile(profileKey);
+              await createProfileCards();
+            }
           } catch (error) {
             handleError('Failed to delete profile:', error);
           }
