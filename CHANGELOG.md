@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.1 (2024-12-07)
+
+- Added pirate profile as new built-in profile
+- feat: Edit custom profile
+- Improved system prompts for builtin prompts
+
 ## v1.1.0 (2024-12-06)
 
 - **Fix**: Now `docFiller` doesn't fill on editable Google Forms as well.
