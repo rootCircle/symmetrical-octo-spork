@@ -545,6 +545,8 @@ input[disabled] {
   background-color: #007bff;
   border: 2px solid #007bff;
   display: flex;
+  font-size: 14px;
+  z-index: 1;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -561,10 +563,11 @@ input[disabled] {
   height: 24px;
   border-radius: 50%;
   background-color: #007bff;
-  border: 2px solid #007bff;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
+  z-index: 1;
   cursor: pointer;
   transition: all 0.2s ease;
   color: white;
