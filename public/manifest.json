@@ -15,8 +15,8 @@
   },
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": [
-    "http://docs.google.com/forms/d/e/*",
-    "https://docs.google.com/forms/d/e/*"
+    "http://docs.google.com/forms/d/e/*/viewform",
+    "https://docs.google.com/forms/d/e/*/viewform"
   ],
   "background": {
     "service_worker": "src/background/index.js",
@@ -25,8 +25,8 @@
   "content_scripts": [
     {
       "matches": [
-        "http://docs.google.com/forms/d/e/*",
-        "https://docs.google.com/forms/d/e/*"
+        "http://docs.google.com/forms/*/viewform",
+        "https://docs.google.com/forms/*/viewform"
       ],
       "js": ["src/contentScript/index.js"]
     }
