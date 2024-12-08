@@ -253,7 +253,11 @@ export class PromptEngine {
 
   // Time Prompt
   private getTimePrompt(title: string, description: string): string {
-    return `Provide only the time based on your response to the following question: ${title} - ${description}. Ensure to return the date object with zero-padding where applicable. Return only the time with no additional text or formatting.`;
+    return `Provide only the time based on your response to the following question:
+    ${title} - ${description}.
+    
+    The Year, Month, and Day fields must always be set to "1970-01-01".
+    Ensure to return the date object with zero-padding where applicable. Return only the time with no additional text or formatting.`;
   }
 
   // Time with Meridiem Prompt
@@ -261,7 +265,12 @@ export class PromptEngine {
     title: string,
     description: string,
   ): string {
-    return `Provide only the date and time based on your response to the following question: ${title} - ${description}. Ensure to return the date object with zero-padding where applicable. Return only the time with no additional text or formatting.`;
+    return `Provide only the date and time based on your response to the following question: 
+    
+    ${title} - ${description}. 
+    
+    The Year, Month, and Day fields must always be set to "1970-01-01".
+    Ensure to return the date object with zero-padding where applicable. Return only the time with no additional text or formatting.`;
   }
 
   // DateTime with Meridiem Prompt

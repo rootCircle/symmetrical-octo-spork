@@ -177,7 +177,7 @@ export class LLMEngine {
           DEFAULT_PROPERTIES.defaultProfile.system_prompt;
         const promptTemplate = ChatPromptTemplate.fromMessages([
           ['system', systemPrompt],
-          ['user', 'Format: {format_instructions}\n\nQuestion: {question}'],
+          ['user', '{format_instructions}\n\n\nQuestion:\n{question}'],
         ]);
         const chain = RunnableSequence.from([
           promptTemplate,
