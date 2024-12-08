@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { watch } from 'chokidar';
+import chokidar from 'chokidar';
 
 import { runBuild } from './builder';
 import copyContents from './copier';
@@ -8,7 +8,7 @@ const buildWatch = () => {
   runBuild(true).catch(console.error);
 
   // Watch directories
-  const watcher = watch(['public/'], {
+  const watcher = chokidar.watch(['public/'], {
     ignored: /node_modules/,
     persistent: true,
   });
