@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "types": [
-      "bun-types", // add Bun type definitions
       "./types.d.ts", // add your own type definitions
       "@types/chrome",
       "@types/firefox-webext-browser"
