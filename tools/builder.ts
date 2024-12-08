@@ -31,4 +31,4 @@ const runBuild = async () => {
   }
 };
 
-export default runBuild;
+export {runBuild};

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import chokidar from 'chokidar';
 
-import runBuild from './builder.ts';
+import { runBuild } from './builder';
 
 const watch = () => {
   // Initial build
