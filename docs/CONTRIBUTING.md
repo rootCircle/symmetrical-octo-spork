@@ -4,19 +4,69 @@ Thank you for considering contributing to docFiller! We welcome contributions fr
 
 ## Table of Contents
 
-1. [Code of Conduct](#code-of-conduct)
-2. [How Can I Contribute?](#how-can-i-contribute)
+1. [Development Setup](#development)
+2. [Code of Conduct](#code-of-conduct)
+3. [How Can I Contribute?](#how-can-i-contribute)
    - [Reporting Bugs](#reporting-bugs)
    - [Suggesting Enhancements](#suggesting-enhancements)
    - [Code Contributions](#code-contributions)
-3. [Getting Started](#getting-started)
+4. [Getting Started](#getting-started)
    - [Setting Up the Development Environment](#setting-up-the-development-environment)
    - [Forking the Repository](#forking-the-repository)
    - [Creating a Branch](#creating-a-branch)
    - [Making Changes](#making-changes)
-4. [Submitting a Pull Request](#submitting-a-pull-request)
-5. [Code Review](#code-review)
-6. [License](#license)
+5. [Submitting a Pull Request](#submitting-a-pull-request)
+6. [Code Review](#code-review)
+7. [License](#license)
+
+## Development
+
+If you're planning to contribute to the development of this web extension, here are some guidelines:
+
+- Use `bun` instead of `npm`, `pnpm` or `yarn` while installing the packages, the project default package manager. You can install bun from [official website](https://bun.sh/).
+
+- To get started, follow these steps:
+
+  1. Clone the repository:
+
+     ```bash
+     git clone https://github.com/rootCircle/docFiller.git # Replace rootCircle with your username if you have forked the repo
+     ```
+
+  2. Install the required dependencies:
+
+     ```bash
+     bun i
+     ```
+
+  3. Test the extension:
+
+  - Firefox
+
+    ```bash
+    bun run dev:firefox
+    ```
+
+    This will open a new Firefox window with the extension loaded.
+
+  - Chromium
+
+    ```bash
+    bun run dev:chromium
+    ```
+
+  4. **Make your changes**: Make the changes you want in your local copy of the repository.
+
+  5. **Test your changes**: Ensure that your changes work as expected. Test thoroughly before proceeding. Run lint checks before proceeding.
+
+     ```bash
+     bun run lint
+     bun run format
+     ```
+
+     To fix a set of lint issues simply run `bun run lint:fix`.
+
+  6. **Submit a Pull Request**: Once you've made your changes and tested them, submit a pull request (PR) to the original repository. Make sure to explain the changes you've made in the PR description.
 
 ## Code of Conduct
 
@@ -133,63 +183,6 @@ git push origin feature/your-feature-name
 ```
 
 Then, open a Pull Request (PR) on the main repository. Be sure to provide a clear title and description of your changes.
-
-## Development
-
-If you're planning to contribute to the development of this web extension, here are some guidelines:
-
-- Use `bun` instead of `npm`, `pnpm` or `yarn` while installing the packages, the project default package manager. You can install bun from [official website](https://bun.sh/).
-
-- To get started, follow these steps:
-
-  1. Clone the repository:
-
-     ```bash
-     git clone https://github.com/your-username/docFiller.git
-     ```
-
-  2. Install the required dependencies:
-
-     ```bash
-     bun i
-     ```
-
-  3. Test the extension:
-
-  - Firefox
-
-    ```bash
-    bun run dev:firefox
-    ```
-
-    This will open a new Firefox window with the extension loaded.
-
-  - Chrome
-
-    - For Chrome, use the following command to watch for changes and load the extension:
-
-      ```bash
-      bun run watch
-      ```
-
-    - Open `chrome://extensions/` in Chrome.
-    - Enable **Developer mode**.
-    - Click **Load unpacked** and select the `build` directory.
-
-      Then, manually load the extension in Chrome.
-
-  4. **Make your changes**: Make the changes you want in your local copy of the repository.
-
-  5. **Test your changes**: Ensure that your changes work as expected. Test thoroughly before proceeding. Run lint checks before proceeding.
-
-     ```bash
-     bun run lint
-     bun run format
-     ```
-
-     To fix a set of lint issues simply run `bun run lint:fix`.
-
-  6. **Submit a Pull Request**: Once you've made your changes and tested them, submit a pull request (PR) to the original repository. Make sure to explain the changes you've made in the PR description.
 
 ## Code Review
 

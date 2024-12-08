@@ -40,6 +40,8 @@ The Web Extension simplifies the process of filling Google forms by automating r
 
 For detailed installation instructions, please refer to the [INSTALL.md](docs/INSTALL.md) file.
 
+For development setup, see instructions in [CONTRIBUTING.md](./docs/CONTRIBUTING.md#development) file.
+
 ## Usage
 
 Once the extension is installed, you can start using it immediately. Simply click on the extension icon in your browser toolbar to access its features. For usage instructions and additional details, please refer to the [documentation](docs).
