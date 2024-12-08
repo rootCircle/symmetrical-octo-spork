@@ -53,6 +53,8 @@
     "build": "bun tools/bundler.ts",
     "package": "bun tools/bundler.ts && web-ext build --source-dir=build --overwrite-dest",
     "dev:firefox": "bun tools/bundler.ts && concurrently --kill-others \"bun tools/watcher.ts\" \"web-ext run --source-dir=build\"",
+    "dev:chromium": "bun tools/bundler.ts && concurrently --kill-others \"bun tools/watcher.ts\" \"web-ext run -t chromium --source-dir=build\"",
+    "dev:firefox-android": "bun tools/bundler.ts && concurrently --kill-others \"bun tools/watcher.ts\" \"web-ext run -t firefox-android --source-dir=build\"",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md,html,css}' '!build/**' '!node_modules/**' '!web-ext-artifacts/**'",
     "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,json,md,html,css}' '!build/**' '!node_modules/**' '!web-ext-artifacts/**'",
     "webext:lint": "web-ext lint --source-dir=build",
