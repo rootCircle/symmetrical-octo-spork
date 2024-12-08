@@ -12,7 +12,7 @@ import {
   StringOutputParser,
 } from '@langchain/core/output_parsers';
 import { ChromeAI } from '@langchain/community/experimental/llms/chrome_ai';
-import LLMEngineType from '@utils/llmEngineTypes';
+import { LLMEngineType } from '@utils/llmEngineTypes';
 import { RunnableSequence } from '@langchain/core/runnables';
 import { QType } from '@utils/questionTypes';
 import { DatetimeOutputParser } from 'langchain/output_parsers';

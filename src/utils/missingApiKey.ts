@@ -1,4 +1,4 @@
-import LLMEngineType from '@utils/llmEngineTypes';
+import { LLMEngineType, LLM_REQUIREMENTS } from '@utils/llmEngineTypes';
 import {
   getEnableConsensus,
   getLLMWeights,
@@ -8,20 +8,6 @@ import {
   getAnthropicApiKey,
 } from '@utils/storage/getProperties';
 import { Settings } from '@utils/settings';
-
-interface LLMRequirements {
-  requiresApiKey: boolean;
-  defaultModel?: string;
-}
-
-const LLM_REQUIREMENTS: Record<LLMEngineType, LLMRequirements> = {
-  [LLMEngineType.ChatGPT]: { requiresApiKey: true },
-  [LLMEngineType.Gemini]: { requiresApiKey: true },
-  [LLMEngineType.Ollama]: { requiresApiKey: false, defaultModel: 'llama2' },
-  [LLMEngineType.Mistral]: { requiresApiKey: true },
-  [LLMEngineType.Anthropic]: { requiresApiKey: true },
-  [LLMEngineType.ChromeAI]: { requiresApiKey: false },
-};
 
 async function getApiKeys(): Promise<
   Record<LLMEngineType, string | undefined>

@@ -1,5 +1,5 @@
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import LLMEngineType, { getModelName } from '@utils/llmEngineTypes';
+import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
 
 import {
@@ -263,20 +263,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let apiKeyValue = '';
 
     switch (selectedModel) {
-      case 'ChatGPT':
+      case getModelName(LLMEngineType.ChatGPT):
         apiKeyValue = chatGptApiKeyInput.value;
         break;
-      case 'Gemini':
+      case getModelName(LLMEngineType.Gemini):
         apiKeyValue = geminiApiKeyInput.value;
         break;
-      case 'Ollama':
-      case 'ChromeAI':
+      case getModelName(LLMEngineType.Ollama):
+      case getModelName(LLMEngineType.ChromeAI):
         apiKeyValue = '';
         break;
-      case 'Mistral':
+      case getModelName(LLMEngineType.Mistral):
         apiKeyValue = mistralApiKeyInput.value;
         break;
-      case 'Anthropic':
+      case getModelName(LLMEngineType.Anthropic):
         apiKeyValue = anthropicApiKeyInput.value;
         break;
       default:
@@ -293,19 +293,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiKeyValue = singleApiKeyInput.value;
 
     switch (selectedModel) {
-      case 'ChatGPT':
+      case getModelName(LLMEngineType.ChatGPT):
         chatGptApiKeyInput.value = apiKeyValue;
         break;
-      case 'Gemini':
+      case getModelName(LLMEngineType.Gemini):
         geminiApiKeyInput.value = apiKeyValue;
         break;
-      case 'Ollama':
-      case 'ChromeAI':
+      case getModelName(LLMEngineType.Ollama):
+      case getModelName(LLMEngineType.ChromeAI):
         break;
-      case 'Mistral':
+      case getModelName(LLMEngineType.Mistral):
         mistralApiKeyInput.value = apiKeyValue;
         break;
-      case 'Anthropic':
+      case getModelName(LLMEngineType.Anthropic):
         anthropicApiKeyInput.value = apiKeyValue;
         break;
       default:

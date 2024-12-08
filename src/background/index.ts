@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
-import LLMEngineType from '@utils/llmEngineTypes';
+import { LLMEngineType } from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
 
 interface ChromeResponseMessage {

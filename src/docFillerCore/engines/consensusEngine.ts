@@ -3,7 +3,7 @@ import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
 import { analyzeWeightedObjects } from '@utils/consensusUtil';
 import { Settings } from '@utils/settings';
-import LLMEngineType from '@utils/llmEngineTypes';
+import { LLMEngineType } from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 

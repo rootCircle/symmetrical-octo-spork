@@ -1,4 +1,4 @@
-import LLMEngineType, { getModelTypeFromName } from '@utils/llmEngineTypes';
+import { LLMEngineType, getModelTypeFromName } from '@utils/llmEngineTypes';
 import {
   getEnableConsensus,
   getLLMModel,

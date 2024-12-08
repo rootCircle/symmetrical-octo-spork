@@ -1,7 +1,9 @@
 import {
+  LLMEngineType,
   getAPIPlatformSourceLink,
+  getModelName,
   getModelTypeFromName,
-} from '../utils/llmEngineTypes';
+} from '@utils/llmEngineTypes';
 
 function updateApiKeyLink(
   modelSelect: HTMLSelectElement,
@@ -40,12 +42,24 @@ function updateConsensusApiLinks(
   if (enableConsensusCheckbox.checked) {
     consensusSection.classList.remove('hidden');
 
-    updateConsensusApiLink('chatGptApiKey', 'ChatGPT');
-    updateConsensusApiLink('geminiApiKey', 'Gemini');
-    updateConsensusApiLink('ollamaApiKey', 'Ollama');
-    updateConsensusApiLink('chromeAIApiKey', 'ChromeAI');
-    updateConsensusApiLink('mistralApiKey', 'Mistral');
-    updateConsensusApiLink('anthropicApiKey', 'Anthropic');
+    updateConsensusApiLink(
+      'chatGptApiKey',
+      getModelName(LLMEngineType.ChatGPT),
+    );
+    updateConsensusApiLink('geminiApiKey', getModelName(LLMEngineType.Gemini));
+    updateConsensusApiLink('ollamaApiKey', getModelName(LLMEngineType.Ollama));
+    updateConsensusApiLink(
+      'chromeAIApiKey',
+      getModelName(LLMEngineType.ChromeAI),
+    );
+    updateConsensusApiLink(
+      'mistralApiKey',
+      getModelName(LLMEngineType.Mistral),
+    );
+    updateConsensusApiLink(
+      'anthropicApiKey',
+      getModelName(LLMEngineType.Anthropic),
+    );
   } else {
     consensusSection.classList.add('hidden');
   }
@@ -79,12 +93,12 @@ function updateApiKeyInputField(
 ) {
   const apiKeyContainer = apiKeyInput.parentElement;
   if (
-    llmModelSelect.value === 'Ollama' ||
-    llmModelSelect.value === 'ChromeAI'
+    llmModelSelect.value === getModelName(LLMEngineType.Ollama) ||
+    llmModelSelect.value === getModelName(LLMEngineType.ChromeAI)
   ) {
     apiKeyInput.disabled = true;
     apiKeyInput.placeholder =
-      llmModelSelect.value === 'Ollama'
+      llmModelSelect.value === getModelName(LLMEngineType.Ollama)
         ? 'No API key required for Ollama! Ensure Ollama is installed locally on your system.'
         : 'No API key required for Chrome AI';
     apiKeyContainer?.classList.add('warning');

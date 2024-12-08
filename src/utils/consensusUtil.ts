@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import LLMEngineType from '@utils/llmEngineTypes';
+import { LLMEngineType } from '@utils/llmEngineTypes';
 
 interface WeightedObject {
   source: LLMEngineType;

@@ -1,5 +1,5 @@
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import LLMEngineType, { getModelName } from '@utils/llmEngineTypes';
+import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 
 function getSetting<T>(key: string): Promise<T | undefined> {
   return new Promise((resolve, reject) => {

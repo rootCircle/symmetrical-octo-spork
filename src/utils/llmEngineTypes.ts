@@ -8,6 +8,20 @@ enum LLMEngineType {
   ChromeAI = 'chrome-gemini-nano',
 }
 
+interface LLMRequirements {
+  requiresApiKey: boolean;
+  defaultModel?: string;
+}
+
+const LLM_REQUIREMENTS: Record<LLMEngineType, LLMRequirements> = {
+  [LLMEngineType.ChatGPT]: { requiresApiKey: true },
+  [LLMEngineType.Gemini]: { requiresApiKey: true },
+  [LLMEngineType.Ollama]: { requiresApiKey: false, defaultModel: 'llama2' },
+  [LLMEngineType.Mistral]: { requiresApiKey: true },
+  [LLMEngineType.Anthropic]: { requiresApiKey: true },
+  [LLMEngineType.ChromeAI]: { requiresApiKey: false },
+};
+
 function getModelName(modelType: LLMEngineType): string {
   switch (modelType) {
     case LLMEngineType.ChatGPT:
@@ -63,5 +77,10 @@ function getAPIPlatformSourceLink(modelType: LLMEngineType): string {
   }
 }
 
-export default LLMEngineType;
-export { getModelName, getModelTypeFromName, getAPIPlatformSourceLink };
+export {
+  LLMEngineType,
+  getModelName,
+  getModelTypeFromName,
+  getAPIPlatformSourceLink,
+  LLM_REQUIREMENTS,
+};
