@@ -25,8 +25,8 @@
   "content_scripts": [
     {
       "matches": [
-        "http://docs.google.com/forms/*/viewform",
-        "https://docs.google.com/forms/*/viewform"
+        "http://docs.google.com/forms/*",
+        "https://docs.google.com/forms/*"
       ],
       "js": ["src/contentScript/index.js"]
     }

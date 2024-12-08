@@ -10,7 +10,6 @@ import { Settings } from '@utils/settings';
 import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
 
 async function runDocFillerEngine() {
-  console.clear(); // Temporary code, while debugging
   const questions = new QuestionExtractorEngine().getValidQuestions();
 
   const checker = new DetectBoxType();
