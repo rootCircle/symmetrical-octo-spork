@@ -65,15 +65,12 @@ function getAPIPlatformSourceLink(modelType: LLMEngineType): string {
     case LLMEngineType.Gemini:
       return 'https://makersuite.google.com/app/apikey';
     case LLMEngineType.Ollama:
-      return ''; // Ollama doesn't need an API key link
     case LLMEngineType.ChromeAI:
-      return ''; // ChromeAI doesn't need an API key link
+      return ''; // ChromeAI, Ollama doesn't need an API key link
     case LLMEngineType.Mistral:
       return 'https://console.mistral.ai/api-keys/';
     case LLMEngineType.Anthropic:
       return 'https://console.anthropic.com/settings/keys';
-    default:
-      return '';
   }
 }
 
