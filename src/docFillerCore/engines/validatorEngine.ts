@@ -41,7 +41,7 @@ export class ValidatorEngine {
           return this.validateMultipleChoice(extractedValue, response);
         case QType.MULTIPLE_CHOICE_WITH_OTHER:
           return this.validateMultipleChoiceWithOther(extractedValue, response);
-        case QType.LINEAR_SCALE:
+        case QType.LINEAR_SCALE_OR_STAR:
           return this.validateLinearScale(extractedValue, response);
 
         case QType.MULTIPLE_CHOICE_GRID:

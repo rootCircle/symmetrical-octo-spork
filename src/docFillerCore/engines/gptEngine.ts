@@ -210,7 +210,7 @@ export class LLMEngine {
       case QType.TIME_WITH_MERIDIEM:
       case QType.DURATION:
         return { date: response as Date };
-      case QType.LINEAR_SCALE:
+      case QType.LINEAR_SCALE_OR_STAR:
         return { linearScale: response as LinearScaleResponse };
       case QType.MULTIPLE_CHOICE:
       case QType.MULTIPLE_CHOICE_WITH_OTHER:
@@ -258,7 +258,7 @@ export class LLMEngine {
       case QType.TIME_WITH_MERIDIEM:
       case QType.DURATION:
         return new DatetimeOutputParser();
-      case QType.LINEAR_SCALE:
+      case QType.LINEAR_SCALE_OR_STAR:
         return StructuredOutputParser.fromZodSchema(
           z.object({
             answer: z

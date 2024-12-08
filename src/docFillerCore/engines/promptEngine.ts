@@ -24,7 +24,7 @@ export class PromptEngine {
       case QType.PARAGRAPH:
         return this.getParagraphPrompt(title, description);
 
-      case QType.LINEAR_SCALE:
+      case QType.LINEAR_SCALE_OR_STAR:
         return this.getLinearScalePrompt(title, description, options, bounds);
 
       case QType.MULTIPLE_CHOICE:
@@ -279,9 +279,22 @@ export class PromptEngine {
 
   // Duration Prompt
   private getDurationPrompt(title: string, description: string): string {
-    return `Based on the following question, provide the duration as a Date object, ensuring to zero-pad where applicable: ${title} - ${description}. 
-    Example: If the duration is 52 seconds, return it as a Date object like this: { date: Date Tue Jan 24 1950 5:30:52 GMT+0530 (India Standard Time) }. 
-    Please return only the duration in the specified format, without any additional text or formatting.`;
+    return `Based on the following question, provide the duration as a Date object, ensuring to zero-pad all values where applicable. 
+    The Year, Month, and Day fields must always be set to "1970-01-01".
+
+    Example 1:
+    If the duration is 52 seconds, return it as: { date: 1970-01-01T00:00:52Z }.
+
+    Example 2:
+    If the duration is 1000 seconds (which is 16 minutes and 40 seconds), return it as: { date: 1970-01-01T00:16:40Z }.
+
+    Example 3:
+    If the duration is 5000 seconds (which is 1 hour, 23 minutes, and 20 seconds), return it as: { date: 1970-01-01T01:23:20Z }.
+
+    Question:
+    ${title} - ${description}
+
+    Please return only the duration in the specified format, with no additional text, explanations, or formatting.`;
   }
 
   // Date Without Year Prompt

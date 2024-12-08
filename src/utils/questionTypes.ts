@@ -20,5 +20,5 @@ export enum QType {
   DATE_TIME_WITH_MERIDIEM = 'Date with Time and Meridiem',
   TIME_WITH_MERIDIEM = 'Time and Meridiem',
   DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR = 'Date without Year with Time and Meridiem',
-  LINEAR_SCALE = 'Linear Scale',
+  LINEAR_SCALE_OR_STAR = 'Linear Scale/Star',
 }

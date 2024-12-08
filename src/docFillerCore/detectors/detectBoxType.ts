@@ -21,7 +21,7 @@ export class DetectBoxType {
       [QType.TEXT_URL]: this.isTextURL(element),
       [QType.MULTI_CORRECT]: this.isMultiCorrect(element),
       [QType.MULTI_CORRECT_WITH_OTHER]: this.isMultiCorrectWithOther(element),
-      [QType.LINEAR_SCALE]: this.isLinearScale(element),
+      [QType.LINEAR_SCALE_OR_STAR]: this.isLinearScale(element),
       [QType.MULTIPLE_CHOICE]: this.isMultipleChoice(element),
       [QType.MULTIPLE_CHOICE_WITH_OTHER]:
         this.isMultipleChoiceWithOther(element),

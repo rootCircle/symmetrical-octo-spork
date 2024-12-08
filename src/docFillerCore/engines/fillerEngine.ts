@@ -29,7 +29,7 @@ export class FillerEngine {
       case QType.PARAGRAPH:
         return this.fillParagraph(fieldValue, value);
 
-      case QType.LINEAR_SCALE:
+      case QType.LINEAR_SCALE_OR_STAR:
         return await this.fillLinearScale(fieldValue, value);
 
       case QType.DROPDOWN:
@@ -137,9 +137,9 @@ export class FillerEngine {
       return false;
     }
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = date.getUTCFullYear().toString();
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -177,11 +177,11 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString();
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -229,10 +229,10 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const hours24 = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const hours24 = date.getUTCHours();
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
     const meridiem = hours24 >= 12 ? 'PM' : 'AM';
     const hours = (hours24 % 12 || 12).toString().padStart(2, '0');
@@ -310,8 +310,8 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
     const meridiem = hours >= 12 ? 'PM' : 'AM';
     const hours12 = (hours % 12 || 12).toString().padStart(2, '0');
@@ -376,12 +376,12 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = date.getUTCFullYear().toString();
 
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
     const meridiem = hours >= 12 ? 'PM' : 'AM';
     const hours12 = (hours % 12 || 12).toString().padStart(2, '0');
@@ -455,8 +455,8 @@ export class FillerEngine {
       return false;
     }
 
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -525,8 +525,8 @@ export class FillerEngine {
       return false;
     }
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 
@@ -559,10 +559,10 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
     const inputEvent = new Event('input', { bubbles: true });
 

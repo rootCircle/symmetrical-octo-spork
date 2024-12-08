@@ -37,7 +37,7 @@ export class FieldExtractorEngine {
       case QType.MULTIPLE_CHOICE_WITH_OTHER:
         return this.getParamsMultipleChoiceWithOther(element) as ExtractedValue;
 
-      case QType.LINEAR_SCALE:
+      case QType.LINEAR_SCALE_OR_STAR:
         return this.getParamsLinearScale(element) as ExtractedValue;
 
       case QType.CHECKBOX_GRID:
