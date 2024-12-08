@@ -29,7 +29,7 @@ class Settings {
   public async getSleepDuration(): Promise<number> {
     if (!this.sleepDuration) {
       this.sleepDuration =
-        (await getSleepDuration()) || DEFAULT_PROPERTIES.sleep_duration;
+        (await getSleepDuration()) ?? DEFAULT_PROPERTIES.sleep_duration;
     }
     return this.sleepDuration;
   }
@@ -37,8 +37,8 @@ class Settings {
   public async getCurrentLLMModel(): Promise<LLMEngineType> {
     if (!this.currentLLMModel) {
       this.currentLLMModel =
-        getModelTypeFromName((await getLLMModel()) ?? EMPTY_STRING) ||
-        LLMEngineType.Gemini;
+        getModelTypeFromName((await getLLMModel()) ?? EMPTY_STRING) ??
+        DEFAULT_PROPERTIES.model;
     }
     return this.currentLLMModel;
   }
@@ -53,7 +53,7 @@ class Settings {
   public async getEnableConsensus(): Promise<boolean> {
     if (!this.enableConsensus) {
       this.enableConsensus =
-        (await getEnableConsensus()) || DEFAULT_PROPERTIES.enableConsensus;
+        (await getEnableConsensus()) ?? DEFAULT_PROPERTIES.enableConsensus;
     }
     return this.enableConsensus;
   }

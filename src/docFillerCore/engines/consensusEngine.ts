@@ -48,7 +48,7 @@ class ConsensusEngine {
       (w) => w > 0,
     ).length;
     const adjustment =
-      (1 - currentSum) / (nonZeroCount || ConsensusEngine.llmWeights.size);
+      (1 - currentSum) / (nonZeroCount ?? ConsensusEngine.llmWeights.size);
     ConsensusEngine.llmWeights.forEach((value, key) => {
       if (value > 0) {
         ConsensusEngine.llmWeights.set(key, value + adjustment);

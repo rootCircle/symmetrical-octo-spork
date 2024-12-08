@@ -7,7 +7,6 @@ let debugging = true;
 if (debugging) {
   getIsEnabled()
     .then((isEnabled) => {
-      console.log('Enabled??', isEnabled);
       if (isEnabled === false) {
         console.log('Doc Filler is currently disabled');
       } else if (

@@ -187,20 +187,20 @@ document.addEventListener('DOMContentLoaded', () => {
     ],
     (items) => {
       sleepDurationInput.value = String(
-        (items['sleepDuration'] as number) || DEFAULT_PROPERTIES.sleep_duration,
+        (items['sleepDuration'] as number) ?? DEFAULT_PROPERTIES.sleep_duration,
       );
       llmModelSelect.value =
-        (items['llmModel'] as string) || getModelName(DEFAULT_PROPERTIES.model);
+        (items['llmModel'] as string) ?? getModelName(DEFAULT_PROPERTIES.model);
 
       updateApiKeyInputField(singleApiKeyInput, llmModelSelect);
 
       enableConsensusCheckbox.checked = Boolean(
-        (items['enableConsensus'] as boolean) ||
+        (items['enableConsensus'] as boolean) ??
           DEFAULT_PROPERTIES.enableConsensus,
       );
 
       const weights =
-        (items['llmWeights'] as Record<LLMEngineType, number>) ||
+        (items['llmWeights'] as Record<LLMEngineType, number>) ??
         DEFAULT_PROPERTIES.llmWeights;
       weightChatGPTInput.value = String(weights[LLMEngineType.ChatGPT]);
       weightGeminiInput.value = String(weights[LLMEngineType.Gemini]);
@@ -210,13 +210,13 @@ document.addEventListener('DOMContentLoaded', () => {
       weightAnthropicInput.value = String(weights[LLMEngineType.Anthropic]);
 
       chatGptApiKeyInput.value =
-        (items['chatGptApiKey'] as string) || EMPTY_STRING;
+        (items['chatGptApiKey'] as string) ?? EMPTY_STRING;
       geminiApiKeyInput.value =
-        (items['geminiApiKey'] as string) || EMPTY_STRING;
+        (items['geminiApiKey'] as string) ?? EMPTY_STRING;
       mistralApiKeyInput.value =
-        (items['mistralApiKey'] as string) || EMPTY_STRING;
+        (items['mistralApiKey'] as string) ?? EMPTY_STRING;
       anthropicApiKeyInput.value =
-        (items['anthropicApiKey'] as string) || EMPTY_STRING;
+        (items['anthropicApiKey'] as string) ?? EMPTY_STRING;
 
       toggleConsensusOptions(enableConsensusCheckbox.checked);
 

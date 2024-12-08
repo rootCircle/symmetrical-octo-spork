@@ -111,7 +111,7 @@ async function getSelectedProfileKey() {
   return await new Promise<string>((resolve) => {
     chrome.storage.sync.get(['selectedProfileKey'], (result) => {
       resolve(
-        (result['selectedProfileKey'] as string) ||
+        (result['selectedProfileKey'] as string) ??
           DEFAULT_PROPERTIES.defaultProfileKey,
       );
     });

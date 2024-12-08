@@ -173,7 +173,7 @@ export class LLMEngine {
         const selectedProfileKey = (await getSelectedProfileKey()).trim();
         const profiles = await loadProfiles();
         const systemPrompt =
-          profiles[selectedProfileKey]?.system_prompt ||
+          profiles[selectedProfileKey]?.system_prompt ??
           DEFAULT_PROPERTIES.defaultProfile.system_prompt;
         const promptTemplate = ChatPromptTemplate.fromMessages([
           ['system', systemPrompt],

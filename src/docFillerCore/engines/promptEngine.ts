@@ -6,7 +6,7 @@ export class PromptEngine {
     const title = value.title ?? EMPTY_STRING;
     const description = value.description ?? EMPTY_STRING;
     const options = value.options ?? [];
-    const bounds = (value.bounds as LowerUpperBound) || null;
+    const bounds = (value.bounds as LowerUpperBound) ?? null;
     const rowOptions = value.rowArray?.join('\n') ?? EMPTY_STRING;
     const columnOptions = value.columnArray?.join(', ') ?? EMPTY_STRING;
     const otherOption = value.other?.data ?? EMPTY_STRING;

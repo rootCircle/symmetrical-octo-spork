@@ -15,28 +15,28 @@ function getSetting<T>(key: string): Promise<T | undefined> {
 
 async function getSleepDuration(): Promise<number> {
   return (
-    (await getSetting<number>('sleepDuration')) ||
+    (await getSetting<number>('sleepDuration')) ??
     DEFAULT_PROPERTIES.sleep_duration
   );
 }
 
 async function getLLMModel(): Promise<string> {
   return (
-    (await getSetting<string>('llmModel')) ||
+    (await getSetting<string>('llmModel')) ??
     getModelName(DEFAULT_PROPERTIES.model)
   );
 }
 
 async function getEnableConsensus(): Promise<boolean> {
   return (
-    (await getSetting<boolean>('enableConsensus')) ||
+    (await getSetting<boolean>('enableConsensus')) ??
     DEFAULT_PROPERTIES.enableConsensus
   );
 }
 
 async function getLLMWeights(): Promise<Record<LLMEngineType, number>> {
   return (
-    (await getSetting<Record<LLMEngineType, number>>('llmWeights')) ||
+    (await getSetting<Record<LLMEngineType, number>>('llmWeights')) ??
     DEFAULT_PROPERTIES.llmWeights
   );
 }
@@ -57,7 +57,7 @@ async function getAnthropicApiKey(): Promise<string | undefined> {
 }
 async function getIsEnabled(): Promise<boolean> {
   return (
-    (await getSetting<boolean>('automaticFillingEnabled')) ||
+    (await getSetting<boolean>('automaticFillingEnabled')) ??
     DEFAULT_PROPERTIES.automaticFillingEnabled
   );
 }

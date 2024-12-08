@@ -190,7 +190,7 @@ async function handleProfileFormSubmit(submitEvent: Event) {
 
   const newProfile: Profile = {
     name: (form.querySelector('#profileName') as HTMLInputElement).value,
-    image_url: imageUrl.trim() || defaultImageUrl,
+    image_url: imageUrl.trim() ?? defaultImageUrl,
     system_prompt: (form.querySelector('#profilePrompt') as HTMLTextAreaElement)
       .value,
     short_description: (

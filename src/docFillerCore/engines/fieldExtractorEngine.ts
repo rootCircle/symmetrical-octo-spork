@@ -154,7 +154,7 @@ export class FieldExtractorEngine {
 
     const optionData: string[] = [];
     optionLabels.forEach((label) => {
-      optionData.push(label.textContent?.trim() || EMPTY_STRING);
+      optionData.push(label.textContent?.trim() ?? EMPTY_STRING);
     });
 
     const options: OptionType[] = [];
@@ -314,7 +314,7 @@ export class FieldExtractorEngine {
     const elementsWithHierarchy =
       element
         .querySelector('span[role="presentation"]')
-        ?.querySelectorAll('div > div:last-child > div:last-child') || [];
+        ?.querySelectorAll('div > div:last-child > div:last-child') ?? [];
 
     let lowerBound: string = EMPTY_STRING;
     let upperBound: string = EMPTY_STRING;
@@ -323,7 +323,7 @@ export class FieldExtractorEngine {
 
     // Determine lowerBound and upperBound
     elementsWithHierarchy.forEach((elm) => {
-      const textContent = elm.textContent?.trim() || EMPTY_STRING;
+      const textContent = elm.textContent?.trim() ?? EMPTY_STRING;
       if (lowerBound === EMPTY_STRING && textContent !== EMPTY_STRING) {
         lowerBound = textContent;
       } else if (lowerBound !== EMPTY_STRING && textContent !== EMPTY_STRING) {
@@ -333,7 +333,7 @@ export class FieldExtractorEngine {
 
     const optionElements = element.querySelectorAll('div[dir="auto"]');
     const options = Array.from(optionElements).map(
-      (optionElement) => optionElement.textContent?.trim() || EMPTY_STRING,
+      (optionElement) => optionElement.textContent?.trim() ?? EMPTY_STRING,
     );
 
     const optionsArray: OptionType[] = [];
@@ -365,10 +365,10 @@ export class FieldExtractorEngine {
 
     const columnsArray = Array.from(columns)
       .slice(1)
-      .map((column) => column.textContent?.trim() || EMPTY_STRING);
+      .map((column) => column.textContent?.trim() ?? EMPTY_STRING);
 
     const rowsArray = Array.from(rows).map(
-      (row) => row.textContent?.trim() || EMPTY_STRING,
+      (row) => row.textContent?.trim() ?? EMPTY_STRING,
     );
 
     const optionsArray: HTMLElement[][] = [];
@@ -422,10 +422,10 @@ export class FieldExtractorEngine {
 
     const columnsArray = Array.from(columns)
       .slice(1)
-      .map((column) => column.textContent?.trim() || EMPTY_STRING);
+      .map((column) => column.textContent?.trim() ?? EMPTY_STRING);
 
     const rowsArray = Array.from(rows).map(
-      (row) => row.textContent?.trim() || EMPTY_STRING,
+      (row) => row.textContent?.trim() ?? EMPTY_STRING,
     );
 
     const optionArray = Array.from(
@@ -493,7 +493,7 @@ export class FieldExtractorEngine {
 
       if (span) {
         options.push({
-          data: span.textContent?.trim() || EMPTY_STRING,
+          data: span.textContent?.trim() ?? EMPTY_STRING,
           dom: optionDiv as HTMLElement,
         });
       }

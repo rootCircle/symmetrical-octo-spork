@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let previousState = false;
   chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
     const automaticFillingEnabled =
-      (items['automaticFillingEnabled'] as boolean) ||
+      (items['automaticFillingEnabled'] as boolean) ??
       DEFAULT_PROPERTIES.automaticFillingEnabled;
     previousState = automaticFillingEnabled;
     updateToggleState(automaticFillingEnabled);
@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   }
                   previousState = newState;
                   updateToggleState(newState);
-                  console.log('State successfully saved:', newState);
                   resolve();
                 }
               },
@@ -154,11 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const profiles = await loadProfiles();
 
     imageUrlInput.src =
-      profiles[selectedProfileKey]?.image_url ||
+      profiles[selectedProfileKey]?.image_url ??
       DEFAULT_PROPERTIES.defaultProfile.image_url;
 
     nameElement.textContent =
-      profiles[selectedProfileKey]?.name ||
+      profiles[selectedProfileKey]?.name ??
       DEFAULT_PROPERTIES.defaultProfile.name;
   }
 

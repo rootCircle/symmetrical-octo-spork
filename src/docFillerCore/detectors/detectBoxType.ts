@@ -62,7 +62,7 @@ export class DetectBoxType {
     return (
       inputFields.length === 1 &&
       inputType !== 'hidden' &&
-      !['email', 'tel', 'url', 'number'].includes(inputType || EMPTY_STRING)
+      !['email', 'tel', 'url', 'number'].includes(inputType ?? EMPTY_STRING)
     );
   }
 

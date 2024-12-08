@@ -47,5 +47,6 @@
 
     "isolatedModules": true
     // "checkJs": true,
-  }
+  },
+  "exclude": ["node_modules", "dist", "build", "web-ext-artifacts", "docs"]
 }

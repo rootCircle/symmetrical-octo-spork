@@ -271,7 +271,7 @@ export class FillerEngine {
       }
 
       const optionElements = Array.from(
-        meridiemDropdown.parentElement?.childNodes || [],
+        meridiemDropdown.parentElement?.childNodes ?? [],
       ).find(
         (child) =>
           !(child as HTMLElement).querySelector('div[role=presentation]'),
@@ -339,7 +339,7 @@ export class FillerEngine {
       }
 
       const optionElements = Array.from(
-        meridiemDropdown.parentElement?.childNodes || [],
+        meridiemDropdown.parentElement?.childNodes ?? [],
       ).find(
         (child) =>
           !(child as HTMLElement).querySelector('div[role=presentation]'),
@@ -422,7 +422,7 @@ export class FillerEngine {
       }
 
       const optionElements = Array.from(
-        meridiemDropdown.parentElement?.childNodes || [],
+        meridiemDropdown.parentElement?.childNodes ?? [],
       ).find(
         (child) =>
           !(child as HTMLElement).querySelector('div[role=presentation]'),
@@ -598,7 +598,7 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    for (const element of fieldValue.options || []) {
+    for (const element of fieldValue.options ?? []) {
       for (const option of value.multiCorrect) {
         // For checkbox
         if (option.optionText && !option.isOther) {
@@ -638,7 +638,7 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    for (const element of fieldValue.options || []) {
+    for (const element of fieldValue.options ?? []) {
       if (value.multipleChoice.optionText && !value.multipleChoice.isOther) {
         // For checkbox
         if (
@@ -773,7 +773,7 @@ export class FillerEngine {
     }
     await sleep(await Settings.getInstance().getSleepDuration());
 
-    for (const option of fieldValue.options || []) {
+    for (const option of fieldValue.options ?? []) {
       if (option.data === value.genericResponse?.answer) {
         if (fieldValue.dom) {
           if (fieldValue.dom?.getAttribute('aria-expanded') !== 'true') {
