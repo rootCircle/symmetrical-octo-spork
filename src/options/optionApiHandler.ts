@@ -74,15 +74,17 @@ function updateConsensusApiLink(apiKeyElementId: string, modelName: string) {
     return;
   }
   const apiLink = getAPIPlatformSourceLink(modelDetected);
+  const apiLinkElement = apiKeyInput.parentElement
+    ?.nextElementSibling as HTMLAnchorElement;
 
   if (apiLink) {
     apiKeyInput.disabled = false;
-    const apiLinkElement = apiKeyInput.nextElementSibling as HTMLAnchorElement;
     apiLinkElement.href = apiLink;
+    (apiKeyInput.nextElementSibling as HTMLElement).style.display = 'block';
     apiLinkElement.style.display = 'block';
   } else {
     apiKeyInput.disabled = true;
-    const apiLinkElement = apiKeyInput.nextElementSibling as HTMLAnchorElement;
+    (apiKeyInput.nextElementSibling as HTMLElement).style.display = 'none'; // Disable the password eye
     apiLinkElement.style.display = 'none';
   }
 }

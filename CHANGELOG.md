@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased (as of 2024-12-08)
+
+- Change bundler from **bun** to [esbuild](https://esbuild.github.io).
+- fix: UI default cases due to wrong use of `||` instead of `??`. (caused enable/disable button to be always enabled in spite of internal values).
+- fix: missing Get API Links in Consensus enabled fields in options page.
+
+## v1.1.2 (2024-12-07)
+
+Same as v1.1.1, re-released due to issue in Firefox AMO registry.
+
 ## v1.1.1 (2024-12-07)
 
 - Added pirate profile as new built-in profile
