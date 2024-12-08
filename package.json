@@ -23,31 +23,6 @@
     "node": ">=18.0.0",
     "bun": ">=1.0.0"
   },
-  "devDependencies": {
-    "@babel/eslint-parser": "^7.25.9",
-    "@eslint/compat": "^1.2.4",
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.16.0",
-    "@types/chrome": "^0.0.287",
-    "@types/firefox-webext-browser": "^120.0.4",
-    "@types/node": "^22.10.1",
-    "chokidar": "^4.0.1",
-    "concurrently": "^9.1.0",
-    "cspell": "^8.16.1",
-    "esbuild": "^0.24.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-async-await": "^0.0.0",
-    "eslint-plugin-import": "^2.31.0",
-    "globals": "^15.13.0",
-    "husky": "^9.1.7",
-    "prettier": "^3.4.2",
-    "typescript-eslint": "^8.17.0",
-    "web-ext": "^8.3.0"
-  },
-  "peerDependencies": {
-    "typescript": "^5.5.4"
-  },
   "scripts": {
     "watch": "bun tsc && bun tools/watcher.ts",
     "build": "bun tools/bundler.ts",
@@ -75,5 +50,33 @@
     "@langchain/openai": "^0.3.14",
     "langchain": "^0.3.6",
     "uuid": "^11.0.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.5.4"
+  },
+  "optionalDependencies": {
+    "@esbuild/linux-x64": "^0.24.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.25.9",
+    "@eslint/compat": "^1.2.4",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.16.0",
+    "@types/chrome": "^0.0.287",
+    "@types/firefox-webext-browser": "^120.0.4",
+    "@types/node": "^22.10.1",
+    "chokidar": "^4.0.1",
+    "concurrently": "^9.1.0",
+    "cspell": "^8.16.1",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-async-await": "^0.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "globals": "^15.13.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.4.2",
+    "typescript-eslint": "^8.17.0",
+    "web-ext": "^8.3.0"
   }
 }
