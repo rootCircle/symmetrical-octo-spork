@@ -1,10 +1,12 @@
 # Changelog
 
-## Unreleased (as of 2024-12-08)
+## v1.2.0 (2024-12-08)
 
 - Change bundler from **bun** to [esbuild](https://esbuild.github.io).
 - fix: UI default cases due to wrong use of `||` instead of `??`. (caused enable/disable button to be always enabled in spite of internal values).
 - fix: missing Get API Links in Consensus enabled fields in options page.
+- fix issues with Time and Duration fields (see more in #58, #59)
+- fix: permission issue causing extension to skip running on first load
 
 ## v1.1.2 (2024-12-07)
 
