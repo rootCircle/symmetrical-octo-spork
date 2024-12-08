@@ -14,6 +14,7 @@ export default [
       'docs/',
       'eslint.config.js',
       'web-ext-artifacts',
+      'tools/',
     ],
   },
   { languageOptions: { globals: globals.browser } },

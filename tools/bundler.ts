@@ -1,5 +1,4 @@
+/* eslint-disable no-console */
 import { runBuild } from './builder';
 
-runBuild()
-  .then(() => {})
-  .catch(() => {});
+runBuild(false).catch(console.error);

@@ -1,7 +1,12 @@
 import { readdir } from 'fs/promises';
 import { extname, join } from 'path';
 
-const sourceDir = './src/';
+const sourceDir = [
+  {
+    path: './src/',
+    extensions: ['.ts', '.js'],
+  },
+];
 
 /**
  * Recursively get all .ts and .js entrypoints from the directory
@@ -9,13 +14,16 @@ const sourceDir = './src/';
  * @param dir Directory path to scan
  * @returns {Promise<string[]>} The entrypoints
  */
-async function getFiles(dir: string): Promise<string[]> {
+async function getFiles(
+  dir: string,
+  validFileExtensions: string[],
+): Promise<string[]> {
   const dirEntries = await readdir(dir, { withFileTypes: true });
   const files = await Promise.all(
     dirEntries.map((dirent) => {
       const res = join(dir, dirent.name);
       if (dirent.isDirectory()) {
-        return getFiles(res);
+        return getFiles(res, validFileExtensions);
       } else {
         return Promise.resolve(res);
       }
@@ -25,7 +33,7 @@ async function getFiles(dir: string): Promise<string[]> {
   // Flatten the array and filter only .ts and .js files
   const filteredFiles: string[] = (
     Array.prototype.concat(...files) as string[]
-  ).filter((file) => ['.ts', '.js'].includes(extname(file)));
+  ).filter((file) => validFileExtensions.includes(extname(file)));
   return filteredFiles;
 }
 
@@ -35,5 +43,9 @@ async function getFiles(dir: string): Promise<string[]> {
  * @returns {Promise<string[]>} The entrypoints
  */
 export default async function entryPoints(): Promise<string[]> {
-  return getFiles(sourceDir);
+  const files = [];
+  for (const { path, extensions } of sourceDir) {
+    files.push(...(await getFiles(path, extensions)));
+  }
+  return files;
 }

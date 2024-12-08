@@ -1,5 +1,6 @@
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
+import { EMPTY_STRING } from '@utils/settings';
 
 function getSetting<T>(key: string): Promise<T | undefined> {
   return new Promise((resolve, reject) => {
@@ -40,20 +41,20 @@ async function getLLMWeights(): Promise<Record<LLMEngineType, number>> {
     DEFAULT_PROPERTIES.llmWeights
   );
 }
-async function getChatGptApiKey(): Promise<string | undefined> {
-  return await getSetting<string>('chatGptApiKey');
+async function getChatGptApiKey(): Promise<string> {
+  return (await getSetting<string>('chatGptApiKey')) ?? EMPTY_STRING;
 }
 
-async function getGeminiApiKey(): Promise<string | undefined> {
-  return await getSetting<string>('geminiApiKey');
+async function getGeminiApiKey(): Promise<string> {
+  return (await getSetting<string>('geminiApiKey')) ?? EMPTY_STRING;
 }
 
-async function getMistralApiKey(): Promise<string | undefined> {
-  return await getSetting<string>('mistralApiKey');
+async function getMistralApiKey(): Promise<string> {
+  return (await getSetting<string>('mistralApiKey')) ?? EMPTY_STRING;
 }
 
-async function getAnthropicApiKey(): Promise<string | undefined> {
-  return await getSetting<string>('anthropicApiKey');
+async function getAnthropicApiKey(): Promise<string> {
+  return (await getSetting<string>('anthropicApiKey')) ?? EMPTY_STRING;
 }
 async function getIsEnabled(): Promise<boolean> {
   return (

@@ -1,3 +1,5 @@
+import { EMPTY_STRING } from '@utils/settings';
+
 /* eslint-disable no-unused-vars */
 enum LLMEngineType {
   ChatGPT = 'gpt4-o',
@@ -66,7 +68,7 @@ function getAPIPlatformSourceLink(modelType: LLMEngineType): string {
       return 'https://makersuite.google.com/app/apikey';
     case LLMEngineType.Ollama:
     case LLMEngineType.ChromeAI:
-      return ''; // ChromeAI, Ollama doesn't need an API key link
+      return EMPTY_STRING; // ChromeAI, Ollama doesn't need an API key link
     case LLMEngineType.Mistral:
       return 'https://console.mistral.ai/api-keys/';
     case LLMEngineType.Anthropic:

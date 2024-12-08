@@ -1,43 +1,32 @@
 /* eslint-disable no-console */
-import chokidar from 'chokidar';
+import { watch } from 'chokidar';
 
 import { runBuild } from './builder';
+import copyContents from './copier';
 
-const watch = () => {
-  // Initial build
-  runBuild()
-    .then(() => {})
-    .catch(() => {});
+const buildWatch = () => {
+  runBuild(true).catch(console.error);
 
   // Watch directories
-  // eslint-disable-next-line import/no-named-as-default-member
-  const watcher = chokidar.watch(['src/', 'public/'], {
+  const watcher = watch(['public/'], {
     ignored: /node_modules/,
     persistent: true,
   });
 
   watcher.on('change', () => {
     // console.log(`File ${path} has been changed`);
-    runBuild()
-      .then(() => {})
-      .catch(() => {});
+    copyContents('./public', './build').catch(console.error);
   });
 
   watcher.on('add', () => {
     // console.log(`File ${path} has been added`);
-    runBuild()
-      .then(() => {})
-      .catch(() => {});
+    copyContents('./public', './build').catch(console.error);
   });
 
   watcher.on('unlink', () => {
     // console.log(`File ${path} has been removed`);
-    runBuild()
-      .then(() => {})
-      .catch(() => {});
+    copyContents('./public', './build').catch(console.error);
   });
-
-  console.log('Watching for file changes...');
 };
 
-watch();
+buildWatch();

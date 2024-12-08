@@ -23,17 +23,14 @@
     "node": ">=18.0.0",
     "bun": ">=1.0.0"
   },
-  "module": "bundler.ts",
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.9",
     "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.16.0",
-    "@types/bun": "^1.1.14",
     "@types/chrome": "^0.0.287",
     "@types/firefox-webext-browser": "^120.0.4",
     "@types/node": "^22.10.1",
-    "bun-types": "^1.1.38",
     "chokidar": "^4.0.1",
     "concurrently": "^9.1.0",
     "cspell": "^8.16.1",
