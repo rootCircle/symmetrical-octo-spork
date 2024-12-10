@@ -69,15 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (toggleButton) {
         toggleOn.style.cursor = 'not-allowed';
         toggleOff.style.cursor = 'not-allowed';
-
       }
     } else {
       apiMessage.style.display = 'none';
       toggleButton?.classList.remove('disabled');
       if (toggleButton) {
         toggleOn.style.cursor = 'pointer';
-          toggleOff.style.cursor = 'pointer';
-        }
+        toggleOff.style.cursor = 'pointer';
+      }
     }
   }
   toggleButton.addEventListener('click', () => {
@@ -118,89 +117,66 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   fillSection.addEventListener('click', () => {
-
     // Show toast when fill action starts
 
     showToast('Starting auto-fill process...', 'info');
 
-
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const tab = tabs[0];
 
-        const tab = tabs[0];
+      chrome.scripting
 
+        .executeScript({
+          target: { tabId: tab?.id || 0 },
 
-        chrome.scripting
+          func: runDocFillerEngine,
+        })
 
-            .executeScript({
+        .then(() => {
+          // Show success toast when fill completes
 
-                target: { tabId: tab?.id || 0 },
+          showToast('Auto-fill completed successfully!', 'success');
+        })
 
-                func: runDocFillerEngine,
+        .catch((error) => {
+          // Show error toast if fill fails
 
-            })
+          showToast(`Auto-fill failed: ${error}`, 'error');
 
-            .then(() => {
-
-                // Show success toast when fill completes
-
-                showToast('Auto-fill completed successfully!', 'success');
-
-            })
-
-            .catch((error) => {
-
-                // Show error toast if fill fails
-
-                showToast(`Auto-fill failed: ${error}`, 'error');
-
-                console.error(error);
-
-            });
-
+          console.error(error);
+        });
     });
-
 
     runDocFillerEngine().catch((error) => {
+      showToast(`Auto-fill failed: ${error}`, 'error');
 
-        showToast(`Auto-fill failed: ${error}`, 'error');
-
-        console.error(error);
-
+      console.error(error);
     });
+  });
 
-});
-
-
-refreshButton.addEventListener('click', () => {
-
-
+  refreshButton.addEventListener('click', () => {
     showToast('Refreshing page...', 'info');
 
-
     chrome.tabs.reload().catch((error) => {
+      showToast(`Failed to refresh: ${error}`, 'error');
 
-
-        showToast(`Failed to refresh: ${error}`, 'error');
-
-        console.error('Failed to reload tab:', error);
-
+      console.error('Failed to reload tab:', error);
     });
-
-});
+  });
 
   function updateToggleState(isEnabled: boolean): void {
     toggleOn.style.display = isEnabled ? 'block' : 'none';
     toggleOff.style.display = isEnabled ? 'none' : 'block';
     if (fillSection) {
-        fillSection.style.display = isEnabled ? 'none' : 'flex';
+      fillSection.style.display = isEnabled ? 'none' : 'flex';
     }
 
     if (isEnabled) {
-        showToast('Power On', 'success');
+      showToast('Power On', 'success');
     } else {
-        showToast('Power Off', 'error');
+      showToast('Power Off', 'error');
     }
-}
+  }
 
   async function fillProfile() {
     const imageUrlInput = document.querySelector(
