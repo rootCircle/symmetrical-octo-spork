@@ -1,18 +1,21 @@
-export const initializeOptionPasswordField = () => {
-  document.querySelectorAll('[id^="toggle"]').forEach(function (toggle) {
-    toggle.addEventListener('click', function () {
-      const targetID = toggle.getAttribute('for');
-      if (!targetID) {
-        return;
-      }
-      const inputField = document.getElementById(targetID) as HTMLInputElement;
-      if (!inputField) {
-        return;
-      }
-      const type = inputField.type === 'password' ? 'text' : 'password';
-      inputField.type = type;
+import { EMPTY_STRING } from '@utils/settings';
 
-      toggle.textContent = type === 'password' ? '👁️' : '🙈';
-    });
+export const initializeOptionPasswordField = () => {
+  const passwordToggles = document.querySelectorAll('.password-toggle');
+
+  passwordToggles.forEach((toggle) => {
+    const button = toggle as HTMLButtonElement;
+    const inputId = button.getAttribute('data-for') || EMPTY_STRING;
+    const input = document.getElementById(inputId) as HTMLInputElement;
+
+    if (input) {
+      input.type = 'password';
+      button.setAttribute('data-visible', 'false');
+      button.addEventListener('click', () => {
+        const isVisible = button.getAttribute('data-visible') === 'true';
+        input.type = isVisible ? 'password' : 'text';
+        button.setAttribute('data-visible', (!isVisible).toString());
+      });
+    }
   });
 };
