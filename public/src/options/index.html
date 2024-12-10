@@ -261,7 +261,8 @@
                 id="chromeAIApiKey"
                 name="chromeApiKey"
                 disabled
-                placeholder="No API key is required for Chrome AI! Please enable it in chrome://flags"              />
+                placeholder="No API key is required for Chrome AI! Please enable it in chrome://flags"
+              />
             </div>
             <div>
               <label for="weightChromeAI">Weight</label>
@@ -396,6 +397,11 @@
         </div>
         <button type="button" id="saveButton">Save Changes</button>
       </form>
+    </div>
+    <div id="toast-container" class="toast-container">
+      <div id="toast" class="toast">
+        <div id="toast-message"></div>
+      </div>
     </div>
     <script src="options.js"></script>
   </body>

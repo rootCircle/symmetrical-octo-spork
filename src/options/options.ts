@@ -4,6 +4,7 @@ import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
 import { getSkipMarkedStatus } from '@utils/storage/getProperties';
 import { setSkipMarkedStatus } from '@utils/storage/setProperties';
+import { showToast } from '@utils/toastUtils';
 
 import {
   createProfileCards,
@@ -383,10 +384,11 @@ document.addEventListener('DOMContentLoaded', () => {
             },
           );
         });
-        alert('Options saved successfully!');
+        showToast('Settings saved successfully!', 'success');
       } catch (error) {
-        alert(
+        showToast(
           `Error saving options. Please try again. ${error instanceof Error ? error.message : String(error)}`,
+          'error',
         );
       }
     };
