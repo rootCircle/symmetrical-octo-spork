@@ -9,6 +9,7 @@ import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { Settings } from '@utils/settings';
 import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
 import { MarkedQuestionChecker } from '@docFillerCore/engines/markedQuestionChecker';
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -33,14 +34,15 @@ async function runDocFillerEngine() {
     }
   }
   const skipMarkedSetting = await new Promise<boolean>((resolve) => {
+    const defaultSkipMarked = DEFAULT_PROPERTIES.skipMarkedQuestions;
     chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
-      resolve(
-        typeof items['skipMarkedQuestions'] === 'boolean'
-          ? items['skipMarkedQuestions']
-          : false,
-      );
+        resolve(
+            typeof items['skipMarkedQuestions'] === 'boolean'
+                ? items['skipMarkedQuestions']
+                : defaultSkipMarked,
+        );
     });
-  });
+});
 
   for (const question of questions) {
     try {
