@@ -24,7 +24,6 @@ async function runDocFillerEngine() {
   let consensusEngine;
   let llm;
   if (enableConsensus) {
-
     consensusEngine = new ConsensusEngine();
   } else {
     try {
