@@ -73,6 +73,22 @@ export class LLMEngine {
         console.error('Error fetching API keys:', error);
       });
   }
+  public static resetAll(): void {
+    this.instances = {
+      [LLMEngineType.ChatGPT]: undefined,
+      [LLMEngineType.Gemini]: undefined,
+      [LLMEngineType.Ollama]: undefined,
+      [LLMEngineType.Mistral]: undefined,
+      [LLMEngineType.Anthropic]: undefined,
+      [LLMEngineType.ChromeAI]: undefined,
+    };
+    this.apiKeys = {
+      chatGptApiKey: undefined,
+      geminiApiKey: undefined,
+      mistralApiKey: undefined,
+      anthropicApiKey: undefined,
+    };
+  }
 
   private static async fetchApiKeys(): Promise<void> {
     LLMEngine.apiKeys['chatGptApiKey'] = await getChatGptApiKey();

@@ -607,3 +607,87 @@ input[disabled] {
   transform: scale(1.1);
   color: white;
 }
+
+.setting-group {
+  margin: 20px 0;
+}
+
+.toggle-setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.setting-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.creative-toggle {
+  --toggle-width: 60px;
+  --toggle-height: 32px;
+  --toggle-padding: 2px;
+  --toggle-color: #22c55e;
+  --toggle-off-color: #e2e8f0;
+
+  position: relative;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  border-radius: 16px;
+  background: var(--toggle-off-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.creative-toggle.active {
+  background: var(--toggle-color);
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: var(--toggle-padding);
+  left: var(--toggle-padding);
+  width: calc(var(--toggle-height) - 2 * var(--toggle-padding));
+  height: calc(var(--toggle-height) - 2 * var(--toggle-padding));
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.creative-toggle.active .toggle-thumb {
+  left: calc(
+    var(--toggle-width) - var(--toggle-height) + var(--toggle-padding)
+  );
+}
+
+.check-icon,
+.cross-icon {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+.check-icon {
+  fill: var(--toggle-color);
+  opacity: 0;
+}
+
+.cross-icon {
+  fill: #94a3b8;
+  opacity: 1;
+}
+
+.creative-toggle.active .check-icon {
+  opacity: 1;
+}
+
+.creative-toggle.active .cross-icon {
+  opacity: 0;
+}

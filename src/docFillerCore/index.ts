@@ -8,6 +8,7 @@ import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { Settings } from '@utils/settings';
 import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
+import { MarkedQuestionChecker } from '@docFillerCore/engines/markedQuestionChecker';
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -17,6 +18,7 @@ async function runDocFillerEngine() {
   const prompts = new PromptEngine();
   const validator = new ValidatorEngine();
   const filler = new FillerEngine();
+  const ismarked = new MarkedQuestionChecker();
   const enableConsensus = await Settings.getInstance().getEnableConsensus();
   let consensusEngine;
   let llm;
@@ -30,6 +32,15 @@ async function runDocFillerEngine() {
       return;
     }
   }
+  const skipMarkedSetting = await new Promise<boolean>((resolve) => {
+    chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
+      resolve(
+        typeof items['skipMarkedQuestions'] === 'boolean'
+          ? items['skipMarkedQuestions']
+          : false,
+      );
+    });
+  });
 
   for (const question of questions) {
     try {
@@ -37,8 +48,6 @@ async function runDocFillerEngine() {
 
       if (fieldType !== null) {
         const fieldValue = fields.getFields(question, fieldType);
-        const promptString = prompts.getPrompt(fieldType, fieldValue);
-
         console.log(question);
 
         console.log(`Field Type : ${fieldType}`);
@@ -47,6 +56,18 @@ async function runDocFillerEngine() {
         console.log('Field Value ↴');
         console.log(fieldValue);
 
+        const isFilled = ismarked.markedCheck(fieldType, fieldValue);
+
+        console.log('Is Already Filled ↴');
+        console.log(isFilled);
+
+        if (skipMarkedSetting && isFilled) {
+          question.style.opacity = '0.6';
+          console.log('Skipping already marked question:', question);
+          continue;
+        }
+
+        const promptString = prompts.getPrompt(fieldType, fieldValue);
         console.log('Prompt ↴');
         console.log(promptString);
 

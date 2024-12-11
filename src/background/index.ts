@@ -12,6 +12,10 @@ interface ChromeResponseMessage {
 
 chrome.runtime.onMessage.addListener(
   (message: ChromeResponseMessage, _sender, sendResponse) => {
+    if (message.type === 'RESET_SETTINGS') {
+      LLMEngine.resetAll();
+      return true;
+    }
     if (message.type === 'API_CALL') {
       try {
         const instance = new LLMEngine(message.model);

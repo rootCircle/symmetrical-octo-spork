@@ -14,6 +14,45 @@ import {
 import { initializeOptionPasswordField } from './optionPasswordField';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const skipMarkedToggle = document.getElementById('skipMarkedToggle');
+
+  chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
+    const isEnabled =
+      (items['skipMarkedQuestions'] as boolean) ??
+      DEFAULT_PROPERTIES.skipMarkedQuestions;
+    skipMarkedToggle?.classList.toggle('active', isEnabled);
+  });
+
+  skipMarkedToggle?.addEventListener('click', () => {
+    const saveState = async () => {
+      try {
+        const currentState = await new Promise<boolean>((resolve) => {
+          chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
+            resolve(Boolean(items['skipMarkedQuestions']));
+          });
+        });
+
+        const newState = !currentState;
+
+        await new Promise<void>((resolve, reject) => {
+          chrome.storage.sync.set({ skipMarkedQuestions: newState }, () => {
+            if (chrome.runtime.lastError) {
+              reject(new Error(chrome.runtime.lastError.message));
+            } else {
+              skipMarkedToggle.classList.toggle('active', newState);
+              resolve();
+            }
+          });
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error saving toggle state:', error);
+      }
+    };
+
+    void saveState();
+  });
+
   const modalHTML = `
     <div id="addProfileModal" class="modal hidden">
       <div class="modal-content">
@@ -365,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
           );
         });
+        await chrome.runtime.sendMessage({ type: 'RESET_SETTINGS' });
         alert('Options saved successfully!');
       } catch (error) {
         alert(
