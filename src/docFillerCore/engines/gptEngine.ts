@@ -73,7 +73,7 @@ export class LLMEngine {
         console.error('Error fetching API keys:', error);
       });
   }
-  public static resetAll(): void {
+  public static async resetAll(): Promise<void> {
     this.instances = {
       [LLMEngineType.ChatGPT]: undefined,
       [LLMEngineType.Gemini]: undefined,
@@ -88,6 +88,7 @@ export class LLMEngine {
       mistralApiKey: undefined,
       anthropicApiKey: undefined,
     };
+    await this.fetchApiKeys();
   }
 
   private static async fetchApiKeys(): Promise<void> {
