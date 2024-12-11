@@ -24,7 +24,8 @@ async function runDocFillerEngine() {
   let consensusEngine;
   let llm;
   if (enableConsensus) {
-    consensusEngine = await ConsensusEngine.getInstance();
+
+    consensusEngine = new ConsensusEngine();
   } else {
     try {
       llm = new LLMEngine(await Settings.getInstance().getCurrentLLMModel());

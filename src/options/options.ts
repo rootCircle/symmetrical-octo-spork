@@ -1,6 +1,7 @@
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
+import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 
 import {
   createProfileCards,
@@ -232,7 +233,13 @@ document.addEventListener('DOMContentLoaded', () => {
         (items['llmModel'] as string) ?? getModelName(DEFAULT_PROPERTIES.model);
 
       updateApiKeyInputField(singleApiKeyInput, llmModelSelect);
-
+      const selectedEngineType = Object.values(LLMEngineType).find(
+        (type) => getModelName(type) === llmModelSelect.value,
+      );
+      if (selectedEngineType) {
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        const engine = new LLMEngine(selectedEngineType);
+      }
       enableConsensusCheckbox.checked = Boolean(
         (items['enableConsensus'] as boolean) ??
           DEFAULT_PROPERTIES.enableConsensus,
@@ -399,12 +406,19 @@ document.addEventListener('DOMContentLoaded', () => {
               if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError.message));
               } else {
+                // Initialize LLMEngine with the selected model
+                const selectedEngineType = Object.values(LLMEngineType).find(
+                  (type) => getModelName(type) === llmModel,
+                );
+                if (selectedEngineType) {
+                  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+                  const engine = new LLMEngine(selectedEngineType);
+                }
                 resolve();
               }
             },
           );
         });
-        await chrome.runtime.sendMessage({ type: 'RESET_SETTINGS' });
         alert('Options saved successfully!');
       } catch (error) {
         alert(
