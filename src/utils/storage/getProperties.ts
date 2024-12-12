@@ -29,16 +29,8 @@ async function getLLMModel(): Promise<string> {
 }
 
 async function getSkipMarkedSetting(): Promise<boolean> {
-  const defaultSkipMarked = DEFAULT_PROPERTIES.skipMarkedQuestions;
-  return new Promise<boolean>((resolve) => {
-    chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
-      resolve(
-        typeof items['skipMarkedQuestions'] === 'boolean'
-          ? items['skipMarkedQuestions']
-          : defaultSkipMarked,
-      );
-    });
-  });
+  const value = await getSetting<boolean>('skipMarkedQuestions');
+  return value ?? DEFAULT_PROPERTIES.skipMarkedQuestions;
 }
 
 export async function getEnableOpacityOnSkippedQuestions(): Promise<boolean> {

@@ -17,18 +17,22 @@ import {
 import { initializeOptionPasswordField } from './optionPasswordField';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const skipMarkedToggle = document.getElementById('skipMarkedToggle');
-  if (!skipMarkedToggle) {
+  const skipMarkedToggleButton = document.getElementById(
+    'skipMarkedToggleButton',
+  );
+  if (!skipMarkedToggleButton) {
     return;
   }
   const initialState = await getSkipMarkedStatus();
-  skipMarkedToggle.classList.toggle('active', initialState);
+  skipMarkedToggleButton.classList.toggle('active', initialState);
 
-  skipMarkedToggle.addEventListener('click', () => {
-    void setSkipMarkedStatus(skipMarkedToggle).catch((error) => {
+  skipMarkedToggleButton.addEventListener('click', async () => {
+    await setSkipMarkedStatus().catch((error) => {
       // eslint-disable-next-line no-console
       console.error('Error toggling state:', error);
     });
+    const currentState = await getSkipMarkedStatus();
+    skipMarkedToggleButton.classList.toggle('active', currentState);
   });
   const modalHTML = `
     <div id="addProfileModal" class="modal hidden">
@@ -358,15 +362,26 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        await chrome.storage.sync.set({
-          sleepDuration,
-          llmModel,
-          enableConsensus,
-          llmWeights,
-          chatGptApiKey,
-          geminiApiKey,
-          mistralApiKey,
-          anthropicApiKey,
+        await new Promise<void>((resolve, reject) => {
+          chrome.storage.sync.set(
+            {
+              sleepDuration,
+              llmModel,
+              enableConsensus,
+              llmWeights,
+              chatGptApiKey,
+              geminiApiKey,
+              mistralApiKey,
+              anthropicApiKey,
+            },
+            () => {
+              if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError.message));
+              } else {
+                resolve();
+              }
+            },
+          );
         });
         alert('Options saved successfully!');
       } catch (error) {
