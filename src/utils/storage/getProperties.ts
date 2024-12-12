@@ -41,18 +41,16 @@ async function getSkipMarkedSetting(): Promise<boolean> {
   });
 }
 
-async function getSkipMarkedToggleStatus(
-  skipMarkedToggle: HTMLElement | null,
-): Promise<void> {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
-      const isEnabled =
-        (items['skipMarkedQuestions'] as boolean) ??
-        DEFAULT_PROPERTIES.skipMarkedQuestions;
-      skipMarkedToggle?.classList.toggle('active', isEnabled);
-      resolve();
-    });
-  });
+export async function getEnableOpacityOnSkippedQuestions(): Promise<boolean> {
+  const value = await getSetting<boolean>('enableOpacityOnSkippedQuestions');
+  return value ?? DEFAULT_PROPERTIES.enableOpacityOnSkippedQuestions;
+}
+
+async function getSkipMarkedStatus(): Promise<boolean> {
+  return (
+    (await getSetting<boolean>('skipMarkedQuestions')) ??
+    DEFAULT_PROPERTIES.skipMarkedQuestions
+  );
 }
 
 async function getEnableConsensus(): Promise<boolean> {
@@ -101,5 +99,5 @@ export {
   getAnthropicApiKey,
   getIsEnabled,
   getSkipMarkedSetting,
-  getSkipMarkedToggleStatus,
+  getSkipMarkedStatus,
 };

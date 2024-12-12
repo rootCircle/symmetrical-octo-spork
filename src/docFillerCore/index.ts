@@ -9,8 +9,10 @@ import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { Settings } from '@utils/settings';
 import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
 import { PrefilledChecker } from '@docFillerCore/engines/prefilledChecker';
-import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import { getSkipMarkedSetting } from '@utils/storage/getProperties';
+import {
+  getSkipMarkedSetting,
+  getEnableOpacityOnSkippedQuestions,
+} from '@utils/storage/getProperties';
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -54,9 +56,11 @@ async function runDocFillerEngine() {
         console.log('Is Already Filled ↴');
         console.log(isFilled);
         const skipMarkedSettingValue = await getSkipMarkedSetting();
+        const enableOpacity = await getEnableOpacityOnSkippedQuestions();
         if (skipMarkedSettingValue && isFilled) {
-          question.style.opacity =
-            DEFAULT_PROPERTIES.markedQuestionOpacity.toString();
+          if (enableOpacity) {
+            question.style.opacity = '0.6';
+          }
           console.log('Skipping already marked question:', question);
           continue;
         }

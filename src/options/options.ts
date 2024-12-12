@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
-import { LLMEngine } from '@docFillerCore/engines/gptEngine';
-import { getSkipMarkedToggleStatus } from '@utils/storage/getProperties';
+import { getSkipMarkedStatus } from '@utils/storage/getProperties';
 import { setSkipMarkedStatus } from '@utils/storage/setProperties';
 
 import {
@@ -16,31 +16,20 @@ import {
 } from './optionApiHandler';
 import { initializeOptionPasswordField } from './optionPasswordField';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const skipMarkedToggle = document.getElementById('skipMarkedToggle');
-  void getSkipMarkedToggleStatus(skipMarkedToggle).catch((error) => {
-    // eslint-disable-next-line no-console
-    console.error('Error getting skip marked toggle status:', error);
+  if (!skipMarkedToggle) {
+    return;
+  }
+  const initialState = await getSkipMarkedStatus();
+  skipMarkedToggle.classList.toggle('active', initialState);
+
+  skipMarkedToggle.addEventListener('click', () => {
+    void setSkipMarkedStatus(skipMarkedToggle).catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Error toggling state:', error);
+    });
   });
-  skipMarkedToggle?.addEventListener('click', () => {
-    const saveState = async () => {
-      try {
-        const currentState = await new Promise<boolean>((resolve) => {
-          chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
-            resolve(Boolean(items['skipMarkedQuestions']));
-          });
-        });
-
-        await setSkipMarkedStatus(skipMarkedToggle, currentState);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error saving toggle state:', error);
-      }
-    };
-
-    void saveState();
-  });
-
   const modalHTML = `
     <div id="addProfileModal" class="modal hidden">
       <div class="modal-content">
@@ -93,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       addProfileForm?.addEventListener('submit', handleProfileFormSubmit);
 
       modal?.addEventListener('click', (e) => {
@@ -220,13 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
         (items['llmModel'] as string) ?? getModelName(DEFAULT_PROPERTIES.model);
 
       updateApiKeyInputField(singleApiKeyInput, llmModelSelect);
-      const selectedEngineType = Object.values(LLMEngineType).find(
-        (type) => getModelName(type) === llmModelSelect.value,
-      );
-      if (selectedEngineType) {
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-        const engine = new LLMEngine(selectedEngineType);
-      }
       enableConsensusCheckbox.checked = Boolean(
         (items['enableConsensus'] as boolean) ??
           DEFAULT_PROPERTIES.enableConsensus,
@@ -377,34 +358,15 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        await new Promise<void>((resolve, reject) => {
-          chrome.storage.sync.set(
-            {
-              sleepDuration,
-              llmModel,
-              enableConsensus,
-              llmWeights,
-              chatGptApiKey,
-              geminiApiKey,
-              mistralApiKey,
-              anthropicApiKey,
-            },
-            () => {
-              if (chrome.runtime.lastError) {
-                reject(new Error(chrome.runtime.lastError.message));
-              } else {
-                // Initialize LLMEngine with the selected model
-                const selectedEngineType = Object.values(LLMEngineType).find(
-                  (type) => getModelName(type) === llmModel,
-                );
-                if (selectedEngineType) {
-                  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-                  const engine = new LLMEngine(selectedEngineType);
-                }
-                resolve();
-              }
-            },
-          );
+        await chrome.storage.sync.set({
+          sleepDuration,
+          llmModel,
+          enableConsensus,
+          llmWeights,
+          chatGptApiKey,
+          geminiApiKey,
+          mistralApiKey,
+          anthropicApiKey,
         });
         alert('Options saved successfully!');
       } catch (error) {

@@ -1,7 +1,9 @@
-async function setSkipMarkedStatus(
+import { getSkipMarkedStatus } from './getProperties';
+
+export async function setSkipMarkedStatus(
   skipMarkedToggle: HTMLElement,
-  currentState: boolean,
 ): Promise<void> {
+  const currentState = await getSkipMarkedStatus();
   const newState = !currentState;
 
   return new Promise<void>((resolve, reject) => {
@@ -15,5 +17,3 @@ async function setSkipMarkedStatus(
     });
   });
 }
-
-export { setSkipMarkedStatus };
