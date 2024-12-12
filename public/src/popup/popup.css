@@ -119,7 +119,7 @@ p {
 }
 
 .toggle-switch img {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -307,4 +307,16 @@ p {
 
 .toast.info {
   background-color: #2196f3;
+}
+.disabled .toggle-on,
+.disabled .toggle-off {
+  opacity: 0.3 !important;
+
+  pointer-events: none;
+
+  display: block;
+}
+.disabled .toggle-on:not(:visible),
+.disabled .toggle-off:not(:visible) {
+  display: none;
 }

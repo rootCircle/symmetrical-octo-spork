@@ -729,7 +729,7 @@ input[disabled] {
 .password-container input {
   width: 100%;
   padding: 0.75rem;
-  padding-right: 40px;
+  padding-right: 45px !important;
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   background-color: var(--input-bg);

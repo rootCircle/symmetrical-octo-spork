@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const apiMessageText = apiMessage?.querySelector(
     '.api-message-text',
   ) as HTMLElement;
-
   if (
     !toggleButton ||
     !toggleOn ||
@@ -44,10 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Required elements not found');
     return;
   }
-
   refreshButton.style.display = 'none';
   fillSection.style.display = 'none';
-
   async function checkAndUpdateApiMessage() {
     type ValidationResult = {
       invalidEngines: string[];
@@ -66,16 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
         apiMessageText.textContent =
           'Please add an API key in Options to use DocFiller';
       }
+      toggleButton?.classList.add('disabled');
+
       if (toggleButton) {
-        toggleOn.style.cursor = 'not-allowed';
-        toggleOff.style.cursor = 'not-allowed';
+        toggleButton.style.pointerEvents = 'none';
       }
     } else {
       apiMessage.style.display = 'none';
       toggleButton?.classList.remove('disabled');
       if (toggleButton) {
-        toggleOn.style.cursor = 'pointer';
-        toggleOff.style.cursor = 'pointer';
+        toggleButton.style.pointerEvents = 'cursor';
       }
     }
   }
@@ -117,49 +114,34 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   fillSection.addEventListener('click', () => {
-    // Show toast when fill action starts
-
     showToast('Starting auto-fill process...', 'info');
-
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
-
+      if (!tab?.url?.includes('docs.google.com/forms')) {
+        showToast('Please open a Google Form to use auto-fill', 'error');
+        return;
+      }
       chrome.scripting
-
         .executeScript({
           target: { tabId: tab?.id || 0 },
-
           func: runDocFillerEngine,
         })
-
         .then(() => {
-          // Show success toast when fill completes
-
           showToast('Auto-fill completed successfully!', 'success');
         })
-
         .catch((error) => {
-          // Show error toast if fill fails
-
           showToast(`Auto-fill failed: ${error}`, 'error');
-
           console.error(error);
         });
     });
-
     runDocFillerEngine().catch((error) => {
       showToast(`Auto-fill failed: ${error}`, 'error');
-
       console.error(error);
     });
   });
 
   refreshButton.addEventListener('click', () => {
-    showToast('Refreshing page...', 'info');
-
     chrome.tabs.reload().catch((error) => {
-      showToast(`Failed to refresh: ${error}`, 'error');
-
       console.error('Failed to reload tab:', error);
     });
   });
@@ -169,12 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleOff.style.display = isEnabled ? 'none' : 'block';
     if (fillSection) {
       fillSection.style.display = isEnabled ? 'none' : 'flex';
-    }
-
-    if (isEnabled) {
-      showToast('Power On', 'success');
-    } else {
-      showToast('Power Off', 'error');
     }
   }
 
