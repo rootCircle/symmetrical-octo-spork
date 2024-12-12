@@ -1,6 +1,6 @@
 import { QType } from '@utils/questionTypes';
 
-export class MarkedQuestionChecker {
+export class PrefilledChecker {
   public markedCheck(fieldType: QType, fieldValue: ExtractedValue): boolean {
     try {
       switch (fieldType) {
@@ -50,6 +50,7 @@ export class MarkedQuestionChecker {
           return this.isTimeFilled(fieldValue);
 
         case QType.TIME_WITH_MERIDIEM:
+          //No need to check meridiem field as it has a default value in google form so it will always be filled.
           return this.isTimeWithMeridiemFilled(fieldValue);
 
         case QType.DURATION:
@@ -59,16 +60,15 @@ export class MarkedQuestionChecker {
           return this.isDateAndTimeFilled(fieldValue);
 
         case QType.DATE_TIME_WITH_MERIDIEM:
+          //No need to check meridiem field as it has a default value in google form so it will always be filled.
           return this.isDateTimeWithMeridiemFilled(fieldValue);
 
         case QType.DATE_TIME_WITHOUT_YEAR:
           return this.isDateTimeWithoutYearFilled(fieldValue);
 
         case QType.DATE_TIME_WITH_MERIDIEM_WITHOUT_YEAR:
+          //No need to check meridiem field as it has a default value in google form so it will always be filled.
           return this.isDateTimeWithMeridiemWithoutYearFilled(fieldValue);
-
-        default:
-          return false;
       }
     } catch (e) {
       // eslint-disable-next-line no-console

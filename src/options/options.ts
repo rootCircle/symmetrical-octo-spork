@@ -2,6 +2,8 @@ import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
+import { getSkipMarkedToggleStatus } from '@utils/storage/getProperties';
+import { setSkipMarkedStatus } from '@utils/storage/setProperties';
 
 import {
   createProfileCards,
@@ -16,14 +18,10 @@ import { initializeOptionPasswordField } from './optionPasswordField';
 
 document.addEventListener('DOMContentLoaded', () => {
   const skipMarkedToggle = document.getElementById('skipMarkedToggle');
-
-  chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
-    const isEnabled =
-      (items['skipMarkedQuestions'] as boolean) ??
-      DEFAULT_PROPERTIES.skipMarkedQuestions;
-    skipMarkedToggle?.classList.toggle('active', isEnabled);
+  void getSkipMarkedToggleStatus(skipMarkedToggle).catch((error) => {
+    // eslint-disable-next-line no-console
+    console.error('Error getting skip marked toggle status:', error);
   });
-
   skipMarkedToggle?.addEventListener('click', () => {
     const saveState = async () => {
       try {
@@ -33,18 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
 
-        const newState = !currentState;
-
-        await new Promise<void>((resolve, reject) => {
-          chrome.storage.sync.set({ skipMarkedQuestions: newState }, () => {
-            if (chrome.runtime.lastError) {
-              reject(new Error(chrome.runtime.lastError.message));
-            } else {
-              skipMarkedToggle.classList.toggle('active', newState);
-              resolve();
-            }
-          });
-        });
+        await setSkipMarkedStatus(skipMarkedToggle, currentState);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error saving toggle state:', error);

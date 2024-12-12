@@ -28,6 +28,33 @@ async function getLLMModel(): Promise<string> {
   );
 }
 
+async function getSkipMarkedSetting(): Promise<boolean> {
+  const defaultSkipMarked = DEFAULT_PROPERTIES.skipMarkedQuestions;
+  return new Promise<boolean>((resolve) => {
+    chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
+      resolve(
+        typeof items['skipMarkedQuestions'] === 'boolean'
+          ? items['skipMarkedQuestions']
+          : defaultSkipMarked,
+      );
+    });
+  });
+}
+
+async function getSkipMarkedToggleStatus(
+  skipMarkedToggle: HTMLElement | null,
+): Promise<void> {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
+      const isEnabled =
+        (items['skipMarkedQuestions'] as boolean) ??
+        DEFAULT_PROPERTIES.skipMarkedQuestions;
+      skipMarkedToggle?.classList.toggle('active', isEnabled);
+      resolve();
+    });
+  });
+}
+
 async function getEnableConsensus(): Promise<boolean> {
   return (
     (await getSetting<boolean>('enableConsensus')) ??
@@ -73,4 +100,6 @@ export {
   getMistralApiKey,
   getAnthropicApiKey,
   getIsEnabled,
+  getSkipMarkedSetting,
+  getSkipMarkedToggleStatus,
 };

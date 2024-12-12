@@ -786,7 +786,6 @@ export class FillerEngine {
       e.preventDefault();
       e.stopPropagation();
       e.stopImmediatePropagation();
-      return false;
     };
     overlay.addEventListener('click', preventAll, true);
     overlay.addEventListener('mousedown', preventAll, true);

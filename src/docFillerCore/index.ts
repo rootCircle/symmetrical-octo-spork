@@ -8,8 +8,9 @@ import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { Settings } from '@utils/settings';
 import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
-import { MarkedQuestionChecker } from '@docFillerCore/engines/markedQuestionChecker';
+import { PrefilledChecker } from '@docFillerCore/engines/prefilledChecker';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
+import { getSkipMarkedSetting } from '@utils/storage/getProperties';
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -19,7 +20,7 @@ async function runDocFillerEngine() {
   const prompts = new PromptEngine();
   const validator = new ValidatorEngine();
   const filler = new FillerEngine();
-  const ismarked = new MarkedQuestionChecker();
+  const isMarked = new PrefilledChecker();
   const enableConsensus = await Settings.getInstance().getEnableConsensus();
   let consensusEngine;
   let llm;
@@ -33,16 +34,16 @@ async function runDocFillerEngine() {
       return;
     }
   }
-  const skipMarkedSetting = await new Promise<boolean>((resolve) => {
-    const defaultSkipMarked = DEFAULT_PROPERTIES.skipMarkedQuestions;
-    chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
-      resolve(
-        typeof items['skipMarkedQuestions'] === 'boolean'
-          ? items['skipMarkedQuestions']
-          : defaultSkipMarked,
-      );
-    });
-  });
+  // const skipMarkedSetting = await new Promise<boolean>((resolve) => {
+  //   const defaultSkipMarked = DEFAULT_PROPERTIES.skipMarkedQuestions;
+  //   chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
+  //     resolve(
+  //       typeof items['skipMarkedQuestions'] === 'boolean'
+  //         ? items['skipMarkedQuestions']
+  //         : defaultSkipMarked,
+  //     );
+  //   });
+  // });
 
   for (const question of questions) {
     try {
@@ -58,13 +59,14 @@ async function runDocFillerEngine() {
         console.log('Field Value ↴');
         console.log(fieldValue);
 
-        const isFilled = ismarked.markedCheck(fieldType, fieldValue);
+        const isFilled = isMarked.markedCheck(fieldType, fieldValue);
 
         console.log('Is Already Filled ↴');
         console.log(isFilled);
-
-        if (skipMarkedSetting && isFilled) {
-          question.style.opacity = '0.6';
+        const skipMarkedSettingValue = await getSkipMarkedSetting();
+        if (skipMarkedSettingValue && isFilled) {
+          question.style.opacity =
+            DEFAULT_PROPERTIES.markedQuestionOpacity.toString();
           console.log('Skipping already marked question:', question);
           continue;
         }
