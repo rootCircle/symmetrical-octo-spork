@@ -771,36 +771,65 @@ export class FillerEngine {
     if (!value.genericResponse) {
       return false;
     }
-    await sleep(await Settings.getInstance().getSleepDuration());
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: transparent;
+        z-index: 99999;
+        cursor: not-allowed;
+    `;
+    const preventAll = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    };
+    overlay.addEventListener('click', preventAll, true);
+    overlay.addEventListener('mousedown', preventAll, true);
+    overlay.addEventListener('mouseup', preventAll, true);
 
-    for (const option of fieldValue.options ?? []) {
-      if (option.data === value.genericResponse?.answer) {
-        if (fieldValue.dom) {
-          if (fieldValue.dom?.getAttribute('aria-expanded') !== 'true') {
-            fieldValue.dom
-              ?.querySelector('div[role=presentation]')
-              ?.dispatchEvent(new Event('click', { bubbles: true }));
-            await sleep(await Settings.getInstance().getSleepDuration());
-          }
+    try {
+      document.body.appendChild(overlay);
+      await sleep(await Settings.getInstance().getSleepDuration());
 
-          const allOptions =
-            fieldValue.dom.querySelectorAll('div[role=option]');
-          allOptions.forEach((possibleOption) => {
-            if (
-              possibleOption.querySelector('span')?.textContent ===
-              value.genericResponse?.answer
-            ) {
-              possibleOption.dispatchEvent(
-                new Event('click', { bubbles: true }),
-              );
-              return;
+      for (const option of fieldValue.options ?? []) {
+        if (option.data === value.genericResponse?.answer) {
+          if (fieldValue.dom) {
+            if (fieldValue.dom?.getAttribute('aria-expanded') !== 'true') {
+              fieldValue.dom
+                ?.querySelector('div[role=presentation]')
+                ?.dispatchEvent(new Event('click', { bubbles: true }));
+              await sleep(await Settings.getInstance().getSleepDuration());
             }
-          });
 
-          return true;
+            const allOptions =
+              fieldValue.dom.querySelectorAll('div[role=option]');
+            allOptions.forEach((possibleOption) => {
+              if (
+                possibleOption.querySelector('span')?.textContent ===
+                value.genericResponse?.answer
+              ) {
+                possibleOption.dispatchEvent(
+                  new Event('click', { bubbles: true }),
+                );
+                return;
+              }
+            });
+
+            return true;
+          }
         }
       }
+      return false;
+    } finally {
+      overlay.removeEventListener('click', preventAll, true);
+      overlay.removeEventListener('mousedown', preventAll, true);
+      overlay.removeEventListener('mouseup', preventAll, true);
+      await sleep(await Settings.getInstance().getSleepDuration());
+      overlay.remove();
     }
-    return false;
   }
 }

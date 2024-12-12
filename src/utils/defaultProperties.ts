@@ -8,6 +8,8 @@ interface typeDefaultProperties {
   automaticFillingEnabled: boolean;
   defaultProfileKey: string;
   defaultProfile: Profile;
+  skipMarkedQuestions: boolean;
+  enableOpacityOnSkippedQuestions: boolean;
 }
 const LLMWeightsMap = {
   [LLMEngineType.Gemini]: 0.18,
@@ -34,6 +36,8 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
     short_description: 'Your best all-rounder',
     is_custom: false,
   },
+  skipMarkedQuestions: true,
+  enableOpacityOnSkippedQuestions: true,
 };
 
 export { DEFAULT_PROPERTIES };

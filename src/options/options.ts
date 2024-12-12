@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
+import { getSkipMarkedStatus } from '@utils/storage/getProperties';
+import { setSkipMarkedStatus } from '@utils/storage/setProperties';
 
 import {
   createProfileCards,
@@ -13,7 +16,24 @@ import {
 } from './optionApiHandler';
 import { initializeOptionPasswordField } from './optionPasswordField';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  const skipMarkedToggleButton = document.getElementById(
+    'skipMarkedToggleButton',
+  );
+  if (!skipMarkedToggleButton) {
+    return;
+  }
+  const initialState = await getSkipMarkedStatus();
+  skipMarkedToggleButton.classList.toggle('active', initialState);
+
+  skipMarkedToggleButton.addEventListener('click', async () => {
+    await setSkipMarkedStatus().catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Error toggling state:', error);
+    });
+    const currentState = await getSkipMarkedStatus();
+    skipMarkedToggleButton.classList.toggle('active', currentState);
+  });
   const modalHTML = `
     <div id="addProfileModal" class="modal hidden">
       <div class="modal-content">
@@ -66,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       addProfileForm?.addEventListener('submit', handleProfileFormSubmit);
 
       modal?.addEventListener('click', (e) => {
@@ -193,7 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
         (items['llmModel'] as string) ?? getModelName(DEFAULT_PROPERTIES.model);
 
       updateApiKeyInputField(singleApiKeyInput, llmModelSelect);
-
       enableConsensusCheckbox.checked = Boolean(
         (items['enableConsensus'] as boolean) ??
           DEFAULT_PROPERTIES.enableConsensus,

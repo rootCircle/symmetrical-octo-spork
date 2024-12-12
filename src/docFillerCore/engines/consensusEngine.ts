@@ -2,40 +2,27 @@
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
 import { analyzeWeightedObjects } from '@utils/consensusUtil';
-import { Settings } from '@utils/settings';
 import { LLMEngineType } from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 
 class ConsensusEngine {
-  private static instance: ConsensusEngine;
   private validateEngine: ValidatorEngine;
-  private static llmWeights: Map<LLMEngineType, number> = new Map<
-    LLMEngineType,
-    number
-  >(Object.entries(DEFAULT_PROPERTIES.llmWeights) as [LLMEngineType, number][]);
+  private llmWeights: Map<LLMEngineType, number>;
 
-  private constructor() {
+  public constructor() {
     this.validateEngine = new ValidatorEngine();
+    this.llmWeights = new Map<LLMEngineType, number>(
+      Object.entries(DEFAULT_PROPERTIES.llmWeights) as [
+        LLMEngineType,
+        number,
+      ][],
+    );
+    this.distributeWeights();
   }
 
-  public static async getInstance(): Promise<ConsensusEngine> {
-    if (!ConsensusEngine.instance) {
-      ConsensusEngine.instance = new ConsensusEngine();
-      ConsensusEngine.llmWeights = new Map<LLMEngineType, number>(
-        Object.entries(await Settings.getInstance().getConsensusWeights()) as [
-          LLMEngineType,
-          number,
-        ][],
-      );
-      ConsensusEngine.distributeWeights();
-    }
-
-    return ConsensusEngine.instance;
-  }
-
-  private static distributeWeights() {
-    const currentSum = Array.from(ConsensusEngine.llmWeights.values()).reduce(
+  private distributeWeights() {
+    const currentSum = Array.from(this.llmWeights.values()).reduce(
       (sum, weight) => sum + weight,
       0,
     );
@@ -44,14 +31,14 @@ class ConsensusEngine {
       return;
     }
 
-    const nonZeroCount = Array.from(ConsensusEngine.llmWeights.values()).filter(
+    const nonZeroCount = Array.from(this.llmWeights.values()).filter(
       (w) => w > 0,
     ).length;
     const adjustment =
-      (1 - currentSum) / (nonZeroCount ?? ConsensusEngine.llmWeights.size);
-    ConsensusEngine.llmWeights.forEach((value, key) => {
+      (1 - currentSum) / (nonZeroCount ?? this.llmWeights.size);
+    this.llmWeights.forEach((value, key) => {
       if (value > 0) {
-        ConsensusEngine.llmWeights.set(key, value + adjustment);
+        this.llmWeights.set(key, value + adjustment);
       }
     });
   }
@@ -62,7 +49,7 @@ class ConsensusEngine {
     fieldType: QType,
   ): Promise<LLMResponse | null> {
     const responses = [];
-    const entries = Array.from(ConsensusEngine.llmWeights.entries());
+    const entries = Array.from(this.llmWeights.entries());
     for (let i = 0; i < entries.length; i++) {
       const [llmType, weight] = entries[i] as [LLMEngineType, number];
       try {

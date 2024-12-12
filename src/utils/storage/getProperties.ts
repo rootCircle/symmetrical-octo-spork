@@ -28,6 +28,23 @@ async function getLLMModel(): Promise<string> {
   );
 }
 
+async function getSkipMarkedSetting(): Promise<boolean> {
+  const value = await getSetting<boolean>('skipMarkedQuestions');
+  return value ?? DEFAULT_PROPERTIES.skipMarkedQuestions;
+}
+
+export async function getEnableOpacityOnSkippedQuestions(): Promise<boolean> {
+  const value = await getSetting<boolean>('enableOpacityOnSkippedQuestions');
+  return value ?? DEFAULT_PROPERTIES.enableOpacityOnSkippedQuestions;
+}
+
+async function getSkipMarkedStatus(): Promise<boolean> {
+  return (
+    (await getSetting<boolean>('skipMarkedQuestions')) ??
+    DEFAULT_PROPERTIES.skipMarkedQuestions
+  );
+}
+
 async function getEnableConsensus(): Promise<boolean> {
   return (
     (await getSetting<boolean>('enableConsensus')) ??
@@ -73,4 +90,6 @@ export {
   getMistralApiKey,
   getAnthropicApiKey,
   getIsEnabled,
+  getSkipMarkedSetting,
+  getSkipMarkedStatus,
 };

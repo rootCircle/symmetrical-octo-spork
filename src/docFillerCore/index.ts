@@ -8,6 +8,11 @@ import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { Settings } from '@utils/settings';
 import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
+import { PrefilledChecker } from '@docFillerCore/engines/prefilledChecker';
+import {
+  getSkipMarkedSetting,
+  getEnableOpacityOnSkippedQuestions,
+} from '@utils/storage/getProperties';
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -17,11 +22,12 @@ async function runDocFillerEngine() {
   const prompts = new PromptEngine();
   const validator = new ValidatorEngine();
   const filler = new FillerEngine();
+  const isMarked = new PrefilledChecker();
   const enableConsensus = await Settings.getInstance().getEnableConsensus();
   let consensusEngine;
   let llm;
   if (enableConsensus) {
-    consensusEngine = await ConsensusEngine.getInstance();
+    consensusEngine = new ConsensusEngine();
   } else {
     try {
       llm = new LLMEngine(await Settings.getInstance().getCurrentLLMModel());
@@ -37,8 +43,6 @@ async function runDocFillerEngine() {
 
       if (fieldType !== null) {
         const fieldValue = fields.getFields(question, fieldType);
-        const promptString = prompts.getPrompt(fieldType, fieldValue);
-
         console.log(question);
 
         console.log(`Field Type : ${fieldType}`);
@@ -47,6 +51,21 @@ async function runDocFillerEngine() {
         console.log('Field Value ↴');
         console.log(fieldValue);
 
+        const isFilled = isMarked.markedCheck(fieldType, fieldValue);
+
+        console.log('Is Already Filled ↴');
+        console.log(isFilled);
+        const skipMarkedSettingValue = await getSkipMarkedSetting();
+        const enableOpacity = await getEnableOpacityOnSkippedQuestions();
+        if (skipMarkedSettingValue && isFilled) {
+          if (enableOpacity) {
+            question.style.opacity = '0.6';
+          }
+          console.log('Skipping already marked question:', question);
+          continue;
+        }
+
+        const promptString = prompts.getPrompt(fieldType, fieldValue);
         console.log('Prompt ↴');
         console.log(promptString);
 
