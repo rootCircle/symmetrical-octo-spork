@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 
-import { runDocFillerEngine } from '@docFillerCore/index';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import {
   getSelectedProfileKey,
@@ -121,22 +120,23 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Please open a Google Form to use auto-fill', 'error');
         return;
       }
-      chrome.scripting
-        .executeScript({
-          target: { tabId: tab?.id || 0 },
-          func: runDocFillerEngine,
-        })
-        .then(() => {
+
+      chrome.tabs.sendMessage(tab.id!, { action: 'fillForm' }, (response) => {
+        if (chrome.runtime.lastError) {
+          showToast('Error: Could not communicate with page', 'error');
+          return;
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (response?.success) {
           showToast('Auto-fill completed successfully!', 'success');
-        })
-        .catch((error) => {
-          showToast(`Auto-fill failed: ${error}`, 'error');
-          console.error(error);
-        });
-    });
-    runDocFillerEngine().catch((error) => {
-      showToast(`Auto-fill failed: ${error}`, 'error');
-      console.error(error);
+        } else {
+          showToast(
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            `Auto-fill failed: ${response?.error || 'Unknown error'}`,
+            'error',
+          );
+        }
+      });
     });
   });
 
