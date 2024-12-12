@@ -34,16 +34,6 @@ async function runDocFillerEngine() {
       return;
     }
   }
-  // const skipMarkedSetting = await new Promise<boolean>((resolve) => {
-  //   const defaultSkipMarked = DEFAULT_PROPERTIES.skipMarkedQuestions;
-  //   chrome.storage.sync.get(['skipMarkedQuestions'], (items) => {
-  //     resolve(
-  //       typeof items['skipMarkedQuestions'] === 'boolean'
-  //         ? items['skipMarkedQuestions']
-  //         : defaultSkipMarked,
-  //     );
-  //   });
-  // });
 
   for (const question of questions) {
     try {
