@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener(
   (
     message: unknown,
 
-    sender: chrome.runtime.MessageSender,
+    _sender: chrome.runtime.MessageSender,
 
     sendResponse: (response: MessageResponse) => void,
   ) => {
