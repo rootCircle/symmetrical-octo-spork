@@ -14,7 +14,6 @@ import {
   getEnableOpacityOnSkippedQuestions,
 } from '@utils/storage/getProperties';
 import { MetricsManager } from '@utils/storage/metricsManager';
-import { LLM_REQUIREMENTS } from '@utils/llmEngineTypes';
 import { validateLLMConfiguration } from '@utils/missingApiKey';
 
 async function runDocFillerEngine() {
@@ -41,16 +40,16 @@ async function runDocFillerEngine() {
     }
   }
 
-  const llmConfig = await validateLLMConfiguration();
-  if (
-    !(
-      (llm &&
-        !llmConfig.isConsensusEnabled &&
-        llmConfig.invalidEngines.length === 0) ||
-      (llmConfig.isConsensusEnabled &&
-        llmConfig.invalidEngines.length < Object.keys(LLM_REQUIREMENTS).length)
-    )
-  ) {
+  type ValidationResult = {
+    invalidEngines: string[];
+    isConsensusEnabled: boolean;
+  };
+  const validation = (await validateLLMConfiguration()) as ValidationResult;
+  if (validation.invalidEngines.length > 0) {
+    console.log(
+      `Consensus is ${validation.isConsensusEnabled ? 'enabled' : 'disabled'}`,
+    );
+    console.error('Invalid engines:', validation.invalidEngines);
     return;
   }
 
