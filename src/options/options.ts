@@ -1,4 +1,3 @@
-
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
@@ -7,7 +6,6 @@ import { EMPTY_STRING } from '@utils/settings';
 import { getSkipMarkedStatus } from '@utils/storage/getProperties';
 import { setSkipMarkedStatus } from '@utils/storage/setProperties';
 import { showToast } from '@utils/toastUtils';
-
 
 import { MetricsUI } from './metrics';
 import {
@@ -22,7 +20,6 @@ import {
 import { initializeOptionPasswordField } from './optionPasswordField';
 
 document.addEventListener('DOMContentLoaded', async () => {
-
   const metricsUI = new MetricsUI();
   await metricsUI.initialize();
 
@@ -41,8 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   skipMarkedToggleButton.addEventListener('click', async () => {
     await setSkipMarkedStatus().catch((error) => {
-
-      // eslint-disable-next-line no-console
       console.error('Error toggling state:', error);
     });
     const currentState = await getSkipMarkedStatus();
@@ -81,7 +76,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-
   try {
     await createProfileCards();
     const modal = document.getElementById('addProfileModal');
@@ -111,7 +105,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error('Error initializing options:', error);
   }
-
 });
 
 // Settings related event listeners

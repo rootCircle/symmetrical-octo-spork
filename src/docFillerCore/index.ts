@@ -13,11 +13,9 @@ import {
   getSkipMarkedSetting,
   getEnableOpacityOnSkippedQuestions,
 } from '@utils/storage/getProperties';
-
 import { MetricsManager } from '@utils/storage/metricsManager';
 import { LLM_REQUIREMENTS } from '@utils/llmEngineTypes';
 import { validateLLMConfiguration } from '@utils/missingApiKey';
-
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -88,7 +86,6 @@ async function runDocFillerEngine() {
           console.log('Skipping already marked question:', question);
           continue;
         }
-
 
         metricsManager.incrementToBeFilledQuestions();
 
