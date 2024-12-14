@@ -123,23 +123,17 @@ interface Profiles {
   [key: string]: Profile;
 }
 
-// types.d.ts
-// Remove duplicate MetricsData interface and merge them:
-
 interface MetricsData {
   history: MetricsHistory[];
   formMetrics: {
     totalFormsFilled: number;
     successfulFills: number;
-    // successfulQuestionFilled: number; // Added this from second interface
     failedFills: number;
-    // questionsByType: Record<QType, number>;
     lastFilledDate: string;
     currentStreak: number;
     activeStreak: number;
   };
   timeMetrics: {
-    // totalTimeSaved: number;
     averageTimePerForm: number;
     totalHoursSaved: number;
     totalMinSaved: number;
@@ -164,10 +158,7 @@ interface MetricsUpdateParams {
 interface MetricsHistory {
   date: string;
   formsFilled: number;
-  timeAI: number; // Time taken by AI in seconds
-  // questionsToBeFilled: number; // Number of questions in form
-  // success: boolean;
-  // successfulFills: number;
+  timeAI: number;
   totalQuestions: number;
   successfulQuestions: number;
   toBeFilledQuestions: number;
