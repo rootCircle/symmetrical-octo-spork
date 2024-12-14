@@ -40,3 +40,6 @@ unflatten
 webext
 webextension
 Yarr
+csvg
+cpolyline
+polyline

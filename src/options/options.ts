@@ -1,11 +1,13 @@
-/* eslint-disable no-console */
 
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
 import { getSkipMarkedStatus } from '@utils/storage/getProperties';
 import { setSkipMarkedStatus } from '@utils/storage/setProperties';
+import { showToast } from '@utils/toastUtils';
+
 
 import { MetricsUI } from './metrics';
 import {
@@ -20,12 +22,14 @@ import {
 import { initializeOptionPasswordField } from './optionPasswordField';
 
 document.addEventListener('DOMContentLoaded', async () => {
+
   const metricsUI = new MetricsUI();
   await metricsUI.initialize();
 
   window.addEventListener('unload', () => {
     metricsUI.cleanup();
   });
+
   const skipMarkedToggleButton = document.getElementById(
     'skipMarkedToggleButton',
   );
@@ -37,6 +41,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   skipMarkedToggleButton.addEventListener('click', async () => {
     await setSkipMarkedStatus().catch((error) => {
+
+      // eslint-disable-next-line no-console
       console.error('Error toggling state:', error);
     });
     const currentState = await getSkipMarkedStatus();
@@ -75,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.body.insertAdjacentHTML('beforeend', modalHTML);
 
+
   try {
     await createProfileCards();
     const modal = document.getElementById('addProfileModal');
@@ -104,6 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error('Error initializing options:', error);
   }
+
 });
 
 // Settings related event listeners
@@ -390,10 +398,11 @@ document.addEventListener('DOMContentLoaded', () => {
             },
           );
         });
-        alert('Options saved successfully!');
+        showToast('Settings saved successfully!', 'success');
       } catch (error) {
-        alert(
+        showToast(
           `Error saving options. Please try again. ${error instanceof Error ? error.message : String(error)}`,
+          'error',
         );
       }
     };

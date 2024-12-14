@@ -13,9 +13,11 @@ import {
   getSkipMarkedSetting,
   getEnableOpacityOnSkippedQuestions,
 } from '@utils/storage/getProperties';
+
 import { MetricsManager } from '@utils/storage/metricsManager';
 import { LLM_REQUIREMENTS } from '@utils/llmEngineTypes';
 import { validateLLMConfiguration } from '@utils/missingApiKey';
+
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -87,6 +89,7 @@ async function runDocFillerEngine() {
           continue;
         }
 
+
         metricsManager.incrementToBeFilledQuestions();
 
         const promptString = prompts.getPrompt(fieldType, fieldValue);
@@ -137,9 +140,7 @@ async function runDocFillerEngine() {
       console.error(e);
     }
   }
-  // const formFilledEvent = new CustomEvent('formFillComplete');
-  // window.dispatchEvent(formFilledEvent);
-  // await chrome.runtime.sendMessage({ type: 'formFillComplete' }).catch(console.error);
+
   const currentLLMModel = await Settings.getInstance().getCurrentLLMModel();
   await metricsManager.endFormFilling(currentLLMModel);
 }

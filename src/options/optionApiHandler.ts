@@ -82,10 +82,6 @@ function updateConsensusApiLink(apiKeyElementId: string, modelName: string) {
     apiLinkElement.href = apiLink;
     (apiKeyInput.nextElementSibling as HTMLElement).style.display = 'block';
     apiLinkElement.style.display = 'block';
-  } else {
-    apiKeyInput.disabled = true;
-    (apiKeyInput.nextElementSibling as HTMLElement).style.display = 'none'; // Disable the password eye
-    apiLinkElement.style.display = 'none';
   }
 }
 
@@ -94,6 +90,9 @@ function updateApiKeyInputField(
   llmModelSelect: HTMLSelectElement,
 ) {
   const apiKeyContainer = apiKeyInput.parentElement;
+  const passwordToggleButton = apiKeyContainer?.querySelector(
+    '.password-toggle',
+  ) as HTMLButtonElement;
   if (
     llmModelSelect.value === getModelName(LLMEngineType.Ollama) ||
     llmModelSelect.value === getModelName(LLMEngineType.ChromeAI)
@@ -104,11 +103,13 @@ function updateApiKeyInputField(
         ? 'No API key required for Ollama! Ensure Ollama is installed locally on your system.'
         : 'No API key required for Chrome AI';
     apiKeyContainer?.classList.add('warning');
+    passwordToggleButton?.classList.add('hidden');
     apiKeyInput.value = '';
   } else {
     apiKeyInput.disabled = false;
     apiKeyInput.placeholder = '';
     apiKeyContainer?.classList.remove('warning');
+    passwordToggleButton?.classList.remove('hidden');
   }
 }
 

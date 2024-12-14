@@ -10,7 +10,6 @@
     <div class="popup-container">
       <div class="api-message" style="display: none">
         <span class="api-message-text"></span>
-
         <a href="/src/options/index.html" target="_blank">Options</a>
       </div>
       <div class="button-container">
@@ -19,6 +18,7 @@
             src="../../assets/icons/refresh.svg"
             alt="Refresh"
             class="refresh-icon"
+            title="Refresh current page"
           />
         </div>
         <div id="toggleButton" class="toggle-switch">
@@ -86,6 +86,12 @@
         </p>
       </div>
     </div>
+
     <script src="popup.js"></script>
+    <div id="toast-container" class="toast-container">
+      <div id="toast" class="toast">
+        <div id="toast-message"></div>
+      </div>
+    </div>
   </body>
 </html>

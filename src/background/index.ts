@@ -21,7 +21,6 @@ chrome.runtime.onMessage.addListener(
     if (message.type === 'API_CALL') {
       try {
         const instance = new LLMEngine(message.model);
-
         instance
           .invokeLLM(message.prompt, message.questionType)
           .then((response) => {

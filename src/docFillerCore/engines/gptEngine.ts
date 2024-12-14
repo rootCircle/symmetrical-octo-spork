@@ -45,7 +45,9 @@ export class LLMEngine {
   public engine: LLMEngineType;
   private instances: Record<LLMEngineType, LLMInstance | undefined>;
   private apiKeys: Record<string, string | undefined>;
+
   private metricsManager = MetricsManager.getInstance();
+
   constructor(engine: LLMEngineType) {
     this.engine = engine;
 

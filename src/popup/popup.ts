@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 
-import { runDocFillerEngine } from '@docFillerCore/index';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import {
   getSelectedProfileKey,
   loadProfiles,
 } from '@utils/storage/profiles/profileManager';
 import { validateLLMConfiguration } from '@utils/missingApiKey';
+import { showToast } from '@utils/toastUtils';
 
 document.addEventListener('DOMContentLoaded', () => {
   let previousState = false;
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const apiMessageText = apiMessage?.querySelector(
     '.api-message-text',
   ) as HTMLElement;
-
   if (
     !toggleButton ||
     !toggleOn ||
@@ -43,10 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Required elements not found');
     return;
   }
-
   refreshButton.style.display = 'none';
   fillSection.style.display = 'none';
-
   async function checkAndUpdateApiMessage() {
     type ValidationResult = {
       invalidEngines: string[];
@@ -65,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
         apiMessageText.textContent =
           'Please add an API key in Options to use DocFiller';
       }
-      // Can't switch on extension
       toggleButton?.classList.add('disabled');
+
       if (toggleButton) {
         toggleButton.style.pointerEvents = 'none';
       }
@@ -74,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
       apiMessage.style.display = 'none';
       toggleButton?.classList.remove('disabled');
       if (toggleButton) {
-        toggleButton.style.pointerEvents = 'auto';
+        toggleButton.style.pointerEvents = 'cursor';
       }
     }
   }
@@ -116,19 +113,33 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   fillSection.addEventListener('click', () => {
+    showToast('Starting auto-fill process...', 'info');
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
+      if (!tab?.url?.includes('docs.google.com/forms')) {
+        showToast('Please open a Google Form to use auto-fill', 'error');
+        return;
+      }
 
-      chrome.scripting
-        .executeScript({
-          target: { tabId: tab?.id || 0 },
-          func: runDocFillerEngine,
-        })
-        .catch(console.error);
+      chrome.tabs.sendMessage(tab.id!, { action: 'fillForm' }, (response) => {
+        if (chrome.runtime.lastError) {
+          showToast('Error: Could not communicate with page', 'error');
+          return;
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (response?.success) {
+          showToast('Auto-fill completed successfully!', 'success');
+        } else {
+          showToast(
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            `Auto-fill failed: ${response?.error || 'Unknown error'}`,
+            'error',
+          );
+        }
+      });
     });
-
-    runDocFillerEngine().catch(console.error);
   });
+
   refreshButton.addEventListener('click', () => {
     chrome.tabs.reload().catch((error) => {
       console.error('Failed to reload tab:', error);
