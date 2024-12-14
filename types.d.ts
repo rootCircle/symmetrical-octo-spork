@@ -122,3 +122,53 @@ interface Profile {
 interface Profiles {
   [key: string]: Profile;
 }
+
+// types.d.ts
+// Remove duplicate MetricsData interface and merge them:
+
+interface MetricsData {
+  history: MetricsHistory[];
+  formMetrics: {
+    totalFormsFilled: number;
+    successfulFills: number;
+    // successfulQuestionFilled: number; // Added this from second interface
+    failedFills: number;
+    // questionsByType: Record<QType, number>;
+    lastFilledDate: string;
+    currentStreak: number;
+    activeStreak: number;
+  };
+  timeMetrics: {
+    // totalTimeSaved: number;
+    averageTimePerForm: number;
+    totalHoursSaved: number;
+    totalMinSaved: number;
+    totalSecSaved: number;
+  };
+  aiMetrics: {
+    apiCalls: Record<LLMEngineType, number>;
+    tokenUsage: Record<LLMEngineType, number>;
+    averageResponseTime: Record<LLMEngineType, number>;
+  };
+}
+
+interface MetricsUpdateParams {
+  llmModel: LLMEngineType;
+  timeAI: number;
+  totalQuestions: number;
+  successfulQuestions: number;
+  toBeFilledQuestions: number;
+  responseTime: number;
+}
+
+interface MetricsHistory {
+  date: string;
+  formsFilled: number;
+  timeAI: number; // Time taken by AI in seconds
+  // questionsToBeFilled: number; // Number of questions in form
+  // success: boolean;
+  // successfulFills: number;
+  totalQuestions: number;
+  successfulQuestions: number;
+  toBeFilledQuestions: number;
+}

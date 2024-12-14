@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
@@ -5,6 +7,7 @@ import { EMPTY_STRING } from '@utils/settings';
 import { getSkipMarkedStatus } from '@utils/storage/getProperties';
 import { setSkipMarkedStatus } from '@utils/storage/setProperties';
 
+import { MetricsUI } from './metrics';
 import {
   createProfileCards,
   handleProfileFormSubmit,
@@ -17,6 +20,12 @@ import {
 import { initializeOptionPasswordField } from './optionPasswordField';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const metricsUI = new MetricsUI();
+  await metricsUI.initialize();
+
+  window.addEventListener('unload', () => {
+    metricsUI.cleanup();
+  });
   const skipMarkedToggleButton = document.getElementById(
     'skipMarkedToggleButton',
   );
@@ -28,7 +37,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   skipMarkedToggleButton.addEventListener('click', async () => {
     await setSkipMarkedStatus().catch((error) => {
-      // eslint-disable-next-line no-console
       console.error('Error toggling state:', error);
     });
     const currentState = await getSkipMarkedStatus();
@@ -67,34 +75,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-  createProfileCards()
-    .then(() => {
-      const modal = document.getElementById('addProfileModal');
-      const closeButton = modal?.querySelector('.close-button');
-      const cancelButton = modal?.querySelector('.cancel-button');
-      const addProfileForm = document.getElementById('addProfileForm');
+  try {
+    await createProfileCards();
+    const modal = document.getElementById('addProfileModal');
+    const closeButton = modal?.querySelector('.close-button');
+    const cancelButton = modal?.querySelector('.cancel-button');
+    const addProfileForm = document.getElementById('addProfileForm');
 
-      closeButton?.addEventListener('click', () => {
-        if (modal) {
-          modal.classList.add('hidden');
-        }
-      });
+    closeButton?.addEventListener('click', () => {
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    });
 
-      cancelButton?.addEventListener('click', () => {
-        if (modal) {
-          modal.classList.add('hidden');
-        }
-      });
+    cancelButton?.addEventListener('click', () => {
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    });
 
-      addProfileForm?.addEventListener('submit', handleProfileFormSubmit);
+    addProfileForm?.addEventListener('submit', handleProfileFormSubmit);
 
-      modal?.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.add('hidden');
-        }
-      });
-    })
-    .catch(() => {});
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  } catch (error) {
+    console.error('Error initializing options:', error);
+  }
 });
 
 // Settings related event listeners
@@ -298,7 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKeyValue = anthropicApiKeyInput.value;
         break;
       default:
-        // eslint-disable-next-line no-console
         console.warn('Unknown model selected:', selectedModel);
         break;
     }
@@ -327,7 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
         anthropicApiKeyInput.value = apiKeyValue;
         break;
       default:
-        // eslint-disable-next-line no-console
         console.warn('Unknown model selected:', selectedModel);
         break;
     }

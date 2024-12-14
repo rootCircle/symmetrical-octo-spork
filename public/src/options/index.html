@@ -333,6 +333,55 @@
             </div>
           </div>
         </div>
+        <div class="metrics-container">
+          <!-- Loading State -->
+          <div id="metricsLoading" class="metrics-loading hidden">
+            <div class="spinner"></div>
+            <p>Loading metrics...</p>
+          </div>
+
+          <!-- Summary Stats -->
+          <div class="metrics-summary">
+            <div class="metric-card">
+              <h3>Total Forms Filled</h3>
+              <div id="totalFormsFilled">
+                <p class="metric-value">0</p>
+                <div class="metric-trend"></div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <h3>Success Rate</h3>
+              <div id="successRate">
+                <p class="metric-value">0%</p>
+                <div class="metric-trend"></div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <h3>Time Saved</h3>
+              <div id="timeSaved">
+                <p class="metric-value">0 mins</p>
+                <div class="metric-trend"></div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <h3>Streaks</h3>
+              <div id="activeStreak">
+                <p class="metric-value">0</p>
+                <div class="metric-trend">Current streak</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="metrics-controls">
+            <button id="exportMetrics" class="btn btn-primary">
+              <span class="icon">📊</span> Export Metrics
+            </button>
+            <button id="resetMetrics" class="btn btn-secondary">
+              <span class="icon">🔄</span> Reset Metrics
+            </button>
+          </div>
+        </div>
         <button type="button" id="saveButton">Save Changes</button>
       </form>
     </div>

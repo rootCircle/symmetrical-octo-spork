@@ -48,6 +48,7 @@
     "@langchain/mistralai": "^0.2.0",
     "@langchain/ollama": "^0.1.2",
     "@langchain/openai": "^0.3.14",
+    "chart.js": "^4.4.7",
     "langchain": "^0.3.6",
     "uuid": "^11.0.3"
   },
