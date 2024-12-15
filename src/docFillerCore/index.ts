@@ -13,6 +13,8 @@ import {
   getSkipMarkedSetting,
   getEnableOpacityOnSkippedQuestions,
 } from '@utils/storage/getProperties';
+import { MetricsManager } from '@utils/storage/metricsManager';
+import { validateLLMConfiguration } from '@utils/missingApiKey';
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -26,6 +28,7 @@ async function runDocFillerEngine() {
   const enableConsensus = await Settings.getInstance().getEnableConsensus();
   let consensusEngine;
   let llm;
+  const metricsManager = MetricsManager.getInstance();
   if (enableConsensus) {
     consensusEngine = new ConsensusEngine();
   } else {
@@ -36,6 +39,24 @@ async function runDocFillerEngine() {
       return;
     }
   }
+
+  type ValidationResult = {
+    invalidEngines: string[];
+    isConsensusEnabled: boolean;
+  };
+  const validation = (await validateLLMConfiguration()) as ValidationResult;
+  if (validation.invalidEngines.length > 0) {
+    console.log(
+      `Consensus is ${validation.isConsensusEnabled ? 'enabled' : 'disabled'}`,
+    );
+    console.error('Invalid engines:', validation.invalidEngines);
+    return;
+  }
+
+  const totalQuestions = questions.length;
+  metricsManager.incrementTotalQuestions(totalQuestions);
+
+  metricsManager?.startFormFilling(totalQuestions);
 
   for (const question of questions) {
     try {
@@ -64,6 +85,8 @@ async function runDocFillerEngine() {
           console.log('Skipping already marked question:', question);
           continue;
         }
+
+        metricsManager.incrementToBeFilledQuestions();
 
         const promptString = prompts.getPrompt(fieldType, fieldValue);
         console.log('Prompt ↴');
@@ -102,14 +125,20 @@ async function runDocFillerEngine() {
             response,
           );
           console.log(`Filler Status ${fillerStatus}`);
-        }
 
+          if (fillerStatus) {
+            metricsManager.incrementSuccessfulQuestions();
+          }
+        }
         console.log();
       }
     } catch (e) {
       console.error(e);
     }
   }
+
+  const currentLLMModel = await Settings.getInstance().getCurrentLLMModel();
+  await metricsManager.endFormFilling(currentLLMModel);
 }
 
 export { runDocFillerEngine };

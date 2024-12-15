@@ -2,6 +2,7 @@
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { LLMEngineType } from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
+import { MetricsManager } from '@utils/storage/metricsManager';
 
 interface ChromeResponseMessage {
   type: string;
@@ -9,6 +10,11 @@ interface ChromeResponseMessage {
   model: LLMEngineType;
   questionType: QType;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+chrome.runtime.onInstalled.addListener(async () => {
+  await MetricsManager.getInstance().getMetrics();
+});
 
 chrome.runtime.onMessage.addListener(
   (message: ChromeResponseMessage, _sender, sendResponse) => {

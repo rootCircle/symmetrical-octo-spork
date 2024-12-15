@@ -31,6 +31,7 @@ import {
   getAnthropicApiKey,
 } from '@utils/storage/getProperties';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
+import { MetricsManager } from '@utils/storage/metricsManager';
 
 type LLMInstance =
   | ChatOpenAI
@@ -44,6 +45,8 @@ export class LLMEngine {
   public engine: LLMEngineType;
   private instances: Record<LLMEngineType, LLMInstance | undefined>;
   private apiKeys: Record<string, string | undefined>;
+
+  private metricsManager = MetricsManager.getInstance();
 
   constructor(engine: LLMEngineType) {
     this.engine = engine;
@@ -163,6 +166,7 @@ export class LLMEngine {
     if (!promptText) {
       return null;
     }
+    const startTime = performance.now();
     try {
       const parser = this.getParser(questionType);
       let modelInstance = this.instances[this.engine];
@@ -192,6 +196,9 @@ export class LLMEngine {
           question: promptText,
           format_instructions: parser.getFormatInstructions(),
         });
+        const endTime = performance.now();
+        const responseTime = (endTime - startTime) / 1000;
+        this.metricsManager.addResponseTime(responseTime);
         return this.patchResponse(response, questionType);
       }
       return null;

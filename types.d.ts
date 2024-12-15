@@ -122,3 +122,44 @@ interface Profile {
 interface Profiles {
   [key: string]: Profile;
 }
+
+interface MetricsData {
+  history: MetricsHistory[];
+  formMetrics: {
+    totalFormsFilled: number;
+    successfulFills: number;
+    failedFills: number;
+    lastFilledDate: string;
+    currentStreak: number;
+    activeStreak: number;
+  };
+  timeMetrics: {
+    averageTimePerForm: number;
+    totalHoursSaved: number;
+    totalMinSaved: number;
+    totalSecSaved: number;
+  };
+  aiMetrics: {
+    apiCalls: Record<LLMEngineType, number>;
+    tokenUsage: Record<LLMEngineType, number>;
+    averageResponseTime: Record<LLMEngineType, number>;
+  };
+}
+
+interface MetricsUpdateParams {
+  llmModel: LLMEngineType;
+  timeAI: number;
+  totalQuestions: number;
+  successfulQuestions: number;
+  toBeFilledQuestions: number;
+  responseTime: number;
+}
+
+interface MetricsHistory {
+  date: string;
+  formsFilled: number;
+  timeAI: number;
+  totalQuestions: number;
+  successfulQuestions: number;
+  toBeFilledQuestions: number;
+}
