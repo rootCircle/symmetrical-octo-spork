@@ -61,7 +61,10 @@ export class MetricsUI {
       const timeSavedMetrics = MetricsCalculator.calculateTimeSaved(
         metrics.history,
       );
-      const streakMetrics = MetricsCalculator.calculateStreaks(metrics.history);
+      const streakMetrics = MetricsCalculator.calculateStreaks(
+        metrics.history,
+        metrics.formMetrics,
+      );
       const totalFormsEl = document.getElementById('totalFormsFilled');
       if (totalFormsEl) {
         const trendClass =
