@@ -3,7 +3,7 @@ export const profilesData: Profiles = {
     system_prompt: '',
     image_url:
       'https://i.pinimg.com/originals/61/2c/93/612c93bbae9bfbcb7df33fd88d2b78d9.gif',
-    name: 'Magic',
+    name: 'Codon',
     short_description: 'Adapts to form context magically',
     is_custom: false,
     is_magic: true,
