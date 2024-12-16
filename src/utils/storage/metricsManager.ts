@@ -217,33 +217,53 @@ export class MetricsManager {
     );
 
     if (metrics.history.length > MetricsManager.MAX_HISTORY_DAYS) {
-      metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1] = {
-        ...metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1],
-        date: metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1]?.date ?? '',
+      const lastKeptIndex = MetricsManager.MAX_HISTORY_DAYS - 1;
+      const excessEntries = metrics.history.slice(
+        MetricsManager.MAX_HISTORY_DAYS,
+      );
+      const accumulatedMetrics = excessEntries.reduce(
+        (acc, entry) => ({
+          formsFilled: (acc.formsFilled ?? 0) + (entry.formsFilled ?? 0),
+          timeAI: (acc.timeAI ?? 0) + (entry.timeAI ?? 0),
+          totalQuestions:
+            (acc.totalQuestions ?? 0) + (entry.totalQuestions ?? 0),
+          successfulQuestions:
+            (acc.successfulQuestions ?? 0) + (entry.successfulQuestions ?? 0),
+          toBeFilledQuestions:
+            (acc.toBeFilledQuestions ?? 0) + (entry.toBeFilledQuestions ?? 0),
+        }),
+        {
+          formsFilled: 0,
+          timeAI: 0,
+          totalQuestions: 0,
+          successfulQuestions: 0,
+          toBeFilledQuestions: 0,
+        },
+      );
+      metrics.history[lastKeptIndex] = {
+        ...metrics.history[lastKeptIndex],
+        date: metrics.history[lastKeptIndex]?.date ?? '',
         formsFilled:
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1]?.formsFilled ??
-            0) +
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS]?.formsFilled ?? 0),
+          (metrics.history[lastKeptIndex]?.formsFilled ?? 0) +
+          accumulatedMetrics.formsFilled,
         timeAI:
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1]?.timeAI ?? 0) +
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS]?.timeAI ?? 0),
+          (metrics.history[lastKeptIndex]?.timeAI ?? 0) +
+          accumulatedMetrics.timeAI,
         totalQuestions:
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1]
-            ?.totalQuestions ?? 0) +
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS]?.totalQuestions ??
-            0),
+          (metrics.history[lastKeptIndex]?.totalQuestions ?? 0) +
+          accumulatedMetrics.totalQuestions,
         successfulQuestions:
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1]
-            ?.successfulQuestions ?? 0) +
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS]
-            ?.successfulQuestions ?? 0),
+          (metrics.history[lastKeptIndex]?.successfulQuestions ?? 0) +
+          accumulatedMetrics.successfulQuestions,
         toBeFilledQuestions:
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS - 1]
-            ?.toBeFilledQuestions ?? 0) +
-          (metrics.history[MetricsManager.MAX_HISTORY_DAYS]
-            ?.toBeFilledQuestions ?? 0),
+          (metrics.history[lastKeptIndex]?.toBeFilledQuestions ?? 0) +
+          accumulatedMetrics.toBeFilledQuestions,
       };
-      metrics.history = metrics.history.slice(0, 15);
+
+      metrics.history = metrics.history.slice(
+        0,
+        MetricsManager.MAX_HISTORY_DAYS,
+      );
     }
     console.log('Metrics History : ', metrics);
   }
