@@ -66,8 +66,8 @@ chrome.runtime.onMessage.addListener(
       } catch (error) {
         console.error('Error creating LLMEngine instance:', error);
       }
+      return true;
     }
-
-    return true;
+    return false;
   },
 );
