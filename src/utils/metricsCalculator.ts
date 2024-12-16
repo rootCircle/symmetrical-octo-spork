@@ -78,7 +78,10 @@ export class MetricsCalculator {
     return { totalHours, totalMin, totalSec, dailyTrend };
   }
 
-  static calculateStreaks(metricHistory: MetricsHistory[]): {
+  static calculateStreaks(
+    metricHistory: MetricsHistory[],
+    formMetrics: MetricsData['formMetrics'],
+  ): {
     currentStreak: number;
     activeStreak: number;
   } {
@@ -89,68 +92,31 @@ export class MetricsCalculator {
     const sortedHistory = [...metricHistory].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );
-    if (this.calculateFormMetrics(metricHistory).total === 0) {
-      return { currentStreak: 0, activeStreak: 0 };
+
+    let currentStreak = formMetrics.currentStreak;
+    let activeStreak = formMetrics.activeStreak;
+    if (sortedHistory[0]?.formsFilled !== 1) {
+      return {
+        currentStreak: formMetrics.currentStreak,
+        activeStreak: formMetrics.activeStreak,
+      };
+    }
+    if (sortedHistory.length === 1) {
+      return { currentStreak: 1, activeStreak: 1 };
     }
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    const lastEntryDate = sortedHistory[0]
-      ? new Date(sortedHistory[0].date)
+    const lastEntryDate = sortedHistory[1]
+      ? new Date(sortedHistory[1].date)
       : new Date();
     lastEntryDate.setHours(0, 0, 0, 0);
-
-    let currentStreak = 0;
-    let activeStreak = 0;
-    let tempStreak = 0;
-
-    const daysSinceLastEntry = Math.floor(
-      (today.getTime() - lastEntryDate.getTime()) / (1000 * 60 * 60 * 24),
-    );
-
-    if (daysSinceLastEntry <= 1) {
-      tempStreak = 1;
-      for (let i = 0; i < sortedHistory.length - 1; i++) {
-        const currentDate = new Date(sortedHistory[i]?.date || '');
-        currentDate.setHours(0, 0, 0, 0);
-        const nextDate = new Date(sortedHistory[i + 1]?.date || 0);
-        nextDate.setHours(0, 0, 0, 0);
-
-        const dayDifference = Math.floor(
-          (currentDate.getTime() - nextDate.getTime()) / (1000 * 60 * 60 * 24),
-        );
-
-        if (dayDifference === 1) {
-          tempStreak++;
-        } else {
-          break;
-        }
-      }
-      currentStreak = daysSinceLastEntry === 0 ? tempStreak : 0;
+    if (today.getTime() - lastEntryDate.getTime() > 86400000) {
+      return { currentStreak: 1, activeStreak };
     }
-    let longestStreak = 1;
-    tempStreak = 1;
-
-    for (let i = 0; i < sortedHistory.length - 1; i++) {
-      const currentDate = new Date(sortedHistory[i]?.date || '');
-      currentDate.setHours(0, 0, 0, 0);
-      const nextDate = new Date(sortedHistory[i + 1]?.date || '');
-      nextDate.setHours(0, 0, 0, 0);
-
-      const dayDifference = Math.floor(
-        (currentDate.getTime() - nextDate.getTime()) / (1000 * 60 * 60 * 24),
-      );
-
-      if (dayDifference === 1) {
-        tempStreak++;
-        longestStreak = Math.max(longestStreak, tempStreak);
-      } else {
-        tempStreak = 1;
-      }
+    currentStreak++;
+    if (currentStreak > activeStreak) {
+      activeStreak = currentStreak;
     }
-
-    activeStreak = longestStreak;
-
     return { currentStreak, activeStreak };
   }
 
