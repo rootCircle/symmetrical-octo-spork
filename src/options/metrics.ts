@@ -111,8 +111,8 @@ export class MetricsUI {
       const activeStreakEl = document.getElementById('activeStreak');
       if (activeStreakEl) {
         activeStreakEl.innerHTML = `
-            <p class="metric-value">${streakMetrics.currentStreak}</p>
-            <div class="metric-trend">Current streak: ${streakMetrics.activeStreak} days</div>
+            <p class="metric-value">${streakMetrics.activeStreak}</p>
+            <div class="metric-trend">Current streak: ${streakMetrics.currentStreak} days</div>
           `;
       }
     } catch (error) {

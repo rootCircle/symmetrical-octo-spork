@@ -106,10 +106,12 @@ export class MetricsCalculator {
     }
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const lastEntryDate = new Date(sortedHistory[0].date);
+    const lastEntryDate = sortedHistory[1]
+      ? new Date(sortedHistory[1].date)
+      : new Date();
     lastEntryDate.setHours(0, 0, 0, 0);
     if (today.getTime() - lastEntryDate.getTime() > 86400000) {
-      return { currentStreak: 0, activeStreak };
+      return { currentStreak: 1, activeStreak };
     }
     currentStreak++;
     if (currentStreak > activeStreak) {
