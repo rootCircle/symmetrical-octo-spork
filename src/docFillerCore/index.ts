@@ -15,6 +15,10 @@ import {
 } from '@utils/storage/getProperties';
 import { MetricsManager } from '@utils/storage/metricsManager';
 import { validateLLMConfiguration } from '@utils/missingApiKey';
+import {
+  getSelectedProfileKey,
+  loadProfiles,
+} from '@utils/storage/profiles/profileManager';
 
 async function runDocFillerEngine() {
   const questions = new QuestionExtractorEngine().getValidQuestions();
@@ -57,6 +61,39 @@ async function runDocFillerEngine() {
   metricsManager.incrementTotalQuestions(totalQuestions);
 
   metricsManager?.startFormFilling(totalQuestions);
+
+  const selectedProfile = await getSelectedProfileKey();
+  const profiles = await loadProfiles();
+  const settings = Settings.getInstance();
+
+  if (profiles[selectedProfile]?.is_magic) {
+    const questionsToSend = [];
+    for (const ques of questions) {
+      const fieldType = checker.detectType(ques);
+      if (fieldType !== null) {
+        const fieldValue = fields.getFields(ques, fieldType);
+        questionsToSend.push(fieldValue.title);
+      }
+    }
+    const response: { value?: { system_prompt: string } } =
+      await chrome.runtime.sendMessage({
+        type: 'MAGIC_PROMPT_GEN',
+        questions: questionsToSend,
+        model: await settings.getCurrentLLMModel(),
+      });
+    if (response?.value) {
+      profiles[selectedProfile].system_prompt = response.value.system_prompt;
+    }
+    await chrome.storage.sync.set({
+      customProfiles: {
+        ...profiles,
+        [selectedProfile]: {
+          ...profiles[selectedProfile],
+          system_prompt: response.value?.system_prompt,
+        },
+      },
+    });
+  }
 
   for (const question of questions) {
     try {

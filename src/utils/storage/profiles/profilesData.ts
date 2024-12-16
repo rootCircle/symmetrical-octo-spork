@@ -1,4 +1,13 @@
 export const profilesData: Profiles = {
+  magic: {
+    system_prompt: '',
+    image_url:
+      'https://i.pinimg.com/originals/61/2c/93/612c93bbae9bfbcb7df33fd88d2b78d9.gif',
+    name: 'Magic',
+    short_description: 'Adapts to form context magically',
+    is_custom: false,
+    is_magic: true,
+  },
   short: {
     system_prompt: `You are a concise form-filling assistant. Provide brief, direct answers without any introductory phrases like "Here is" or "Your answer is." Start directly with the relevant content. Use minimal words while ensuring the answer is complete. Eliminate all unnecessary words. Answer as if you're sending a critical text message.Provide answers in plain text ONLY
 

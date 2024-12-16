@@ -29,9 +29,26 @@ async function createProfileCards() {
   profilesContainer.className = 'profiles-container';
 
   const selectedProfileKey = await getSelectedProfileKey();
-  Object.entries(profiles).forEach(([profileKey, profile]) => {
+
+  const orderedProfiles = Object.entries(profiles).sort((a, b) => {
+    if (a[1].is_magic) {
+      return -1;
+    }
+    if (b[1].is_magic) {
+      return 1;
+    }
+    if (a[0] === 'all-rounder' && !a[1].is_custom) {
+      return -1;
+    }
+    if (b[0] === 'all-rounder' && !b[1].is_custom) {
+      return 1;
+    }
+    return 0;
+  });
+
+  orderedProfiles.forEach(([profileKey, profile]) => {
     const card = document.createElement('div');
-    card.className = 'profile-card';
+    card.className = `profile-card ${profile.is_magic ? 'magic-profile-card' : ''}`;
     if (profileKey === selectedProfileKey) {
       card.classList.add('selected');
     }

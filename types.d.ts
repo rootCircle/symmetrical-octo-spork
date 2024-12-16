@@ -109,6 +109,7 @@ interface LLMResponse {
   linearScale?: LinearScaleResponse;
   multipleChoiceGrid?: RowColumn[];
   checkboxGrid?: RowColumnOption[];
+  magicPrompt?: MagicPromptResponse;
 }
 
 interface Profile {
@@ -117,6 +118,7 @@ interface Profile {
   name: string;
   short_description: string;
   is_custom: boolean;
+  is_magic?: boolean;
 }
 
 interface Profiles {
