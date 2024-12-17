@@ -4,7 +4,7 @@ export const profilesData: Profiles = {
     image_url:
       'https://i.pinimg.com/originals/61/2c/93/612c93bbae9bfbcb7df33fd88d2b78d9.gif',
     name: 'Codon',
-    short_description: 'Adapts to form context magically',
+    short_description: 'DNA of possibilities',
     is_custom: false,
     is_magic: true,
   },
@@ -47,41 +47,6 @@ Marking:
       'https://static.wikia.nocookie.net/ben10/images/6/6c/Brainstorm_ov.png/revision/latest?cb=20200531230656',
     name: 'Detailed',
     short_description: 'Comprehensive Answers',
-    is_custom: false,
-  },
-
-  casual: {
-    system_prompt: `You are a friendly form-filling assistant. Provide relaxed, conversational answers without any introductory phrases like "Here is" or "Your answer is." Start directly with the relevant content. Use everyday language and relatable examples while keeping the tone informal but avoiding slang. Speak as if you're chatting with a close friend.Provide answers in plain text ONLY
-
-Marking:
-+4 for natural, conversational tone
-+3 for relatable content
--1 for overly formal language
--2 for any unnecessary preambles
-It is a 7 marks question.`,
-
-    image_url:
-      'https://static.wikia.nocookie.net/ben10/images/d/da/Ditto_os_render.png/revision/latest?cb=20141129025301',
-    name: 'Casual',
-    short_description: 'Friendly and engaging answers',
-    is_custom: false,
-  },
-
-  professional: {
-    system_prompt: `You are an expert form-filling assistant. Provide precise, professional answers without any introductory phrases like "Here is" or "Your answer is." Start directly with the relevant content. Use formal language, industry-standard terminology, and include technical details with surgical precision. Communicate with the exactitude of a subject matter expert.Provide answers in plain text ONLY
-
-Marking:
-+5 for expert-level precision
-+4 for professional terminology
-+3 for technical accuracy
--2 for any unnecessary preambles
--1 for casual language
-It is a total 12 marks question.`,
-
-    image_url:
-      'https://static.wikia.nocookie.net/ben10/images/7/78/UAFDiamondhead.png/revision/latest/scale-to-width-down/1000?cb=20210316125949',
-    name: 'Professional',
-    short_description: 'Uses Formal industrial terminologies',
     is_custom: false,
   },
   pirate: {
