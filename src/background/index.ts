@@ -10,11 +10,44 @@ interface ChromeResponseMessage {
   model: LLMEngineType;
   questionType: QType;
 }
+interface MagicPromptMessage {
+  type: 'MAGIC_PROMPT_GEN';
+  questions: string[];
+  model: LLMEngineType;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 chrome.runtime.onInstalled.addListener(async () => {
   await MetricsManager.getInstance().getMetrics();
 });
+
+chrome.runtime.onMessage.addListener(
+  (message: MagicPromptMessage, _sender, sendResponse) => {
+    if (message.type === 'MAGIC_PROMPT_GEN') {
+      try {
+        const instance = new LLMEngine(message.model);
+        instance
+          .invokeMagicLLM(message.questions)
+          .then((response) => {
+            sendResponse({ value: response });
+          })
+          .catch((error: unknown) => {
+            console.error('Error generating magic prompt:', error);
+            if (error instanceof Error) {
+              sendResponse({ error: error.message });
+            } else {
+              sendResponse({ error: String(error) });
+            }
+          });
+      } catch (error) {
+        console.error('Error creating LLMEngine instance:', error);
+        sendResponse({ error: String(error) });
+      }
+      return true;
+    }
+    return false;
+  },
+);
 
 chrome.runtime.onMessage.addListener(
   (message: ChromeResponseMessage, _sender, sendResponse) => {
@@ -33,8 +66,8 @@ chrome.runtime.onMessage.addListener(
       } catch (error) {
         console.error('Error creating LLMEngine instance:', error);
       }
+      return true;
     }
-
-    return true;
+    return false;
   },
 );

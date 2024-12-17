@@ -41,6 +41,11 @@ type LLMInstance =
   | ChatMistralAI
   | ChromeAI;
 
+type MagicPromptResponse = {
+  subject_context: string;
+  expertise_level: string;
+  system_prompt: string;
+};
 export class LLMEngine {
   public engine: LLMEngineType;
   private instances: Record<LLMEngineType, LLMInstance | undefined>;
@@ -155,6 +160,90 @@ export class LLMEngine {
       });
     } catch (error) {
       console.error('Error getting response:', error);
+      return null;
+    }
+  }
+  async invokeMagicLLM(questions: string[]): Promise<MagicPromptResponse> {
+    try {
+      console.log('Invoking magic LLM with questions:', questions);
+      const promptText = `
+        Analyze these form questions and generate an optimal system prompt:
+        Questions: ${JSON.stringify(questions)}
+        Requirements:
+        1. Detect the subject area and context
+        2. Determine appropriate expertise level
+        3. Generate a comprehensive system prompt
+        Return the response in this JSON format:
+        {
+          "subject_context": "detected subject/domain of the form",
+          "expertise_level": "required expertise level for responses",
+          "system_prompt": "generated system prompt for the context"
+        }
+      `;
+      const response = await this.getMagicResponse(promptText, this.engine);
+      if (!response) {
+        throw new Error('No response received from LLM');
+      }
+      console.log('Magic prompt response:', response);
+      return {
+        subject_context: response.subject_context,
+        expertise_level: response.expertise_level,
+        system_prompt: response.system_prompt,
+      };
+    } catch (error) {
+      console.error('Error in invokeMagicLLM:', error);
+      throw error;
+    }
+  }
+  async getMagicResponse(
+    promptText: string,
+    engineType: LLMEngineType,
+  ): Promise<MagicPromptResponse | null> {
+    try {
+      let modelInstance = this.instances[engineType];
+      if (!modelInstance) {
+        await this.fetchApiKeys();
+        modelInstance = this.instantiateEngine(engineType);
+      }
+      const expertRoleGeneratorPrompt = `Analyze all questions and create a comprehensive expert role that covers all domains:
+"You are an expert specializing in [list all domains based on frequency, e.g., 'primarily mathematics , with additional expertise in music and human rights ']. As a multidisciplinary professional with deep knowledge across these fields, you serve as [list relevant roles, e.g., 'mathematics professor, music theorist, and human rights consultant']. Your extensive experience covers [list key specialties from all domains]. Provide accurate and detailed answers drawing from your comprehensive expertise."
+Examples:
+- For questions mix (some math, some physics):
+"You are an expert specializing primarily in mathematics and physics. As a distinguished professor in mathematical physics, you have extensive experience in calculus, quantum mechanics..."
+- For diverse mix (some history, some music, some art):
+"You are an expert specializing in history, music, and art. As a cultural historian with strong background in musicology and art history, you have extensive experience in..."
+Count and incorporate ALL question domains to ensure comprehensive expertise.`;
+      if (modelInstance) {
+        const promptTemplate = ChatPromptTemplate.fromMessages([
+          ['system', expertRoleGeneratorPrompt],
+          ['user', '{question}'],
+        ]);
+        const parser = StructuredOutputParser.fromZodSchema(
+          z.object({
+            subject_context: z
+              .string()
+              .describe('The detected subject/domain of the form'),
+            expertise_level: z
+              .string()
+              .describe('Required expertise level for responses'),
+            system_prompt: z
+              .string()
+              .describe('Generated system prompt for the context'),
+          }),
+        );
+        const chain = RunnableSequence.from([
+          promptTemplate,
+          modelInstance,
+          parser,
+        ]);
+        const response = await chain.invoke({
+          question: promptText,
+        });
+        return response as MagicPromptResponse;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error in getMagicResponse:', error);
       return null;
     }
   }

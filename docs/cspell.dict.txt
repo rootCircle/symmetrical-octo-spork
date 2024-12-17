@@ -8,6 +8,8 @@ Cacher
 camelcase
 Classts
 compat
+cpolyline
+csvg
 Datetime
 decompile
 divs
@@ -26,10 +28,12 @@ mistralai
 Multicorrect
 nodenext
 ollama
+omnitrix
 openai
 outdir
 Parens
 plusplus
+polyline
 precommit
 Radhakrishnan
 radiogroup
@@ -40,6 +44,3 @@ unflatten
 webext
 webextension
 Yarr
-csvg
-cpolyline
-polyline

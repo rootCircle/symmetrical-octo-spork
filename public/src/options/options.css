@@ -978,3 +978,138 @@ input[disabled] {
 .toast.info {
   background-color: #2196f3;
 }
+.magic-profile-card {
+  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  border: 3px solid #16a34a;
+  position: relative;
+  overflow: hidden;
+}
+
+.magic-profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(46, 204, 113, 0.2) 100%
+  );
+  animation: omnitrixPulse 2s infinite;
+}
+
+.magic-profile-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(46, 204, 113, 0.4);
+}
+
+.magic-profile-card h3 {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 1.4em;
+}
+
+.magic-profile-card p {
+  color: #e8f6ef;
+}
+
+.magic-profile-card .profile-image {
+  border: 4px solid #27ae60;
+  box-shadow: 0 0 15px #2ecc71;
+  transition: transform 0.3s ease;
+}
+
+.magic-profile-card:hover .profile-image {
+  transform: rotate(360deg);
+}
+
+/* Omnitrix Animation */
+@keyframes omnitrixPulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
+.magic-profile-card.selected {
+  border-color: #fff;
+  animation: selectedPulse 1.5s infinite;
+}
+
+@keyframes selectedPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+  }
+}
+
+.magic-profile-card .card-icons {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.magic-profile-card .edit-mark,
+.magic-profile-card .edit-mark-selected,
+.magic-profile-card .delete-mark {
+  background: rgba(255, 255, 255, 0.9);
+  color: #27ae60;
+  transition: all 0.3s ease;
+}
+
+.magic-profile-card .tick-mark {
+  background: #fff;
+  color: #27ae60;
+  transform: scale(1.1);
+}
+
+.magic-profile-card .edit-mark:hover,
+.magic-profile-card .edit-mark-selected:hover {
+  background: #fff;
+  transform: rotate(180deg);
+}
+
+.magic-profile-card .delete-mark:hover {
+  background: #ff4444;
+  color: white;
+  transform: rotate(90deg);
+}
+.magic-profile-card::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: url('path-to-omnitrix-icon.png') center/contain no-repeat;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0.5;
+}
+
+.magic-profile-card.selected::after {
+  animation: omnitrixSpin 1s infinite linear;
+}
+
+@keyframes omnitrixSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
