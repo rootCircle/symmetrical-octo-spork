@@ -1,5 +1,7 @@
 # Changelog
+
 ## v1.3.0 (2024-12-17)
+
 - Added: Metric functionality for tracking form completion statistics
 - New: 'Codon' profile with automatic system prompt selection based on form context
 - Enhanced: Form analysis and response generation
