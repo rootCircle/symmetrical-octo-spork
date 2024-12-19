@@ -113,32 +113,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('enableConsensus') as HTMLInputElement
 )?.addEventListener('change', function () {
   const consensusWeights = document.getElementById('consensusWeights');
-
   const singleModelOptions = document.getElementById('singleModelOptions');
-
   if (this.checked) {
     consensusWeights?.classList.remove('hidden');
-
     singleModelOptions?.classList.add('hidden');
   } else {
     consensusWeights?.classList.add('hidden');
-
     singleModelOptions?.classList.remove('hidden');
   }
 });
 
 (
-  document.getElementById('enableConsensus') as HTMLInputElement
+  document.getElementById('enableDarkTheme') as HTMLInputElement
 )?.addEventListener('change', function () {
-  const consensusWeights = document.getElementById('consensusWeights');
-  const singleModelOptions = document.getElementById('singleModelOptions');
-
   if (this.checked) {
-    consensusWeights?.classList.remove('hidden');
-    singleModelOptions?.classList.add('hidden');
+    document.documentElement.classList.add('dark-theme');
   } else {
-    consensusWeights?.classList.add('hidden');
-    singleModelOptions?.classList.remove('hidden');
+    document.documentElement.classList.remove('dark-theme');
   }
 });
 
@@ -151,6 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
   ) as HTMLSelectElement;
   const enableConsensusCheckbox = document.getElementById(
     'enableConsensus',
+  ) as HTMLInputElement;
+  const enableDarkThemeCheckbox = document.getElementById(
+    'enableDarkTheme',
   ) as HTMLInputElement;
   const consensusWeightsDiv = document.getElementById(
     'consensusWeights',
@@ -208,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'sleepDuration',
       'llmModel',
       'enableConsensus',
+      'enableDarkTheme',
       'llmWeights',
       'chatGptApiKey',
       'geminiApiKey',
@@ -225,6 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
       enableConsensusCheckbox.checked = Boolean(
         (items['enableConsensus'] as boolean) ??
           DEFAULT_PROPERTIES.enableConsensus,
+      );
+      enableDarkThemeCheckbox.checked = Boolean(
+        (items['enableDarkTheme'] as boolean) ??
+          DEFAULT_PROPERTIES.enableDarkTheme,
       );
 
       const weights =
@@ -247,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         (items['anthropicApiKey'] as string) ?? EMPTY_STRING;
 
       toggleConsensusOptions(enableConsensusCheckbox.checked);
+      toggleDarkTheme(enableDarkThemeCheckbox.checked);
 
       // Initial call to set up the form when it loads
       updateApiKeyLink(modelSelect, apiKeyInputLink);
@@ -264,6 +264,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateSingleApiKeyInput(llmModelSelect.value);
   });
+
+  const toggleDarkTheme = (enableDarkTheme: boolean) => {
+    if (enableDarkTheme) {
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+    }
+  };
 
   const toggleConsensusOptions = (enableConsensus: boolean) => {
     if (enableConsensus) {
@@ -355,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const sleepDuration = parseInt(sleepDurationInput.value, 10);
       const llmModel = llmModelSelect.value;
       const enableConsensus = enableConsensusCheckbox.checked;
+      const enableDarkTheme = enableDarkThemeCheckbox.checked;
       const chatGptApiKey = chatGptApiKeyInput.value;
       const geminiApiKey = geminiApiKeyInput.value;
       const mistralApiKey = mistralApiKeyInput.value;
@@ -376,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
               sleepDuration,
               llmModel,
               enableConsensus,
+              enableDarkTheme,
               llmWeights,
               chatGptApiKey,
               geminiApiKey,

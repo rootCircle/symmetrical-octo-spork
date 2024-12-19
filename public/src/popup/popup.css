@@ -1,7 +1,25 @@
 body {
+  --background: #f4f4f4;
+  --primary-color: #112;
+  --secondary-color: #557;
+  --button-bg: #b6c0bb;
+  --button-hover: #aaaaaa;
+  --card-bg: #fff;
+  --border-color: #e0e0e0;
   margin: 0;
   font-family: sans-serif;
-  background-color: #f4f4f4;
+  background-color: var(--background);
+  color: var(--primary-color);
+}
+
+body.dark-theme {
+  --background: #112;
+  --primary-color: #eee;
+  --secondary-color: #bbb;
+  --button-bg: #474b49;
+  --button-hover: #224;
+  --card-bg: #001;
+  --border-color: #224;
 }
 
 .popup-container {
@@ -38,7 +56,7 @@ p {
   margin-top: 0px;
   font-size: 0.9em;
   text-align: center;
-  color: #555;
+  color: var(--secondary-color);
 }
 
 .terms-privacy a {
@@ -75,7 +93,7 @@ p {
   width: 60px;
   padding-inline: 5px;
   border-radius: 5px;
-  background-color: #b6c0bb;
+  background-color: var(--button-bg);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -94,7 +112,7 @@ p {
 
 .button-section-vertical-left:hover,
 .button-section-vertical-right:hover {
-  background-color: #84978d;
+  background-color: var(--button-hover);
 }
 
 .refresh-icon,
@@ -145,8 +163,8 @@ p {
   padding-top: 10px;
   padding-bottom: -10px;
   margin-top: 10px;
-  border-bottom: 1px solid #e0e0e0;
-  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
   margin-bottom: 0px;
 }
 
@@ -166,7 +184,7 @@ p {
 
 .profile-name {
   font-size: 14px;
-  color: #666;
+  color: var(--primary-color);
   margin-bottom: 0px;
 }
 
@@ -183,10 +201,10 @@ p {
   display: inline-flex;
   align-items: center;
   padding: 6px 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 20px;
-  background: white;
-  color: #666;
+  background: var(--card-bg);
+  color: var(--secondary-color);
   font-size: 14px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
@@ -197,7 +215,7 @@ p {
 }
 
 .more-button:hover {
-  background-color: white;
+  background-color: var(--button-hover);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -209,14 +227,14 @@ p {
 .more-button::before {
   content: '+';
   margin-right: 4px;
-  color: #999;
+  color: var(--secondary-color);
 }
 
 .profile-stats {
   padding: 15px 20px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: var(--card-bg);
   box-shadow: 0 2px 2px rgba(255, 255, 255, 0.1);
   margin: 10px auto;
   width: fit-content;
@@ -238,12 +256,12 @@ p {
   font-size: 16px;
   color: #666;
   padding: 20px 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 20px;
 }
 
 .signin-text {
-  color: #666;
+  color: var(--secondary-color);
   font-size: 14px;
   margin-bottom: 5px;
 }
@@ -253,7 +271,7 @@ p {
   /* color: #856404; */
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid #f5c6cb;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   display: none;
 }

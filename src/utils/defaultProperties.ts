@@ -4,6 +4,7 @@ interface typeDefaultProperties {
   model: LLMEngineType;
   sleep_duration: number;
   enableConsensus: boolean;
+  enableDarkTheme: boolean;
   llmWeights: Record<LLMEngineType, number>;
   automaticFillingEnabled: boolean;
   defaultProfileKey: string;
@@ -24,6 +25,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   sleep_duration: 1500,
   model: LLMEngineType.Gemini,
   enableConsensus: false,
+  enableDarkTheme: true,
   llmWeights: LLMWeightsMap,
   automaticFillingEnabled: true,
   defaultProfileKey: 'default',
