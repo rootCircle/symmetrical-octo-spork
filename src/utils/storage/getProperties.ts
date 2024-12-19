@@ -52,6 +52,13 @@ async function getEnableConsensus(): Promise<boolean> {
   );
 }
 
+async function getEnableDarkTheme(): Promise<boolean> {
+  return (
+    (await getSetting<boolean>('enableDarkTheme')) ??
+    DEFAULT_PROPERTIES.enableDarkTheme
+  );
+}
+
 async function getLLMWeights(): Promise<Record<LLMEngineType, number>> {
   return (
     (await getSetting<Record<LLMEngineType, number>>('llmWeights')) ??
@@ -84,6 +91,7 @@ export {
   getSleepDuration,
   getLLMModel,
   getEnableConsensus,
+  getEnableDarkTheme,
   getLLMWeights,
   getChatGptApiKey,
   getGeminiApiKey,

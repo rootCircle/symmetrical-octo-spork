@@ -1,4 +1,5 @@
 :root {
+  --white: #ffffff;
   --primary-color: #22c55e;
   --primary-hover: #16a34a;
   --background: #f8fafc;
@@ -7,12 +8,32 @@
   --text-secondary: #64748b;
   --border-color: #e2e8f0;
   --input-bg: #f8fafc;
+  --metric-bg: #f8f9fa;
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --warning-bg: #fee2e2;
   --warning-border: #fecaca;
   --warning-text: #991b1b;
   --eye-icon-enabled: #64748bc9;
   --eye-icon-disabled: #64748b6f;
+}
+
+:root.dark-theme {
+  --white: #000;
+  --primary-color: #22c55e;
+  --primary-hover: #16a34a;
+  --background: #001;
+  --card-bg: #112;
+  --text-primary: #d4dbe6;
+  --text-secondary: #96a4b8;
+  --border-color: #224;
+  --input-bg: #001;
+  --metric-bg: #112;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --warning-bg: #1f0000;
+  --warning-border: #1d0202;
+  --warning-text: #ff8b8b;
+  --eye-icon-enabled: #ffffffc9;
+  --eye-icon-disabled: #939ca86f;
 }
 
 body {
@@ -84,6 +105,7 @@ textarea {
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   background-color: var(--input-bg);
+  color: var(--text-primary);
   font-size: 1rem;
   transition: all 0.2s ease;
   box-sizing: border-box;
@@ -133,7 +155,7 @@ input[type='checkbox'] {
   height: 1.25rem;
   margin: 0;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--white);
   accent-color: var(--primary-color);
 }
 
@@ -159,7 +181,7 @@ input[type='checkbox'] {
 
 button {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--white);
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
@@ -230,7 +252,7 @@ input[disabled] {
 
 .profile-card {
   position: relative;
-  background: white;
+  background: var(--white);
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -257,13 +279,13 @@ input[disabled] {
 
 .profile-card h3 {
   margin: 0 0 10px 0;
-  color: #333;
+  color: var(--text-primary);
   font-size: 1.2em;
 }
 
 .profile-card p {
   margin: 0;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9em;
   line-height: 1.4;
 }
@@ -298,7 +320,7 @@ input[disabled] {
   top: 10px;
   right: 10px;
   background: #4caf50;
-  color: white;
+  color: var(--white);
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -331,7 +353,7 @@ input[disabled] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background: var(--white);
   padding: 20px;
   border-radius: 12px;
   width: 90%;
@@ -347,11 +369,11 @@ input[disabled] {
   right: 10px;
   font-size: 24px;
   cursor: pointer;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .close-button:hover {
-  color: #333;
+  color: var(--text-primary);
 }
 
 #addProfileForm {
@@ -366,15 +388,16 @@ input[disabled] {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #333;
+  color: var(--text-secondary);
 }
 
 #addProfileForm input,
 #addProfileForm textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -681,7 +704,7 @@ input[disabled] {
   left: var(--toggle-padding);
   width: calc(var(--toggle-height) - 2 * var(--toggle-padding));
   height: calc(var(--toggle-height) - 2 * var(--toggle-padding));
-  background: white;
+  background: var(--white);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -725,7 +748,7 @@ input[disabled] {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  background: #f8f9fa;
+  background: var(--metric-bg);
 }
 
 /* Loading State */
@@ -768,7 +791,7 @@ input[disabled] {
 }
 
 .metric-card {
-  background: white;
+  background: var(--white);
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -783,7 +806,7 @@ input[disabled] {
 }
 
 .metric-card h3 {
-  color: #6c757d;
+  color: var(--text-primary);
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
   font-weight: 500;
@@ -792,13 +815,13 @@ input[disabled] {
 .metric-value {
   font-size: 2rem;
   font-weight: 600;
-  color: #2d3436;
+  color: var(--text-secondary);
   margin: 0.5rem 0;
 }
 
 .metric-trend {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--text-secondary);
 }
 
 .metric-trend.positive {
@@ -883,6 +906,7 @@ input[disabled] {
   padding-right: 45px !important;
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
+  color: var(--text-primary);
   background-color: var(--input-bg);
   font-size: 1rem;
   transition: all 0.2s ease;

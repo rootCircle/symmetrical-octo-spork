@@ -1,6 +1,7 @@
 import { LLMEngineType, getModelTypeFromName } from '@utils/llmEngineTypes';
 import {
   getEnableConsensus,
+  getEnableDarkTheme,
   getLLMModel,
   getLLMWeights,
   getSleepDuration,
@@ -14,6 +15,7 @@ class Settings {
   private sleepDuration!: number;
   private currentLLMModel!: LLMEngineType;
   private enableConsensus!: boolean;
+  private enableDarkTheme!: boolean;
   private consensusWeights!: Record<LLMEngineType, number>;
 
   private constructor() {}
@@ -56,6 +58,14 @@ class Settings {
         (await getEnableConsensus()) ?? DEFAULT_PROPERTIES.enableConsensus;
     }
     return this.enableConsensus;
+  }
+
+  public async getEnableDarkTheme(): Promise<boolean> {
+    if (!this.enableDarkTheme) {
+      this.enableDarkTheme =
+        (await getEnableDarkTheme()) ?? DEFAULT_PROPERTIES.enableDarkTheme;
+    }
+    return this.enableDarkTheme;
   }
 
   public async getConsensusWeights(): Promise<Record<LLMEngineType, number>> {

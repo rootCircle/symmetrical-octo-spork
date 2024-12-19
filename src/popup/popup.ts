@@ -5,6 +5,7 @@ import {
   getSelectedProfileKey,
   loadProfiles,
 } from '@utils/storage/profiles/profileManager';
+import { getEnableDarkTheme } from '@utils/storage/getProperties';
 import { validateLLMConfiguration } from '@utils/missingApiKey';
 import { showToast } from '@utils/toastUtils';
 
@@ -154,6 +155,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function setTheme() {
+    const isDarkTheme = await getEnableDarkTheme();
+    if (isDarkTheme) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+  }
+
   async function fillProfile() {
     const imageUrlInput = document.querySelector(
       '.profile-avatar img',
@@ -172,5 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
       DEFAULT_PROPERTIES.defaultProfile.name;
   }
 
-  Promise.all([checkAndUpdateApiMessage(), fillProfile()]).catch(console.error);
+  Promise.all([checkAndUpdateApiMessage(), setTheme(), fillProfile()]).catch(
+    console.error,
+  );
 });
