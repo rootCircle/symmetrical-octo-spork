@@ -6,10 +6,15 @@ import * as esbuild from 'esbuild';
 
 import copyContents from './copier';
 import entryPoints from './entrypoints';
+import fs from 'fs-extra';
 
 const build = async (watch: boolean) => {
   const entrypoints = await entryPoints();
-  await copyContents('./public', './build');
+  await fs.copy('./public', './build', {
+    filter: (src) => {
+      return !src.endsWith('manifest.json');
+    },
+  });
   if (watch) {
     const buildContext = await esbuild.context({
       entryPoints: entrypoints,

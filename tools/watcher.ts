@@ -1,32 +1,36 @@
 /* eslint-disable no-console */
 import chokidar from 'chokidar';
-
 import { runBuild } from './builder';
-import copyContents from './copier';
+import { writeManifest } from './manifest';
+import fs from 'fs-extra';
 
-const buildWatch = () => {
-  runBuild(true).catch(console.error);
+const buildWatch = async () => {
+  await writeManifest();
+  await runBuild(true).catch(console.error);
 
-  // Watch directories
   const watcher = chokidar.watch(['public/'], {
     ignored: /node_modules/,
     persistent: true,
   });
 
-  watcher.on('change', () => {
-    // console.log(`File ${path} has been changed`);
-    copyContents('./public', './build').catch(console.error);
-  });
+  const handleChange = async () => {
+    try {
+      await fs.copy('./public', './build', {
+        filter: (src) => !src.endsWith('manifest.json'),
+        overwrite: true,
+      });
+      await writeManifest();
+      await runBuild(true);
+    } catch (error) {
+      if (!(error.code === 'ENOENT' || error.code === 'EPERM')) {
+        console.error('Critical error:', error);
+      }
+    }
+  };
 
-  watcher.on('add', () => {
-    // console.log(`File ${path} has been added`);
-    copyContents('./public', './build').catch(console.error);
-  });
-
-  watcher.on('unlink', () => {
-    // console.log(`File ${path} has been removed`);
-    copyContents('./public', './build').catch(console.error);
-  });
+  watcher.on('change', handleChange);
+  watcher.on('add', handleChange);
+  watcher.on('unlink', handleChange);
 };
 
 buildWatch();
