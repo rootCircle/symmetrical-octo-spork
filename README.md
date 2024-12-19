@@ -1,21 +1,31 @@
 <p align="center">
   <img src="./public/assets/icons/icon-form-96.png" alt="docFiller logo">
 <h1 align="center">🚀 docFiller</h1>
-<a align="center" href="https://discord.gg/Sa4JPe4FWT">
-  <p align="center"><img align="center" src="https://img.shields.io/discord/1129752670287184022?logo=discord"
-      alt="Discord"></p>
-</a>
+  <p align="center">
+    <img src="http://ForTheBadge.com/images/badges/built-with-love.svg">
+    <br><br>
+    <img src="https://img.shields.io/github/stars/rootcircle/docFiller?style=for-the-badge&logo=andela&color=CAC992&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
+    <img src="https://img.shields.io/github/license/rootcircle/docFiller?style=for-the-badge&logo=libreofficewriter&color=FFB686&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
+    <img src="https://img.shields.io/github/issues/rootcircle/docFiller?style=for-the-badge&logo=git&color=CCE8E9&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
+    <img src="https://img.shields.io/badge/PR-Welcome-green?style=for-the-badge&color=CCE8E9&logoColor=D9E0EE&labelColor=292324)"/>
+    <br><br>
+    <a align="center" href="https://discord.gg/Sa4JPe4FWT">
+      <img src="https://img.shields.io/discord/1129752670287184022?style=for-the-badge&logo=discord&logoColor=D9E0EE"></a>&nbsp;
+    <img src="https://img.shields.io/github/actions/workflow/status/rootCircle/docFiller/lint-check.yml?style=for-the-badge&logo=github&logoColor=D9E0EE&labelColor=292324)"/>
+  </p>
 <p align="center">Automated <em>Google Forms</em> Filling Web Extension using GenAI. Filling boring google form done
   easy!</p>
 </p>
 
-<a href="https://addons.mozilla.org/en-US/firefox/addon/docfiller">
-  <img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get the docFiller extension">
-</a>
-
-<a href="https://microsoftedge.microsoft.com/addons/detail/docfiller/hkcldpodmllikgghmplcbbocikadoljl">
-  <img src="https://user-images.githubusercontent.com/585534/107280673-a5ece780-6a26-11eb-9cc7-9fa9f9f81180.png" alt="Get the docFiller extension">
-</a>
+<div align="center">
+  <a href="https://addons.mozilla.org/en-US/firefox/addon/docfiller">
+    <img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get the docFiller extension"></a>
+  &nbsp;
+  <a href="https://microsoftedge.microsoft.com/addons/detail/docfiller/hkcldpodmllikgghmplcbbocikadoljl">
+    <img src="https://user-images.githubusercontent.com/585534/107280673-a5ece780-6a26-11eb-9cc7-9fa9f9f81180.png" alt="Get the docFiller extension">
+  </a>
+</div>
+<br>
 
 <https://github.com/user-attachments/assets/55691cdf-6065-42bd-81fc-008be7422071>
 
