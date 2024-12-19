@@ -25,7 +25,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   sleep_duration: 1500,
   model: LLMEngineType.Gemini,
   enableConsensus: false,
-  enableDarkTheme: false,
+  enableDarkTheme: true,
   llmWeights: LLMWeightsMap,
   automaticFillingEnabled: true,
   defaultProfileKey: 'default',
