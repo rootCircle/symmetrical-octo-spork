@@ -4,11 +4,14 @@
   <p align="center">
     <img src="http://ForTheBadge.com/images/badges/built-with-love.svg">
     <br><br>
-    <a align="center" href="https://discord.gg/Sa4JPe4FWT">
-      <img src="https://img.shields.io/discord/1129752670287184022?style=for-the-badge&logo=discord&logoColor=D9E0EE"></a>&nbsp;
     <img src="https://img.shields.io/github/stars/rootcircle/docFiller?style=for-the-badge&logo=andela&color=CAC992&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
     <img src="https://img.shields.io/github/license/rootcircle/docFiller?style=for-the-badge&logo=libreofficewriter&color=FFB686&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
     <img src="https://img.shields.io/github/issues/rootcircle/docFiller?style=for-the-badge&logo=git&color=CCE8E9&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
+    <img src="https://img.shields.io/badge/PR-Welcome-green?style=for-the-badge&color=CCE8E9&logoColor=D9E0EE&labelColor=292324)"/>
+    <br><br>
+    <a align="center" href="https://discord.gg/Sa4JPe4FWT">
+      <img src="https://img.shields.io/discord/1129752670287184022?style=for-the-badge&logo=discord&logoColor=D9E0EE"></a>&nbsp;
+    <img src="https://img.shields.io/github/actions/workflow/status/rootCircle/docFiller/lint-check.yml?style=for-the-badge&logo=github&logoColor=D9E0EE&labelColor=292324)"/>
   </p>
 <p align="center">Automated <em>Google Forms</em> Filling Web Extension using GenAI. Filling boring google form done
   easy!</p>
