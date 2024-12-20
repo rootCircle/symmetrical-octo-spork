@@ -50,6 +50,6 @@ jobs:
       run: |
           bun run webext:lint
 
-    -name: Build
+    - name: Build
       run: |
         bun run build:chromium
