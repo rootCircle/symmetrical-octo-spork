@@ -22,9 +22,7 @@ const buildWatch = async () => {
       await writeManifest();
       await runBuild(true);
     } catch (error) {
-      if (!(error.code === 'ENOENT' || error.code === 'EPERM')) {
-        console.error('Critical error:', error);
-      }
+      console.error('error:', error);
     }
   };
 
