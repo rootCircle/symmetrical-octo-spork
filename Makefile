@@ -8,7 +8,7 @@ tsc:
 	bun tsc
 
 build:
-	bun run build
+	bun run build:firefox && bun run build:chromium
 
 spell:
 	bun run spell

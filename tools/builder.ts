@@ -3,18 +3,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-console */
 import * as esbuild from 'esbuild';
-
+import fs from 'fs-extra';
 import copyContents from './copier';
 import entryPoints from './entrypoints';
-import fs from 'fs-extra';
+import { writeManifest } from './manifest';
 
+const cleanBuildFolder = async () => {
+  try {
+    await fs.remove('./build');
+    await fs.ensureDir('./build');
+    console.log('Build folder cleaned and recreated.');
+  } catch (error) {
+    console.error('Error cleaning build folder:', error);
+    throw error;
+  }
+};
 const build = async (watch: boolean) => {
   const entrypoints = await entryPoints();
-  await fs.copy('./public', './build', {
-    filter: (src) => {
-      return !src.endsWith('manifest.json');
-    },
-  });
+  copyContents('./public/assets', './build/assets');
+  copyContents('./public/src', './build/src');
   if (watch) {
     const buildContext = await esbuild.context({
       entryPoints: entrypoints,
@@ -50,6 +57,8 @@ const build = async (watch: boolean) => {
 
 const runBuild = async (watch: boolean) => {
   try {
+    await cleanBuildFolder();
+    await writeManifest();
     await build(watch);
     console.log('Build completed successfully.');
   } catch (error) {
