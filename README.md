@@ -2,32 +2,34 @@
   <img src="./public/assets/icons/icon-form-96.png" alt="docFiller logo">
 <h1 align="center">🚀 docFiller</h1>
   <p align="center">
-    <img src="http://ForTheBadge.com/images/badges/built-with-love.svg">
+    <img src="https://ForTheBadge.com/images/badges/built-with-love.svg">
+    <br><br>
+    <a align="center" href="https://discord.gg/Sa4JPe4FWT">
+      <img src="https://img.shields.io/discord/1129752670287184022?style=for-the-badge&logo=discord&logoColor=D9E0EE"></a>&nbsp;
+    <img src="https://img.shields.io/github/actions/workflow/status/rootCircle/docFiller/lint-check.yml?style=for-the-badge&logo=github&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
+    <img src="https://img.shields.io/github/package-json/v/rootCircle/docFiller/dev?label=version&style=for-the-badge&logo=github&logoColor=D9E0EE&labelColor=292324)"/>
     <br><br>
     <img src="https://img.shields.io/github/stars/rootcircle/docFiller?style=for-the-badge&logo=andela&color=CAC992&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
     <img src="https://img.shields.io/github/license/rootcircle/docFiller?style=for-the-badge&logo=libreofficewriter&color=FFB686&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
     <img src="https://img.shields.io/github/issues/rootcircle/docFiller?style=for-the-badge&logo=git&color=CCE8E9&logoColor=D9E0EE&labelColor=292324)"/>&nbsp;
     <img src="https://img.shields.io/badge/PR-Welcome-green?style=for-the-badge&color=CCE8E9&logoColor=D9E0EE&labelColor=292324)"/>
-    <br><br>
-    <a align="center" href="https://discord.gg/Sa4JPe4FWT">
-      <img src="https://img.shields.io/discord/1129752670287184022?style=for-the-badge&logo=discord&logoColor=D9E0EE"></a>&nbsp;
-    <img src="https://img.shields.io/github/actions/workflow/status/rootCircle/docFiller/lint-check.yml?style=for-the-badge&logo=github&logoColor=D9E0EE&labelColor=292324)"/>
   </p>
-<p align="center">Automated <em>Google Forms</em> Filling Web Extension using GenAI. Filling boring google form done
-  easy!</p>
+<p align="center">Automated <em>Google Forms</em> filling web extension using GenAI. Making boring form filling easy!</p>
 </p>
 
 <div align="center">
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/docfiller">
-    <img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get the docFiller extension"></a>
-  &nbsp;
-  <a href="https://microsoftedge.microsoft.com/addons/detail/docfiller/hkcldpodmllikgghmplcbbocikadoljl">
-    <img src="https://user-images.githubusercontent.com/585534/107280673-a5ece780-6a26-11eb-9cc7-9fa9f9f81180.png" alt="Get the docFiller extension">
-  </a>
+
+|     Browser      |                                                                                   Firefox                                                                                   |                                                                                                Chrome                                                                                                 |                                                                                                     Edge                                                                                                     |
+| :--------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| **Installation** | [![Firefox](https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png)](https://addons.mozilla.org/en-US/firefox/addon/docfiller) | [![Chrome](https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png)](https://chromewebstore.google.com/detail/docfiller/goibiampjlgcdjdfakjepniopldpijcd) | [![Edge](https://user-images.githubusercontent.com/585534/107280673-a5ece780-6a26-11eb-9cc7-9fa9f9f81180.png)](https://microsoftedge.microsoft.com/addons/detail/docfiller/hkcldpodmllikgghmplcbbocikadoljl) |
+|   **Version**    |          ![Firefox version](https://img.shields.io/amo/v/docfiller?label=version&logo=firefox&style=for-the-badge&color=CAC992logoColor=D9E0EE&labelColor=292324)           |   ![Chrome version](https://img.shields.io/chrome-web-store/v/goibiampjlgcdjdfakjepniopldpijcd?label=version&logo=google-chrome&style=for-the-badge&color=CAC992logoColor=D9E0EE&labelColor=292324)   |                                     ![Edge version](https://img.shields.io/badge/version-1.1.0-green?style=for-the-badge&color=CAC992logoColor=D9E0EE&labelColor=292324)                                     |
+|  **Downloads**   |              ![Firefox downloads](https://img.shields.io/amo/users/docfiller?logo=firefox&style=for-the-badge&color=CAC992logoColor=D9E0EE&labelColor=292324)               |       ![Chrome downloads](https://img.shields.io/chrome-web-store/users/goibiampjlgcdjdfakjepniopldpijcd?logo=google-chrome&style=for-the-badge&color=CAC992logoColor=D9E0EE&labelColor=292324)       |                                                                                                     N/A                                                                                                      |
+|  **Maintainer**  |                                                                [@rootCircle](https://github.com/rootCircle)                                                                 |                                                                             [@Gyan172004](https://github.com/Gyan172004)                                                                              |                                                                                 [@rootCircle](https://github.com/rootCircle)                                                                                 |
+
 </div>
 <br>
 
-<https://github.com/user-attachments/assets/55691cdf-6065-42bd-81fc-008be7422071>
+<video src="https://github.com/user-attachments/assets/55691cdf-6065-42bd-81fc-008be7422071" controls></video>
 
 ## Project Overview
 
