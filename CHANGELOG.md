@@ -1,10 +1,19 @@
 # Changelog
 
+## v1.3.1 [Unreleased] (last updated on 2024-12-23)
+
+- Dark Theme (enabled by default)
+
 ## v1.3.0 (2024-12-17)
 
 - Added: Metric functionality for tracking form completion statistics
-- New: 'Codon' profile with automatic system prompt selection based on form context
+- New: (Magic Profile)'Codon' profile with automatic system prompt selection based on form context
 - Enhanced: Form analysis and response generation
+- fix: issue with API key not being reset after erase.
+- feat: improve dropdown handling
+- feat: skip marked questions
+- chore: improved password input toggles
+- feat: toast notification, instead of JS prompts
 
 ## v1.2.0 (2024-12-08)
 
