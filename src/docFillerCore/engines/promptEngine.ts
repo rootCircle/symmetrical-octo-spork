@@ -253,11 +253,21 @@ export class PromptEngine {
 
   // Time Prompt
   private getTimePrompt(title: string, description: string): string {
-    return `Provide only the time based on your response to the following question:
-    ${title} - ${description}.
-    
-    The Year, Month, and Day fields must always be set to "1970-01-01".
-    Ensure to return the date object with zero-padding where applicable. Return only the time with no additional text or formatting.`;
+    return `Based on the following question, provide only the time in the ISO 8601-compliant Date object format "YYYY-MM-DDTHH:mm:ssZ".
+
+    Always set the date fields to "1970-01-01" and ensure zero-padding for all values.
+
+    Examples:
+    1. For 2:30 PM, return: 1970-01-01T14:30:00Z.
+    2. For 10:05 AM, return: 1970-01-01T10:05:00Z.
+    3. For midnight (12:00 AM), return: 1970-01-01T00:00:00Z.
+    4. For noon (12:00 PM), return: 1970-01-01T12:00:00Z.
+
+    Input:
+    Question: ${title} - ${description}
+
+    Output:
+    Provide only the time in the exact "YYYY-MM-DDTHH:mm:ssZ" format with no additional text, explanations, or formatting.`;
   }
 
   // Time with Meridiem Prompt
@@ -265,12 +275,21 @@ export class PromptEngine {
     title: string,
     description: string,
   ): string {
-    return `Provide only the date and time based on your response to the following question: 
-    
-    ${title} - ${description}. 
-    
-    The Year, Month, and Day fields must always be set to "1970-01-01".
-    Ensure to return the date object with zero-padding where applicable. Return only the time with no additional text or formatting.`;
+    return `Based on the following question, provide the time in 12-hour format with meridiem (AM/PM), converted into the ISO 8601-compliant Date object format "YYYY-MM-DDTHH:mm:ssZ".
+
+    Always set the date fields to "1970-01-01". Convert the given time to 24-hour format where necessary and ensure zero-padding for all values.
+
+    Examples:
+    1. For 2:30 PM, return: 1970-01-01T14:30:00Z.
+    2. For 10:05 AM, return: 1970-01-01T10:05:00Z.
+    3. For midnight (12:00 AM), return: 1970-01-01T00:00:00Z.
+    4. For noon (12:00 PM), return: 1970-01-01T12:00:00Z.
+
+    Input:
+    Question: ${title} - ${description}
+
+    Output:
+    Provide only the time in the exact "YYYY-MM-DDTHH:mm:ssZ" format with no additional text, explanations, or formatting.`;
   }
 
   // DateTime with Meridiem Prompt

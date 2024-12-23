@@ -3,6 +3,7 @@
 ## v1.3.1 [Unreleased] (last updated on 2024-12-23)
 
 - Dark Theme (enabled by default)
+- fix: TIME and TIME_WITH_MERIDIEM fields parsing errors.
 
 ## v1.3.0 (2024-12-17)
 
