@@ -297,6 +297,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: none;
 }
 
 .toast {
@@ -311,13 +312,10 @@ p {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 80%;
   text-align: center;
-  display: none;
 }
 .toast.show {
-  display: block;
   opacity: 1;
 }
-
 .toast.success {
   background-color: #4caf50;
 }
