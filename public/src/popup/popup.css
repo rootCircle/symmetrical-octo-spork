@@ -23,7 +23,7 @@ body.dark-theme {
 }
 
 .popup-container {
-  width: 400px;
+  width: 320px;
   padding: 20px;
   padding-top: 5px;
   text-align: center;
@@ -130,6 +130,7 @@ p {
   position: relative;
   margin: 0 auto;
   transition: all 0.3s ease;
+  scale: 0.8;
 }
 
 .toggle-switch:hover {
@@ -235,7 +236,7 @@ p {
   border: 1px solid var(--border-color);
   border-radius: 12px;
   background-color: var(--card-bg);
-  box-shadow: 0 2px 2px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
   margin: 10px auto;
   width: fit-content;
   min-width: auto;
@@ -310,8 +311,10 @@ p {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 80%;
   text-align: center;
+  display: none;
 }
 .toast.show {
+  display: block;
   opacity: 1;
 }
 
