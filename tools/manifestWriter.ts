@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { getManifest } from '../src/manifest';
+import { getManifest } from '../public/manifest';
 import fs from 'fs-extra';
 
 const r = (...args: string[]) => {

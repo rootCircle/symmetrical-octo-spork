@@ -6,7 +6,7 @@ import copyContents from './copier';
 const buildWatch = () => {
   runBuild(true).catch(console.error);
 
-  const watcher = chokidar.watch(['public/', 'src/manifest.ts'], {
+  const watcher = chokidar.watch(['public/', 'public/manifest.ts'], {
     ignored: /node_modules/,
     persistent: true,
   });

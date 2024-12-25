@@ -20,15 +20,13 @@ const cleanBuildFolder = async () => {
 };
 const build = async (watch: boolean) => {
   const entrypoints = await entryPoints();
-  await copyContents('./public', './build').catch(console.error);
+  await copyContents('./public', './build');
   if (watch) {
     const buildContext = await esbuild.context({
       entryPoints: entrypoints,
       bundle: true,
       // minify: true,
       outdir: './build/src',
-      platform: 'node',
-      format: 'esm',
     });
     await buildContext.watch();
   } else {
@@ -37,8 +35,6 @@ const build = async (watch: boolean) => {
       bundle: true,
       // minify: true,
       outdir: './build/src',
-      platform: 'node',
-      format: 'esm',
     });
 
     if (buildStatus.errors.length > 0) {
