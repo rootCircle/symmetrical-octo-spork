@@ -6,17 +6,13 @@ import copyContents from './copier';
 const buildWatch = () => {
   runBuild(true).catch(console.error);
 
-  const watcher = chokidar.watch(['public/', 'manifest.ts'], {
+  const watcher = chokidar.watch(['public/', 'src/manifest.ts'], {
     ignored: /node_modules/,
     persistent: true,
   });
 
   const handleChange = () => {
-    try {
-      copyContents('./public', './build').catch(console.error);
-    } catch (error) {
-      console.error('error:', error);
-    }
+    copyContents('./public', './build').catch(console.error);
   };
 
   watcher.on('change', handleChange);
