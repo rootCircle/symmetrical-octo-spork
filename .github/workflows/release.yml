@@ -6,20 +6,16 @@ on:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
-    permissions:
-      contents: write
-    name: Build packages
+    name: Build and Release
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Debug Information
         run: |
           echo "Current ref: ${GITHUB_REF}"
-          echo "Current branch: ${GITHUB_REF#refs/heads/}"
           echo "Event name: ${GITHUB_EVENT_NAME}"
 
       - name: Clone repository
@@ -27,13 +23,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Get release information
+      - name: Extract Version from Tag
         run: |
-          echo "Getting version information..."
-           echo "GITHUB_REF: ${GITHUB_REF}"
-           VERSION=${GITHUB_REF#refs/tags/}  # This removes 'refs/tags/' prefix
-           echo "VERSION=$VERSION" >> $GITHUB_ENV
-           echo "Set VERSION to: $VERSION"
+          echo "Extracting version from ref: ${GITHUB_REF}"
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Set VERSION to: $VERSION"
 
       - uses: oven-sh/setup-bun@v1
         with:
@@ -43,7 +38,6 @@ jobs:
         run: |
           echo "Starting build process..."
           bun install
-          echo "Dependencies installed"
           bun run build
           echo "Build completed"
           ls -la
@@ -60,12 +54,9 @@ jobs:
           echo "Assembling release notes..."
           > release.body.txt
           VERSION_PATTERN="## ${VERSION}"
-          echo "Looking for pattern: $VERSION_PATTERN"
-          START_LINE=$(grep -n "$VERSION_PATTERN" CHANGELOG.md | cut -d: -f1)
-          echo "Found version at line: $START_LINE"
+          START_LINE=$(grep -n "$VERSION_PATTERN" CHANGELOG.md | cut -d: -f1 || echo "")
           if [ -n "$START_LINE" ]; then
-            NEXT_VERSION_LINE=$(($(tail -n +$((START_LINE+1)) CHANGELOG.md | grep -n "^## " | head -n1 | cut -d: -f1) + START_LINE))
-            echo "Next version starts at line: $NEXT_VERSION_LINE"
+            NEXT_VERSION_LINE=$(($(tail -n +$((START_LINE+1)) CHANGELOG.md | grep -n "^## " | head -n1 | cut -d: -f1 || echo "") + START_LINE))
             if [ -n "$NEXT_VERSION_LINE" ]; then
               sed -n "$START_LINE,$((NEXT_VERSION_LINE-1))p" CHANGELOG.md > release.body.txt
             else
@@ -75,17 +66,16 @@ jobs:
           echo "Generated release notes:"
           cat release.body.txt
 
-      - name: Create GitHub release
+      - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.VERSION }}
           name: ${{ env.VERSION }}
-          draft: true
-          prerelease: true
+          draft: false
+          prerelease: false
           body_path: release.body.txt
           files: |
             web-ext-artifacts/docfiller-*.zip
-
