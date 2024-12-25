@@ -6,7 +6,7 @@ import * as esbuild from 'esbuild';
 import fs from 'fs-extra';
 import copyContents from './copier';
 import entryPoints from './entrypoints';
-import { writeManifest } from './manifest';
+import { writeManifest } from './manifestWriter';
 
 const cleanBuildFolder = async () => {
   try {

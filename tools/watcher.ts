@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
 import chokidar from 'chokidar';
 import { runBuild } from './builder';
-import { writeManifest } from './manifest';
-import fs from 'fs-extra';
+import copyContents from './copier';
 
 const buildWatch = async () => {
-  await writeManifest();
   await runBuild(true).catch(console.error);
 
   const watcher = chokidar.watch(['public/'], {
@@ -15,11 +13,8 @@ const buildWatch = async () => {
 
   const handleChange = async () => {
     try {
-      await fs.copy('./public', './build', {
-        filter: (src) => !src.endsWith('manifest.json'),
-        overwrite: true,
-      });
-      await writeManifest();
+      copyContents('./public/assets', './build/assets');
+      copyContents('./public/src', './build/src');
       await runBuild(true);
     } catch (error) {
       console.error('error:', error);

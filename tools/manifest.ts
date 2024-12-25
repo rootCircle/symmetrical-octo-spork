@@ -3,6 +3,7 @@ import type { Manifest } from 'webextension-polyfill';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import type PkgType from '../package.json';
+import { writeManifest } from './manifestWriter';
 
 const r = (...args: string[]) => {
   return resolve(fileURLToPath(new URL('..', import.meta.url)), ...args);
@@ -17,15 +18,15 @@ export async function getManifest() {
   }
 
   const pkg = (await fs.readJSON(r('package.json'))) as typeof PkgType;
-  const browser = process.env.BROWSER?.toLowerCase();
-  const isFirefoxBased = FIREFOX_BASED.includes(browser ?? '');
-  const isChromiumBased = CHROMIUM_BASED.includes(browser ?? '');
-  if (!browser) {
+  const targetBrowser = process.env.BROWSER;
+  if (!targetBrowser) {
     throw new Error('BROWSER environment variable must be set');
   }
+  const isFirefoxBased = FIREFOX_BASED.includes(targetBrowser);
+  const isChromiumBased = CHROMIUM_BASED.includes(targetBrowser);
   if (!isFirefoxBased && !isChromiumBased) {
     throw new Error(
-      `Unsupported or unspecified browser: ${browser}. Supported browsers: ${[...CHROMIUM_BASED, ...FIREFOX_BASED].join(', ')}`,
+      `Unsupported or unspecified browser: ${targetBrowser}. Supported browsers: ${[...CHROMIUM_BASED, ...FIREFOX_BASED].join(', ')}`,
     );
   }
   if (isFirefoxBased && isChromiumBased) {
@@ -83,33 +84,17 @@ export async function getManifest() {
       }
       throw new Error('Unsupported browser type');
     })(),
-    ...(isFirefoxBased && {
-      browser_specific_settings: {
+    browser_specific_settings: {
+      ...(isFirefoxBased && {
         gecko: {
           id: 'docFiller@rootcircle.github.io',
           strict_min_version: '109.0',
         },
-      },
-    }),
+      }),
+    },
   };
 
   return manifest;
-}
-
-export async function writeManifest() {
-  const browser = process.env.BROWSER;
-  if (!browser) {
-    throw new Error('BROWSER environment variable must be set');
-  }
-  try {
-    await fs.ensureDir(r('build'));
-    const manifest = await getManifest();
-    await fs.writeJSON(r('build/manifest.json'), manifest, { spaces: 2 });
-    console.log(`✓ manifest.json generated for ${browser}`);
-  } catch (error) {
-    console.error('Error writing manifest:', error);
-    throw error;
-  }
 }
 
 if (require.main === module) {
