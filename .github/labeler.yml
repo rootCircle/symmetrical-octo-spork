@@ -45,6 +45,9 @@
 "utils":
   - "src/utils/**"
 
+"manifest":
+  - "public/manifest.ts"
+
 # Label for TypeScript utilities and tools
 "config":
   - "eslint.config.js"
