@@ -16,7 +16,6 @@ jobs:
       - name: Debug Information
         run: |
           echo "Current ref: ${GITHUB_REF}"
-          echo "Current branch: ${GITHUB_REF#refs/heads/}"
           echo "Event name: ${GITHUB_EVENT_NAME}"
 
       - name: Clone repository
