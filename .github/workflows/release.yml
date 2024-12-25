@@ -57,7 +57,7 @@ jobs:
         run: |
           echo "Assembling release notes..."
           > release.body.txt
-          VERSION_PATTERN="### ${VERSION}"
+          VERSION_PATTERN="## ${VERSION}"
           echo "Looking for pattern: $VERSION_PATTERN"
           echo "Current CHANGELOG.md content:"
           cat CHANGELOG.md
@@ -87,4 +87,4 @@ jobs:
           prerelease: true
           body_path: release.body.txt
           files: |
-            docfiller-${{ env.VERSION }}.zip
+            web-ext-artifacts/docfiller-*.zip
