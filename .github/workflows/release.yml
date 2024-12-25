@@ -13,11 +13,6 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
     steps:
-      - name: Debug Information
-        run: |
-          echo "Current ref: ${GITHUB_REF}"
-          echo "Event name: ${GITHUB_EVENT_NAME}"
-
       - name: Clone repository
         uses: actions/checkout@v4
         with:
@@ -25,10 +20,8 @@ jobs:
 
       - name: Extract Version from Tag
         run: |
-          echo "Extracting version from ref: ${GITHUB_REF}"
           VERSION=${GITHUB_REF#refs/tags/}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Set VERSION to: $VERSION"
 
       - uses: oven-sh/setup-bun@v1
         with:
@@ -36,22 +29,17 @@ jobs:
 
       - name: Build packages
         run: |
-          echo "Starting build process..."
           bun install
           bun run build
-          echo "Build completed"
           ls -la
 
       - name: Package extension
         run: |
-          echo "Packaging extension..."
           bun run package
-          echo "Package created"
           ls -la web-ext-artifacts/
 
       - name: Assemble release notes
         run: |
-          echo "Assembling release notes..."
           > release.body.txt
           VERSION_PATTERN="## ${VERSION}"
           START_LINE=$(grep -n "$VERSION_PATTERN" CHANGELOG.md | cut -d: -f1 || echo "")
@@ -63,8 +51,6 @@ jobs:
               sed -n "$START_LINE,\$p" CHANGELOG.md > release.body.txt
             fi
           fi
-          echo "Generated release notes:"
-          cat release.body.txt
 
       - name: Create GitHub Release
         id: create_release
