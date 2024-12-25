@@ -87,4 +87,4 @@ jobs:
           prerelease: true
           body_path: release.body.txt
           files: |
-            web-ext-artifacts/docfiller-${{ env.VERSION }}.zip
+            docfiller-${{ env.VERSION }}.zip

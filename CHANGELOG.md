@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.0.7-test (2024-12-25)
+
+- Last Christmas I gave you my Heart
+- This Chirstmas you are not even here
+
 ## v1.3.1 [Unreleased] (last updated on 2024-12-23)
 
 - Dark Theme (enabled by default)
