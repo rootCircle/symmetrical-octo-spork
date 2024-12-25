@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { getManifest } from '../public/manifest';
 import fs from 'fs-extra';
 
 const r = (...args: string[]) => {
@@ -12,11 +11,27 @@ export async function writeManifest() {
   if (!browser) {
     throw new Error('BROWSER environment variable must be set');
   }
+
   try {
     await fs.ensureDir(r('build'));
+
+    // Dynamically import the manifest to avoid caching
+    const { getManifest } = await import('../public/manifest.js');
     const manifest = await getManifest();
-    await fs.writeJSON(r('build/manifest.json'), manifest, { spaces: 2 });
-    console.log(`✓ manifest.json generated for ${browser}`);
+
+    let existingManifest = null;
+    try {
+      existingManifest = await fs.readJSON(r('build/manifest.json'));
+    } catch (error) {
+      // File doesn't exist yet, that's fine
+    }
+
+    if (JSON.stringify(existingManifest) !== JSON.stringify(manifest)) {
+      await fs.writeJSON(r('build/manifest.json'), manifest, { spaces: 2 });
+      console.log(`✓ manifest.json updated for ${browser}`);
+    } else {
+      console.log('No changes detected in manifest content');
+    }
   } catch (error) {
     console.error('Error writing manifest:', error);
     throw error;
