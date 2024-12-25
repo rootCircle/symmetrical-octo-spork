@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
   
-     - uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
@@ -33,10 +33,13 @@ jobs:
           bun install
           bun run build
 
+      - name: Package extension
+        run: bun run package
+
       - name: Assemble release notes
         run: |
           > release.body.txt
-          VERSION_PATTERN="## ${VERSION}"
+          VERSION_PATTERN="### ${VERSION}"
           START_LINE=$(grep -n "$VERSION_PATTERN" CHANGELOG.md | cut -d: -f1)
           if [ -n "$START_LINE" ]; then
             NEXT_VERSION_LINE=$(($(tail -n +$((START_LINE+1)) CHANGELOG.md | grep -n "^## " | head -n1 | cut -d: -f1) + START_LINE))
@@ -59,4 +62,4 @@ jobs:
           prerelease: true
           body_path: release.body.txt
           files: |
-            dist/docfiller-${{ env.VERSION }}.zip
+            web-ext-artifacts/docfiller-${{ env.VERSION }}.zip
