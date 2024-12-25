@@ -23,10 +23,11 @@ export class MetricsUI {
       await this.updateMetricsDisplay();
       this.setupEventListeners();
       // Update metrics every 5 seconds
-      this.updateInterval = window.setInterval(
-        async () => void (await this.updateMetricsDisplay()),
-        5000,
-      );
+      this.updateInterval = window.setInterval(() => {
+        this.updateMetricsDisplay().catch((error) =>
+          console.error('Error updating metrics display:', error),
+        );
+      }, 5000);
     } catch (error) {
       console.error('Failed to initialize metrics:', error);
     } finally {
