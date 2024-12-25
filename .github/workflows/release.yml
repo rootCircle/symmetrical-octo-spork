@@ -1,11 +1,11 @@
 name: docFiller Release
+
+
 on:
-  push:
-    tags:
-      - "v*"
-      branches:
-      - dev
-     workflow_dispatch:  
+
+  create:
+
+    branches: dev
 
 permissions:
   contents: write
