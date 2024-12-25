@@ -1,9 +1,10 @@
 name: docFiller Release
 
 on:
-  create:
-    branches: dev
-    
+  push:
+    tags:
+      - "v*"
+
 permissions:
   contents: write
 
