@@ -1,0 +1,59 @@
+
+name: docFiller Release
+
+on:
+  create:
+    branches: dev
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: write 
+    name: Build packages
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Get release information
+        run: |
+          echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
+      - name: Build packages
+        run: |
+          npm install
+          npm run build
+
+      - name: Assemble release notes
+        run: |
+          > release.body.txt
+          VERSION_PATTERN="## ${VERSION}"
+          START_LINE=$(grep -n "$VERSION_PATTERN" CHANGELOG.md | cut -d: -f1)
+          if [ -n "$START_LINE" ]; then
+            NEXT_VERSION_LINE=$(($(tail -n +$((START_LINE+1)) CHANGELOG.md | grep -n "^## " | head -n1 | cut -d: -f1) + START_LINE))
+            if [ -n "$NEXT_VERSION_LINE" ]; then
+              sed -n "$START_LINE,$((NEXT_VERSION_LINE-1))p" CHANGELOG.md > release.body.txt
+            else
+              sed -n "$START_LINE,\$p" CHANGELOG.md > release.body.txt
+            fi
+          fi
+
+      - name: Create GitHub release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          draft: true
+          prerelease: true
+          body_path: release.body.txt
+          files: |
+            dist/docfiller-${{ env.VERSION }}.zip
