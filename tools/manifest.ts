@@ -1,9 +1,10 @@
-import fs from 'fs-extra';
-import type { Manifest } from 'webextension-polyfill';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
+
+import fs from 'fs-extra';
+import type { Manifest } from 'webextension-polyfill';
+
 import type PkgType from '../package.json';
-import { writeManifest } from './manifestWriter';
 
 const r = (...args: string[]) => {
   return resolve(fileURLToPath(new URL('..', import.meta.url)), ...args);
@@ -18,7 +19,7 @@ export async function getManifest() {
   }
 
   const pkg = (await fs.readJSON(r('package.json'))) as typeof PkgType;
-  const targetBrowser = process.env.BROWSER;
+  const targetBrowser = process.env['BROWSER'];
   if (!targetBrowser) {
     throw new Error('BROWSER environment variable must be set');
   }
@@ -31,7 +32,7 @@ export async function getManifest() {
   }
   if (isFirefoxBased && isChromiumBased) {
     throw new Error(
-      `Both Firefox and Chromium based browsers are specified. Please specify only one.`,
+      'Both Firefox and Chromium based browsers are specified. Please specify only one.',
     );
   }
 
@@ -95,8 +96,4 @@ export async function getManifest() {
   };
 
   return manifest;
-}
-
-if (require.main === module) {
-  writeManifest().catch(console.error);
 }

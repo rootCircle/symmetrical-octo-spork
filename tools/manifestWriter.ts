@@ -22,3 +22,7 @@ export async function writeManifest() {
     throw error;
   }
 }
+
+if (require.main === module) {
+  writeManifest().catch(console.error);
+}

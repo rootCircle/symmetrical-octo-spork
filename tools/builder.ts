@@ -20,8 +20,7 @@ const cleanBuildFolder = async () => {
 };
 const build = async (watch: boolean) => {
   const entrypoints = await entryPoints();
-  copyContents('./public/assets', './build/assets');
-  copyContents('./public/src', './build/src');
+  copyContents('./public', './build').catch(console.error);
   if (watch) {
     const buildContext = await esbuild.context({
       entryPoints: entrypoints,

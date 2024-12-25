@@ -3,19 +3,17 @@ import chokidar from 'chokidar';
 import { runBuild } from './builder';
 import copyContents from './copier';
 
-const buildWatch = async () => {
-  await runBuild(true).catch(console.error);
+const buildWatch = () => {
+  runBuild(true).catch(console.error);
 
-  const watcher = chokidar.watch(['public/'], {
+  const watcher = chokidar.watch(['public/', 'manifest.ts'], {
     ignored: /node_modules/,
     persistent: true,
   });
 
-  const handleChange = async () => {
+  const handleChange = () => {
     try {
-      copyContents('./public/assets', './build/assets');
-      copyContents('./public/src', './build/src');
-      await runBuild(true);
+      copyContents('./public', './build').catch(console.error);
     } catch (error) {
       console.error('error:', error);
     }
