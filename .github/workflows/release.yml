@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - "v*"
+      branches:
+      - dev
+     workflow_dispatch:  
 
 permissions:
   contents: read
