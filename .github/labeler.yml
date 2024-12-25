@@ -1,0 +1,71 @@
+# Label for documentation-related changes
+"documentation":
+  - "docs/**"
+  - "*.md"
+
+# Label for public assets and styling
+"assets":
+  - "public/assets/**"
+
+"popup":
+  - "public/src/popup/**"
+  - "src/popup/**"
+
+"options-page":
+  - "public/src/options/**"
+  - "src/options/**"
+
+"background":
+  - "src/background/**"
+
+"content script":
+  - "src/contentScript/**"
+
+"core":
+  - "src/docFillerCore/**"
+
+"consensus-engine":
+  - "src/docFillerCore/engines/consensusEngine.ts"
+
+"extractor-engine":
+  - "src/docFillerCore/engines/fieldExtractorEngine.ts"
+
+"filler-engine":
+  - "src/docFillerCore/engines/fillerEngine.ts"
+
+"gpt-engine":
+  - "src/docFillerCore/engines/gptEngine.ts"
+
+"prompt-engine":
+  - "src/docFillerCore/engines/promptEngine.ts"
+
+"parser-engine":
+  - "src/docFillerCore/engines/validatorEngine.ts"
+
+"utils":
+  - "src/utils/**"
+
+# Label for TypeScript utilities and tools
+"config":
+  - "eslint.config.js"
+  - "tsconfig.json"
+  - ".prettierrc"
+
+# Label for licensing and governance
+"governance":
+  - "LICENSE"
+  - "docs/GOVERNANCE.md"
+  - "docs/CODE_OF_CONDUCT.md"
+
+# Label for testing or metrics
+"metrics":
+  - "src/options/metrics.ts"
+  - "src/utils/metricsCalculator.ts"
+
+# Label for build and CI-related files
+"build":
+  - "Makefile"
+  - "tools/**"
+
+"ci":
+  - ".github/workflows/**"
