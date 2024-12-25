@@ -35,6 +35,9 @@ jobs:
           bun run package:firefox
           bun run package:chromium
 
+      - name: Package extension
+        run: bun run package
+
       - name: Assemble release notes
         run: |
           > release.body.txt
