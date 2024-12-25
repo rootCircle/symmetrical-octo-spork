@@ -6,7 +6,6 @@ import type { Manifest } from 'webextension-polyfill';
 
 import type PkgType from '../package.json';
 
-
 const r = (...args: string[]) => {
   return resolve(fileURLToPath(new URL('..', import.meta.url)), ...args);
 };
