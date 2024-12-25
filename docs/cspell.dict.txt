@@ -6,6 +6,7 @@ Barkha
 Brooooo
 Cacher
 camelcase
+cfworker
 Classts
 compat
 cpolyline

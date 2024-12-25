@@ -44,8 +44,12 @@ jobs:
 
     - name: Build
       run: |
-        bun run build
+        bun run build:firefox
 
     - name: web-ext Lint
       run: |
           bun run webext:lint
+
+    - name: Build
+      run: |
+        bun run build:chromium

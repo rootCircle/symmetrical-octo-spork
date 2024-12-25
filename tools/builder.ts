@@ -3,10 +3,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-console */
 import * as esbuild from 'esbuild';
-
+import fs from 'fs-extra';
 import copyContents from './copier';
 import entryPoints from './entrypoints';
+import { writeManifest } from './manifestWriter';
 
+const cleanBuildFolder = async () => {
+  try {
+    await fs.remove('./build');
+    await fs.ensureDir('./build');
+    console.log('Build folder cleaned and recreated.');
+  } catch (error) {
+    console.error('Error cleaning build folder:', error);
+    throw error;
+  }
+};
 const build = async (watch: boolean) => {
   const entrypoints = await entryPoints();
   await copyContents('./public', './build');
@@ -45,6 +56,8 @@ const build = async (watch: boolean) => {
 
 const runBuild = async (watch: boolean) => {
   try {
+    await cleanBuildFolder();
+    await writeManifest();
     await build(watch);
     console.log('Build completed successfully.');
   } catch (error) {

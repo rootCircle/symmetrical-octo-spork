@@ -43,7 +43,7 @@ async function getFiles(
  * @returns {Promise<string[]>} The entrypoints
  */
 export default async function entryPoints(): Promise<string[]> {
-  const files = [];
+  const files: string[] = [];
   for (const { path, extensions } of sourceDir) {
     files.push(...(await getFiles(path, extensions)));
   }

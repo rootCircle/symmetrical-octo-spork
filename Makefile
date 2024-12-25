@@ -7,8 +7,11 @@ format:
 tsc:
 	bun tsc
 
-build:
-	bun run build
+build-firefox:
+	bun run build:firefox
+
+build-chromium:
+	bun run build:chromium
 
 spell:
 	bun run spell

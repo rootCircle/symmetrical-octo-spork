@@ -25,11 +25,13 @@
   },
   "scripts": {
     "watch": "bun tsc && bun tools/watcher.ts",
-    "build": "bun tools/bundler.ts",
-    "package": "bun tools/bundler.ts && web-ext build --source-dir=build --overwrite-dest",
-    "dev:firefox": "bun tools/bundler.ts && concurrently --kill-others \"bun tools/watcher.ts\" \"web-ext run --source-dir=build\"",
-    "dev:chromium": "bun tools/bundler.ts && concurrently --kill-others \"bun tools/watcher.ts\" \"web-ext run -t chromium --source-dir=build\"",
-    "dev:firefox-android": "bun tools/bundler.ts && concurrently --kill-others \"bun tools/watcher.ts\" \"web-ext run -t firefox-android --source-dir=build\"",
+    "build:firefox": "BROWSER=firefox bun tools/bundler.ts",
+    "build:chromium": "BROWSER=chromium bun tools/bundler.ts",
+    "package:firefox": "BROWSER=firefox bun tools/bundler.ts && web-ext build --source-dir=build --overwrite-dest",
+    "package:chromium": "BROWSER=chromium bun tools/bundler.ts && web-ext build --source-dir=build --overwrite-dest",
+    "dev:firefox": "cross-env BROWSER=firefox bun tools/bundler.ts && concurrently --kill-others \"cross-env BROWSER=firefox bun tools/watcher.ts\" \"web-ext run --source-dir=build\"",
+    "dev:chromium": "cross-env BROWSER=chromium bun tools/bundler.ts && concurrently --kill-others \"cross-env BROWSER=chromium bun tools/watcher.ts\" \"web-ext run -t chromium --source-dir=build\"",
+    "dev:firefox-android": "cross-env BROWSER=firefox bun tools/bundler.ts && concurrently --kill-others \"cross-env BROWSER=firefox bun tools/watcher.ts\" \"web-ext run -t firefox-android --source-dir=build\"",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md,html,css}' '!build/**' '!node_modules/**' '!web-ext-artifacts/**'",
     "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,json,md,html,css}' '!build/**' '!node_modules/**' '!web-ext-artifacts/**'",
     "webext:lint": "web-ext lint --source-dir=build",
@@ -37,11 +39,12 @@
     "lint:fix": "eslint . --cache --cache-strategy content --fix",
     "tsc": "tsc --noEmit",
     "spell": "cspell \"**/*.{ts,js,md,json,txt,html,css}\" \"Makefile\" --gitignore",
-    "precommit": "bun run lint && bun run format:check && bun run tsc && bun run spell && bun run build && bun run webext:lint",
+    "precommit": "bun run lint && bun run format:check && bun run tsc && bun run spell && bun run build:firefox && web-ext lint --source-dir=build && bun run build:chromium",
     "prepare": "husky"
   },
   "type": "module",
   "dependencies": {
+    "@cfworker/json-schema": "^4.0.3",
     "@langchain/anthropic": "^0.3.8",
     "@langchain/community": "^0.3.17",
     "@langchain/google-genai": "^0.1.5",
@@ -65,9 +68,12 @@
     "@eslint/js": "^9.16.0",
     "@types/chrome": "^0.0.287",
     "@types/firefox-webext-browser": "^120.0.4",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.1",
+    "@types/webextension-polyfill": "^0.12.1",
     "chokidar": "^4.0.1",
     "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
     "cspell": "^8.16.1",
     "esbuild": "^0.24.0",
     "eslint": "^9.16.0",
@@ -78,6 +84,7 @@
     "husky": "^9.1.7",
     "prettier": "^3.4.2",
     "typescript-eslint": "^8.17.0",
-    "web-ext": "^8.3.0"
+    "web-ext": "^8.3.0",
+    "webextension-polyfill": "^0.12.0"
   }
 }

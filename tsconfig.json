@@ -3,7 +3,8 @@
     "types": [
       "./types.d.ts", // add your own type definitions
       "@types/chrome",
-      "@types/firefox-webext-browser"
+      "@types/firefox-webext-browser",
+      "webextension-polyfill"
     ],
     "baseUrl": "src",
     "paths": {

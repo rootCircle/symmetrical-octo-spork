@@ -7,7 +7,7 @@ This document provides instructions for installing the Web Extension on various 
 1. **Download the extension package**: Clone the project and run `bun run build`. The package will be created in `build/` directory.
 2. **Open Mozilla Firefox and navigate to about:debugging**: Enter `about:debugging` in the address bar of Firefox and press Enter.
 3. **Load the extension**: Click on the "This Firefox" button in the upper right corner of the screen, then select "Load Temporary Add-on..." from the dropdown menu.
-4. **Select the extension package**: Navigate to the folder where you downloaded the extension package and select the `manifest.json` file.
+4. **Select the extension package**: Navigate to the folder where you downloaded the extension package and select the generated `manifest.json` file.
 5. **Confirm installation**: You should now see the extension added to the list of installed extensions.
 
 ## Google Chrome 🌐
