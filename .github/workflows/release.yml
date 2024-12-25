@@ -36,7 +36,6 @@ jobs:
       - name: Package extension
         run: |
           bun run package
-          ls -la web-ext-artifacts/
 
       - name: Assemble release notes
         run: |
