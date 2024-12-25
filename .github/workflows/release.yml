@@ -13,11 +13,6 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
     steps:
-      - name: Debug Information
-        run: |
-          echo "Current ref: ${GITHUB_REF}"
-          echo "Event name: ${GITHUB_EVENT_NAME}"
-
       - name: Clone repository
         uses: actions/checkout@v4
         with:
@@ -34,7 +29,6 @@ jobs:
 
       - name: Installtion of Dependencies 
         run: |
-          echo "Starting build process..."
           bun install
   
       - name: Package extension
@@ -44,14 +38,11 @@ jobs:
 
       - name: Package extension
         run: |
-          echo "Packaging extension..."
           bun run package
-          echo "Package created"
           ls -la web-ext-artifacts/
 
       - name: Assemble release notes
         run: |
-          echo "Assembling release notes..."
           > release.body.txt
           VERSION_PATTERN="## ${VERSION}"
           START_LINE=$(grep -n "$VERSION_PATTERN" CHANGELOG.md | cut -d: -f1 || echo "")
@@ -63,8 +54,6 @@ jobs:
               sed -n "$START_LINE,\$p" CHANGELOG.md > release.body.txt
             fi
           fi
-          echo "Generated release notes:"
-          cat release.body.txt
 
       - name: Create GitHub Release
         id: create_release
