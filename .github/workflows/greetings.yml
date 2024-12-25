@@ -1,0 +1,37 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: |
+          👋 Hello, and welcome to our repository! Thank you for opening an issue.
+        
+          Before we proceed, please ensure that
+          - You've checked existing issues to avoid duplicates.
+          - You've provided sufficient details about the issue, including steps to reproduce, expected behavior, and any relevant screenshots or logs.
+        
+          We appreciate your contribution and will review your report soon. In the meantime, feel free to explore our [contribution guidelines](https://github.com/rootCircle/docFiller/blob/dev/docs/CONTRIBUTING.md) and [code of conduct](https://github.com/rootCircle/docFiller/blob/dev/docs/CODE_OF_CONDUCT.md).
+        
+          Thank you for helping improve this project!
+
+        pr-message: |
+          🎉 Thank you for your first pull request! We’re excited to have your contribution.
+        
+          To help us review your PR effectively, please ensure that
+          - Your changes are well-documented.
+          - You've adhered to our [coding standards](https://github.com/rootCircle/docFiller/blob/dev/docs/CONTRIBUTING.md).
+          - All tests pass, and you've added new tests if necessary.
+        
+          We’ll review your PR soon and provide feedback. In the meantime, check out our [contribution guidelines](https://github.com/rootCircle/docFiller/blob/dev/docs/CONTRIBUTING.md) for more tips on making impactful contributions.
+        
+          Thanks again for contributing to this project!
+
