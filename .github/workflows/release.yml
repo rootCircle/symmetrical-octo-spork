@@ -1,9 +1,8 @@
-
 name: docFiller Release
-
 on:
-  create:
-    branches: dev
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: read
@@ -24,6 +23,10 @@ jobs:
       - name: Get release information
         run: |
           echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+  
+     - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       - name: Build packages
         run: |
