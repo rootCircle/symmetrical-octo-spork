@@ -1,0 +1,65 @@
+name: docFiller Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Extract Version from Tag
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Installation of Dependencies 
+        run: |
+          bun install
+  
+      - name: Package extension
+        run: |
+          bun run package:firefox
+          bun run package:chromium
+
+      - name: Assemble release notes
+        run: |
+          > release.body.txt
+          VERSION_PATTERN="## ${VERSION}"
+          START_LINE=$(grep -n "$VERSION_PATTERN" CHANGELOG.md | cut -d: -f1 || echo "")
+          if [ -n "$START_LINE" ]; then
+            NEXT_VERSION_LINE=$(($(tail -n +$((START_LINE+1)) CHANGELOG.md | grep -n "^## " | head -n1 | cut -d: -f1 || echo "") + START_LINE))
+            if [ -n "$NEXT_VERSION_LINE" ]; then
+              sed -n "$START_LINE,$((NEXT_VERSION_LINE-1))p" CHANGELOG.md > release.body.txt
+            else
+              sed -n "$START_LINE,\$p" CHANGELOG.md > release.body.txt
+            fi
+          fi
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          body_path: release.body.txt
+          files: |
+            web-ext-artifacts/docfiller-*.zip
