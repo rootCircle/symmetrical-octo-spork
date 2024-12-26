@@ -3,7 +3,7 @@ name: docFiller Release
 on:
   push:
     tags:
-      - "*"
+      - "v*"
 
 permissions:
   contents: write
@@ -27,7 +27,7 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Installation of Dependencies 
+      - name: Installtion of Dependencies 
         run: |
           bun install
   
@@ -35,6 +35,10 @@ jobs:
         run: |
           bun run package:firefox
           bun run package:chromium
+
+      - name: Package extension
+        run: |
+          bun run package
 
       - name: Assemble release notes
         run: |
