@@ -1,6 +1,6 @@
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
-import { LLMEngineType } from '@utils/llmEngineTypes';
-import { QType } from '@utils/questionTypes';
+import type { LLMEngineType } from '@utils/llmEngineTypes';
+import type { QType } from '@utils/questionTypes';
 import { MetricsManager } from '@utils/storage/metricsManager';
 
 interface ChromeResponseMessage {

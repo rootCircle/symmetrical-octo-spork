@@ -486,14 +486,13 @@ Count and incorporate ALL question domains to ensure comprehensive expertise.`;
           return StructuredOutputParser.fromZodSchema(
             multiCorrectOptionsArraySchema,
           );
-        } else {
+        }
           // For multiple-choice with optional 'other' option
           return StructuredOutputParser.fromZodSchema(
             multiCorrectOrMultipleOptionSchema.describe(
               "Schema for a single option in multiple-choice with an optional 'other' option",
             ),
           );
-        }
       }
     }
   }

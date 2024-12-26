@@ -71,6 +71,7 @@
     "concurrently": "^9.1.0",
     "cross-env": "^7.0.3",
     "cspell": "^8.16.1",
+    "esbuild": "^0.24.0",
     "globals": "^15.13.0",
     "husky": "^9.1.7",
     "web-ext": "^8.3.0",

@@ -2,8 +2,8 @@ import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
 import { analyzeWeightedObjects } from '@utils/consensusUtil';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import { LLMEngineType } from '@utils/llmEngineTypes';
-import { QType } from '@utils/questionTypes';
+import type { LLMEngineType } from '@utils/llmEngineTypes';
+import type { QType } from '@utils/questionTypes';
 
 class ConsensusEngine {
   private validateEngine: ValidatorEngine;
@@ -78,7 +78,6 @@ class ConsensusEngine {
       } catch (error) {
         // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(error);
-        continue;
       }
     }
 

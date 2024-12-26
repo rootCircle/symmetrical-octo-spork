@@ -1,11 +1,11 @@
-import { LLMEngineType } from '@utils/llmEngineTypes';
+import type { LLMEngineType } from '@utils/llmEngineTypes';
 import { MetricsCalculator } from '@utils/metricsCalculator';
 
 export class MetricsManager {
   private static instance: MetricsManager;
   private static readonly STORAGE_KEY = 'metrics';
   private static readonly MAX_HISTORY_DAYS = 15; //ADD 1 Extra to accumulate removed days data in last day
-  private formStartTime: number = 0;
+  private formStartTime = 0;
 
   private currentFormMetrics = {
     totalQuestions: 0,

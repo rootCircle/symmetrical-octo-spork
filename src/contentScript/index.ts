@@ -1,5 +1,5 @@
 import { runDocFillerEngine } from '@docFillerCore/index';
-import { MessageResponse, isFillFormMessage } from '@utils/messageTypes';
+import { type MessageResponse, isFillFormMessage } from '@utils/messageTypes';
 import { getIsEnabled } from '@utils/storage/getProperties';
 
 chrome.runtime.onMessage.addListener(

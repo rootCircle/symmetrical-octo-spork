@@ -1,5 +1,5 @@
-import { extname, join } from 'path';
-import { readdir } from 'fs/promises';
+import { readdir } from 'node:fs/promises';
+import { extname, join } from 'node:path';
 
 const sourceDir = [
   {
@@ -24,9 +24,8 @@ async function getFiles(
       const res = join(dir, dirent.name);
       if (dirent.isDirectory()) {
         return getFiles(res, validFileExtensions);
-      } else {
-        return Promise.resolve(res);
       }
+        return Promise.resolve(res);
     }),
   );
 

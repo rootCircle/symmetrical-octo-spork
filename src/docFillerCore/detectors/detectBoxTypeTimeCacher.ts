@@ -19,7 +19,7 @@ export class DetectBoxTypeTimeCacher {
 
   public getTimeParams(
     element: HTMLElement,
-    invalidateCache: boolean = false,
+    invalidateCache = false,
   ): [
     number | null,
     boolean | null,

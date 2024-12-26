@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   saveButton.addEventListener('click', () => {
     const saveOptions = async () => {
-      const sleepDuration = parseInt(sleepDurationInput.value, 10);
+      const sleepDuration = Number.parseInt(sleepDurationInput.value, 10);
       const llmModel = llmModelSelect.value;
       const enableConsensus = enableConsensusCheckbox.checked;
       const enableDarkTheme = enableDarkThemeCheckbox.checked;
@@ -381,12 +381,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const anthropicApiKey = anthropicApiKeyInput.value;
 
       const llmWeights = {
-        [LLMEngineType.ChatGPT]: parseFloat(weightChatGPTInput.value),
-        [LLMEngineType.Gemini]: parseFloat(weightGeminiInput.value),
-        [LLMEngineType.Ollama]: parseFloat(weightOllamaInput.value),
-        [LLMEngineType.ChromeAI]: parseFloat(weightChromeAIInput.value),
-        [LLMEngineType.Mistral]: parseFloat(weightMistralInput.value),
-        [LLMEngineType.Anthropic]: parseFloat(weightAnthropicInput.value),
+        [LLMEngineType.ChatGPT]: Number.parseFloat(weightChatGPTInput.value),
+        [LLMEngineType.Gemini]: Number.parseFloat(weightGeminiInput.value),
+        [LLMEngineType.Ollama]: Number.parseFloat(weightOllamaInput.value),
+        [LLMEngineType.ChromeAI]: Number.parseFloat(weightChromeAIInput.value),
+        [LLMEngineType.Mistral]: Number.parseFloat(weightMistralInput.value),
+        [LLMEngineType.Anthropic]: Number.parseFloat(weightAnthropicInput.value),
       };
 
       try {

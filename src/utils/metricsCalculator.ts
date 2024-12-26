@@ -1,3 +1,4 @@
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class MetricsCalculator {
   // Constants
   private static MANUAL_TIME_PER_QUESTION = 23;
@@ -37,7 +38,7 @@ export class MetricsCalculator {
 
   private static calculateTimeDifference(entry: MetricsHistory): number {
     const manualTime = entry.toBeFilledQuestions
-      ? entry.toBeFilledQuestions * this.MANUAL_TIME_PER_QUESTION
+      ? entry.toBeFilledQuestions * MetricsCalculator.MANUAL_TIME_PER_QUESTION
       : entry.timeAI;
     return manualTime - entry.timeAI;
   }
@@ -49,13 +50,13 @@ export class MetricsCalculator {
     dailyTrend: number;
   } {
     let total = metricHistory.reduce(
-      (sum, entry) => sum + this.calculateTimeDifference(entry),
+      (sum, entry) => sum + MetricsCalculator.calculateTimeDifference(entry),
       0,
     );
     if (total < 0) {
       total = 0;
     }
-    if (this.calculateFormMetrics(metricHistory).total === 0) {
+    if (MetricsCalculator.calculateFormMetrics(metricHistory).total === 0) {
       return { totalHours: 0, totalMin: 0, totalSec: 0, dailyTrend: 0 };
     }
     const totalHours = Math.floor(total / 3600);
@@ -67,10 +68,10 @@ export class MetricsCalculator {
       .split('T')[0];
     const todayTotal = metricHistory
       .filter((entry) => entry.date === today)
-      .reduce((sum, entry) => sum + this.calculateTimeDifference(entry), 0);
+      .reduce((sum, entry) => sum + MetricsCalculator.calculateTimeDifference(entry), 0);
     const yesterdayTotal = metricHistory
       .filter((entry) => entry.date === yesterday)
-      .reduce((sum, entry) => sum + this.calculateTimeDifference(entry), 0);
+      .reduce((sum, entry) => sum + MetricsCalculator.calculateTimeDifference(entry), 0);
     const dailyTrend =
       (yesterdayTotal === 0
         ? 1
@@ -133,7 +134,7 @@ export class MetricsCalculator {
     return (
       (hasToFill
         ? successful / hasToFill
-        : this.calculateFormMetrics(entries).total > 0
+        : MetricsCalculator.calculateFormMetrics(entries).total > 0
           ? 1
           : 0) * 100
     );
@@ -143,20 +144,20 @@ export class MetricsCalculator {
     rate: number;
     weeklyTrend: number;
   } {
-    if (this.calculateFormMetrics(metricHistory).total === 0) {
+    if (MetricsCalculator.calculateFormMetrics(metricHistory).total === 0) {
       return { rate: 0, weeklyTrend: 0 };
     }
 
-    const rate = this.calculateRateForEntries(metricHistory);
+    const rate = MetricsCalculator.calculateRateForEntries(metricHistory);
     const today = new Date();
     const thisWeekStart = new Date(today);
     thisWeekStart.setDate(today.getDate() - 7);
     const lastWeekStart = new Date(thisWeekStart);
     lastWeekStart.setDate(thisWeekStart.getDate() - 7);
-    const thisWeekRate = this.calculateRateForEntries(
+    const thisWeekRate = MetricsCalculator.calculateRateForEntries(
       metricHistory.filter((entry) => new Date(entry.date) >= thisWeekStart),
     );
-    const lastWeekRate = this.calculateRateForEntries(
+    const lastWeekRate = MetricsCalculator.calculateRateForEntries(
       metricHistory.filter((entry) => {
         const date = new Date(entry.date);
         return date >= lastWeekStart && date < thisWeekStart;

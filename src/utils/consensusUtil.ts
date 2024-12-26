@@ -1,4 +1,4 @@
-import { LLMEngineType } from '@utils/llmEngineTypes';
+import type { LLMEngineType } from '@utils/llmEngineTypes';
 
 interface WeightedObject {
   source: LLMEngineType;

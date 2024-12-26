@@ -133,7 +133,7 @@ export class FillerEngine {
 
     const date = value.date;
 
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
 
@@ -172,7 +172,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
     await sleep(await Settings.getInstance().getSleepDuration());
@@ -224,7 +224,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
     await sleep(await Settings.getInstance().getSleepDuration());
@@ -305,7 +305,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
     await sleep(await Settings.getInstance().getSleepDuration());
@@ -371,7 +371,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
     await sleep(await Settings.getInstance().getSleepDuration());
@@ -451,7 +451,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
 
@@ -484,7 +484,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
 
@@ -521,7 +521,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
 
@@ -554,7 +554,7 @@ export class FillerEngine {
       return false;
     }
     const date = value.date;
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
       return false;
     }
     await sleep(await Settings.getInstance().getSleepDuration());

@@ -1,7 +1,7 @@
 export function showToast(
   message: string,
   type: 'success' | 'error' | 'info' = 'info',
-  duration: number = 3000,
+  duration = 3000,
 ) {
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toast-message');

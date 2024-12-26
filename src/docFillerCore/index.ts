@@ -29,8 +29,8 @@ async function runDocFillerEngine() {
   const filler = new FillerEngine();
   const isMarked = new PrefilledChecker();
   const enableConsensus = await Settings.getInstance().getEnableConsensus();
-  let consensusEngine;
-  let llm;
+  let consensusEngine: ConsensusEngine | null = null;
+  let llm: LLMEngine | null = null;
   const metricsManager = MetricsManager.getInstance();
   if (enableConsensus) {
     consensusEngine = new ConsensusEngine();

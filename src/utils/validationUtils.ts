@@ -1,5 +1,5 @@
 class ValidationUtils {
-  validateDate(date: string, month: string, year: string = '2020') {
+  validateDate(date: string, month: string, year = '2020') {
     // Input :- date(string), month(string), year(string)
     // Validates date is valid or not based on month and year
     // If no value for year is given, then code will assume the year to be a leap,
@@ -18,7 +18,7 @@ class ValidationUtils {
     }
 
     const parsedYear = Number(year);
-    if (isNaN(parsedYear)) {
+    if (Number.isNaN(parsedYear)) {
       return false; // Invalid formatted year
     }
 

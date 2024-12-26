@@ -124,7 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      chrome.tabs.sendMessage(tab.id!, { action: 'fillForm' }, (response) => {
+      if (!tab.id) {
+        showToast('Error: Could not get tab ID', 'error');
+        return;
+      }
+
+      chrome.tabs.sendMessage(tab.id, { action: 'fillForm' }, (response) => {
         if (chrome.runtime.lastError) {
           showToast('Error: Could not communicate with page', 'error');
           return;

@@ -1,5 +1,5 @@
-import { readdirSync, renameSync } from 'fs';
-import * as path from 'path';
+import { readdirSync, renameSync } from 'node:fs';
+import * as path from 'node:path';
 import PkgType from '../package.json';
 
 const BROWSER = process.env.BROWSER;
