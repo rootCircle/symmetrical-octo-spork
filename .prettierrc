@@ -1,0 +1,17 @@
+{
+  "arrowParens": "always",
+  "singleQuote": true,
+  "proseWrap": "never",
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "semi": true,
+  "endOfLine": "crlf",
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "preserve"
+      }
+    }
+  ]
+}

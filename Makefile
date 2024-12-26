@@ -5,7 +5,7 @@ format:
 	bun format:check
 
 tsc:
-	bun tsc
+	bun typecheck
 
 build-firefox:
 	bun run build:firefox

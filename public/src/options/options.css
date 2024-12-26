@@ -37,7 +37,11 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   background-color: var(--background);
   color: var(--text-primary);
   padding: 1rem;
@@ -93,9 +97,9 @@ label {
   border-radius: 5px;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="number"],
+input[type='text'],
+input[type='password'],
+input[type='number'],
 textarea {
   width: 100%;
   padding: 0.75rem;
@@ -124,9 +128,9 @@ select {
   transition: all 0.2s ease;
   box-sizing: border-box;
 }
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus,
+input[type='text']:focus,
+input[type='password']:focus,
+input[type='number']:focus,
 select:focus,
 textarea:focus {
   outline: none;
@@ -134,7 +138,7 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 0.55rem;
@@ -148,7 +152,7 @@ input[type="checkbox"] {
   margin: 1rem 0.2rem;
 }
 
-.toggleConsensusMenu input[type="checkbox"] {
+.toggleConsensusMenu input[type='checkbox'] {
   width: 1.25rem;
   height: 1.25rem;
   margin: 0;
@@ -255,7 +259,9 @@ input[disabled] {
   padding: 20px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -558,9 +564,9 @@ input[disabled] {
     margin: 0 5px;
   }
 
-  input[type="text"],
-  input[type="password"],
-  input[type="number"],
+  input[type='text'],
+  input[type='password'],
+  input[type='number'],
   select,
   textarea {
     font-size: 0.9rem;
@@ -706,7 +712,9 @@ input[disabled] {
 }
 
 .creative-toggle.active .toggle-thumb {
-  left: calc(var(--toggle-width) - var(--toggle-height) + var(--toggle-padding));
+  left: calc(
+    var(--toggle-width) - var(--toggle-height) + var(--toggle-padding)
+  );
 }
 
 .check-icon,
@@ -789,7 +797,9 @@ input[disabled] {
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .metric-card:hover {
@@ -945,11 +955,11 @@ input[disabled] {
   display: none;
 }
 
-.password-toggle[data-visible="true"] .eye-closed {
+.password-toggle[data-visible='true'] .eye-closed {
   display: block;
 }
 
-.password-toggle[data-visible="true"] .eye-open {
+.password-toggle[data-visible='true'] .eye-open {
   display: none;
 }
 
@@ -1002,7 +1012,7 @@ input[disabled] {
 }
 
 .magic-profile-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1107,11 +1117,11 @@ input[disabled] {
   transform: rotate(90deg);
 }
 .magic-profile-card::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 40px;
   height: 40px;
-  background: url("path-to-omnitrix-icon.png") center / contain no-repeat;
+  background: url('path-to-omnitrix-icon.png') center / contain no-repeat;
   bottom: 10px;
   right: 10px;
   opacity: 0.5;

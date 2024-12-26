@@ -1,3 +1,8 @@
 {
-  "recommendations": ["biomejs.biome"]
+  "recommendations": [
+    "biomejs.biome",
+    "fill-labs.dependi",
+    "usernamehw.errorlens",
+    "ecmel.vscode-html-css"
+  ]
 }

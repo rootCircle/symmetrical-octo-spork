@@ -8,7 +8,13 @@
     // Configure properties specific to VS Code.
     "vscode": {
       // Add the IDs of extensions you want installed when the container is created.
-      "extensions": ["oven.bun-vscode", "biomejs.biome"]
+      "extensions": [
+        "oven.bun-vscode",
+        "biomejs.biome",
+        "fill-labs.dependi",
+        "usernamehw.errorlens",
+        "ecmel.vscode-html-css"
+      ]
     }
   },
   "features": {
