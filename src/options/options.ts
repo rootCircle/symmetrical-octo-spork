@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType, getModelName } from '@utils/llmEngineTypes';
 import { EMPTY_STRING } from '@utils/settings';
@@ -9,15 +7,15 @@ import { showToast } from '@utils/toastUtils';
 
 import { MetricsUI } from './metrics';
 import {
-  createProfileCards,
-  handleProfileFormSubmit,
-} from './optionProfileHandler';
-import {
   updateApiKeyInputField,
   updateApiKeyLink,
   updateConsensusApiLinks,
 } from './optionApiHandler';
 import { initializeOptionPasswordField } from './optionPasswordField';
+import {
+  createProfileCards,
+  handleProfileFormSubmit,
+} from './optionProfileHandler';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const metricsUI = new MetricsUI();
@@ -38,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   skipMarkedToggleButton.addEventListener('click', async () => {
     await setSkipMarkedStatus().catch((error) => {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error toggling state:', error);
     });
     const currentState = await getSkipMarkedStatus();
@@ -103,6 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error('Error initializing options:', error);
   }
 });
@@ -316,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKeyValue = anthropicApiKeyInput.value;
         break;
       default:
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.warn('Unknown model selected:', selectedModel);
         break;
     }
@@ -344,6 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         anthropicApiKeyInput.value = apiKeyValue;
         break;
       default:
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.warn('Unknown model selected:', selectedModel);
         break;
     }

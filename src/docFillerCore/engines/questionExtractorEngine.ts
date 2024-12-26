@@ -111,8 +111,7 @@ export class QuestionExtractorEngine {
       return (
         attributes?.attributes.getNamedItem('role')?.nodeValue === 'heading'
       );
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   }

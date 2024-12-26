@@ -1,6 +1,5 @@
 import { EMPTY_STRING } from '@utils/settings';
 
-/* eslint-disable no-unused-vars */
 enum LLMEngineType {
   ChatGPT = 'gpt4-o',
   Gemini = 'gemini-pro',

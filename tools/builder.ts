@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable no-console */
 import * as esbuild from 'esbuild';
 import fs from 'fs-extra';
 import copyContents from './copier';
@@ -12,8 +8,10 @@ const cleanBuildFolder = async () => {
   try {
     await fs.remove('./build');
     await fs.ensureDir('./build');
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.log('Build folder cleaned and recreated.');
   } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error('Error cleaning build folder:', error);
     throw error;
   }
@@ -38,16 +36,20 @@ const build = async (watch: boolean) => {
     });
 
     if (buildStatus.errors.length > 0) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Build failed');
       for (const message of buildStatus.errors) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(message.text);
       }
       throw new Error('Error building the ts files!');
     }
 
     if (buildStatus.warnings.length > 0) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.warn('Build completed with warnings');
       for (const message of buildStatus.warnings) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.warn(message.text);
       }
     }
@@ -59,8 +61,10 @@ const runBuild = async (watch: boolean) => {
     await cleanBuildFolder();
     await writeManifest();
     await build(watch);
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.log('Build completed successfully.');
   } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error('Build failed:', error);
   }
 };

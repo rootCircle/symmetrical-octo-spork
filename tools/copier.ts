@@ -1,5 +1,5 @@
-import { readdir, stat, mkdir, copyFile } from 'fs/promises';
 import { join } from 'path';
+import { copyFile, mkdir, readdir, stat } from 'fs/promises';
 
 /**
  * Copy the contents of a directory to another.

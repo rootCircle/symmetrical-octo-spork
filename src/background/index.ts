@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
 import { LLMEngineType } from '@utils/llmEngineTypes';
 import { QType } from '@utils/questionTypes';
@@ -16,7 +15,6 @@ interface MagicPromptMessage {
   model: LLMEngineType;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 chrome.runtime.onInstalled.addListener(async () => {
   await MetricsManager.getInstance().getMetrics();
 });
@@ -32,6 +30,7 @@ chrome.runtime.onMessage.addListener(
             sendResponse({ value: response });
           })
           .catch((error: unknown) => {
+            // biome-ignore lint/suspicious/noConsole: <explanation>
             console.error('Error generating magic prompt:', error);
             if (error instanceof Error) {
               sendResponse({ error: error.message });
@@ -40,6 +39,7 @@ chrome.runtime.onMessage.addListener(
             }
           });
       } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error('Error creating LLMEngine instance:', error);
         sendResponse({ error: String(error) });
       }
@@ -59,11 +59,12 @@ chrome.runtime.onMessage.addListener(
           .then((response) => {
             sendResponse({ value: response });
           })
-          .then(() => {})
           .catch((error) => {
+            // biome-ignore lint/suspicious/noConsole: <explanation>
             console.error('Error getting response:', error);
           });
       } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error('Error creating LLMEngine instance:', error);
       }
       return true;

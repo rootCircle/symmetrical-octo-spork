@@ -22,17 +22,20 @@ export async function writeManifest() {
     let existingManifest = null;
     try {
       existingManifest = await fs.readJSON(r('build/manifest.json'));
-    } catch (error) {
+    } catch (_error) {
       // File doesn't exist yet, that's fine
     }
 
     if (JSON.stringify(existingManifest) !== JSON.stringify(manifest)) {
       await fs.writeJSON(r('build/manifest.json'), manifest, { spaces: 2 });
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.log(`✓ manifest.json updated for ${browser}`);
     } else {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.log('No changes detected in manifest content');
     }
   } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error('Error writing manifest:', error);
     throw error;
   }

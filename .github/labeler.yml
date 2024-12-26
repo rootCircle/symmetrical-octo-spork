@@ -53,6 +53,7 @@
   - "eslint.config.js"
   - "tsconfig.json"
   - ".prettierrc"
+  - "biome.json"
 
 # Label for licensing and governance
 "governance":

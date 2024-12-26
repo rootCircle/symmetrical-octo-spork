@@ -1,9 +1,5 @@
-/* eslint-disable no-console */
-
-// src/options/metrics.ts
-
-import { MetricsManager } from '@utils/storage/metricsManager';
 import { MetricsCalculator } from '@utils/metricsCalculator';
+import { MetricsManager } from '@utils/storage/metricsManager';
 
 export class MetricsUI {
   private updateInterval: number | undefined;
@@ -14,8 +10,6 @@ export class MetricsUI {
       }
     | undefined;
 
-  constructor() {}
-
   public async initialize(): Promise<void> {
     const loadingEl = document.getElementById('metricsLoading');
     try {
@@ -24,11 +18,13 @@ export class MetricsUI {
       this.setupEventListeners();
       // Update metrics every 5 seconds
       this.updateInterval = window.setInterval(() => {
-        this.updateMetricsDisplay().catch((error) =>
-          console.error('Error updating metrics display:', error),
-        );
+        this.updateMetricsDisplay().catch((error) => {
+          // biome-ignore lint/suspicious/noConsole: <explanation>
+          console.error('Error updating metrics display:', error);
+        });
       }, 5000);
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Failed to initialize metrics:', error);
     } finally {
       loadingEl?.classList.add('hidden');
@@ -117,6 +113,7 @@ export class MetricsUI {
           `;
       }
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error updating metrics display:', error);
       const errorEl = document.getElementById('metricsError');
       if (errorEl) {
@@ -159,6 +156,7 @@ export class MetricsUI {
       a.click();
       URL.revokeObjectURL(url);
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Failed to export metrics:', error);
       alert('Failed to export metrics. Please try again.');
     }
@@ -175,6 +173,7 @@ export class MetricsUI {
         await this.updateMetricsDisplay();
         alert('Metrics reset successfully!');
       } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error('Failed to reset metrics:', error);
         alert('Failed to reset metrics. Please try again.');
       }

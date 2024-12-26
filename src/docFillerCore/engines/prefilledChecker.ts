@@ -71,7 +71,7 @@ export class PrefilledChecker {
           return this.isDateTimeWithMeridiemWithoutYearFilled(fieldValue);
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error checking if field is filled:', e);
       return false;
     }

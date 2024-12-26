@@ -26,7 +26,7 @@ jobs:
       run: |
         bun install
 
-    - name: eslint Lint check
+    - name: Lint check
       run: |
         bun run lint
  

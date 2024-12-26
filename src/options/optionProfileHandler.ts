@@ -1,10 +1,10 @@
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import {
-  loadProfiles,
-  saveSelectedProfileKey,
   deleteProfile,
-  saveCustomProfile,
   getSelectedProfileKey,
+  loadProfiles,
+  saveCustomProfile,
+  saveSelectedProfileKey,
 } from '@utils/storage/profiles/profileManager';
 
 async function createProfileCards() {
@@ -224,8 +224,7 @@ async function handleProfileFormSubmit(submitEvent: Event) {
     }
     form.reset();
     await createProfileCards();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  } catch (error) {
+  } catch (_error) {
     alert('Failed to save profile. Please try again.');
   }
 }

@@ -1,5 +1,5 @@
-import { readdir } from 'fs/promises';
 import { extname, join } from 'path';
+import { readdir } from 'fs/promises';
 
 const sourceDir = [
   {

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import chokidar from 'chokidar';
 import { runBuild } from './builder';
 import copyContents from './copier';
@@ -30,8 +29,10 @@ const buildWatch = () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       await writeManifest();
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.log('Manifest updated due to change');
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error handling manifest change:', error);
     }
   };

@@ -1,12 +1,10 @@
-/* eslint-disable no-console */
-
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
+import { validateLLMConfiguration } from '@utils/missingApiKey';
+import { getEnableDarkTheme } from '@utils/storage/getProperties';
 import {
   getSelectedProfileKey,
   loadProfiles,
 } from '@utils/storage/profiles/profileManager';
-import { getEnableDarkTheme } from '@utils/storage/getProperties';
-import { validateLLMConfiguration } from '@utils/missingApiKey';
 import { showToast } from '@utils/toastUtils';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     !apiMessage ||
     !apiMessageText
   ) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error('Required elements not found');
     return;
   }
@@ -104,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         await checkAndUpdateApiMessage();
       } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(
           `Error saving state. ${error instanceof Error ? error.message : String(error)}`,
         );
@@ -127,12 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
           showToast('Error: Could not communicate with page', 'error');
           return;
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (response?.success) {
           showToast('Auto-fill completed successfully!', 'success');
         } else {
           showToast(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             `Auto-fill failed: ${response?.error || 'Unknown error'}`,
             'error',
           );
@@ -143,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   refreshButton.addEventListener('click', () => {
     chrome.tabs.reload().catch((error) => {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Failed to reload tab:', error);
     });
   });

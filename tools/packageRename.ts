@@ -28,8 +28,10 @@ try {
   const newFilePath = path.join(artifactsDir, newFileName);
 
   renameSync(oldFilePath, newFilePath);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.log(`Renamed ${oldFilePath} to ${newFilePath}`);
 } catch (error) {
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.error('Error:', error.message);
   process.exit(1);
 }

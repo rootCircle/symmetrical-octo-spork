@@ -1,5 +1,5 @@
-import { v4 } from 'uuid';
 import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
+import { v4 } from 'uuid';
 
 import { profilesData } from './profilesData';
 
@@ -63,7 +63,6 @@ async function deleteProfile(profileKey: string): Promise<void> {
       (result) => {
         const customProfiles: Profiles =
           (result['customProfiles'] as Profiles) || {};
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
         const { [profileKey]: deletedProfile, ...remainingProfiles } =
           customProfiles;
 

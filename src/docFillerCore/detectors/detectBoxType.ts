@@ -11,7 +11,6 @@ export class DetectBoxType {
 
   public detectType = (element: HTMLElement): QType | null => {
     const possibleBoxesMethod: {
-      // eslint-disable-next-line no-unused-vars
       [key in QType]: boolean;
     } = {
       [QType.DROPDOWN]: this.isDropdown(element),
@@ -255,9 +254,7 @@ export class DetectBoxType {
       hasYear,
       hasMonth,
       hasDate,
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
       _hasHour,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       _hasMinute,
       hasSecond,
       hasMeridiemField,

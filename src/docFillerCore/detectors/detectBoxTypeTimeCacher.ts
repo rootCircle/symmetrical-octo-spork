@@ -17,8 +17,6 @@ export class DetectBoxTypeTimeCacher {
   private hasSecond: boolean | null = null;
   private hasMeridiemField: boolean | null = null;
 
-  constructor() {}
-
   public getTimeParams(
     element: HTMLElement,
     invalidateCache: boolean = false,

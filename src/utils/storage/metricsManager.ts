@@ -1,9 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-// src/utils/storage/metricsManager.ts
-
-// Add missing interface
 import { LLMEngineType } from '@utils/llmEngineTypes';
 import { MetricsCalculator } from '@utils/metricsCalculator';
 
@@ -94,6 +88,7 @@ export class MetricsManager {
         this.getDefaultMetrics()
       );
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error getting metrics:', error);
       return this.getDefaultMetrics();
     }
@@ -161,6 +156,7 @@ export class MetricsManager {
       this.updateAIMetrics(metrics, params);
       await this.saveMetrics(metrics);
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error updating metrics:', error);
       throw error;
     }
@@ -172,6 +168,7 @@ export class MetricsManager {
         [MetricsManager.STORAGE_KEY]: metrics,
       });
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error saving metrics:', error);
       throw error;
     }
@@ -265,6 +262,7 @@ export class MetricsManager {
         MetricsManager.MAX_HISTORY_DAYS,
       );
     }
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.log('Metrics History : ', metrics);
   }
 

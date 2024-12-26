@@ -1,5 +1,5 @@
-import { EMPTY_STRING } from '@utils/settings';
 import { QType } from '@utils/questionTypes';
+import { EMPTY_STRING } from '@utils/settings';
 
 export class PromptEngine {
   public getPrompt(fieldType: QType, value: ExtractedValue): string {
@@ -106,19 +106,11 @@ export class PromptEngine {
   }
 
   private getTextURLPrompt(title: string, description: string): string {
-    return (
-      'Please provide a plain text URL (not formatted as a hyperlink or markdown) in response to the following: ' +
-      `${title} — ${description}.\n` +
-      'Ensure the URL is in plain text without any hyperlink formatting.'
-    );
+    return `Please provide a plain text URL (not formatted as a hyperlink or markdown) in response to the following: ${title} — ${description}.\nEnsure the URL is in plain text without any hyperlink formatting.`;
   }
 
   private getParagraphPrompt(title: string, description: string): string {
-    return (
-      'Please provide a detailed response in the form of a plain text paragraph for the following: ' +
-      `${title} — ${description}.\n` +
-      'Ensure the response is in plain text without any markdown or special formatting.'
-    );
+    return `Please provide a detailed response in the form of a plain text paragraph for the following: ${title} — ${description}.\nEnsure the response is in plain text without any markdown or special formatting.`;
   }
 
   private getLinearScalePrompt(
@@ -127,14 +119,7 @@ export class PromptEngine {
     options: OptionType[],
     bounds: LowerUpperBound,
   ): string {
-    return (
-      `Prompt:\nPlease respond with an integer on a linear scale from 1 to ${options.length}.\n` +
-      `- A value of 1 corresponds to "${bounds?.lowerBound ?? EMPTY_STRING}".\n` +
-      `- A value of ${options.length} corresponds to "${bounds?.upperBound ?? EMPTY_STRING}".\n` +
-      `The values between 1 and ${options.length} are distributed uniformly.\n` +
-      'Provide only the appropriate integer value that best matches the given scale.\n' +
-      `\nQuestion: ${title}\n${description}`
-    );
+    return `Prompt:\nPlease respond with an integer on a linear scale from 1 to ${options.length}.\n- A value of 1 corresponds to "${bounds?.lowerBound ?? EMPTY_STRING}".\n- A value of ${options.length} corresponds to "${bounds?.upperBound ?? EMPTY_STRING}".\nThe values between 1 and ${options.length} are distributed uniformly.\nProvide only the appropriate integer value that best matches the given scale.\n\nQuestion: ${title}\n${description}`;
   }
 
   private getMultipleChoicePrompt(
@@ -142,13 +127,7 @@ export class PromptEngine {
     description: string,
     options: OptionType[],
   ): string {
-    return (
-      'Prompt:\nPlease select the correct answer from the options below.\n' +
-      'Provide only the exact text of the correct option, without adding any extra characters or explanations.\n' +
-      `\nQuestion Description: ${description}\n` +
-      `Question Title: ${title}\n` +
-      `\nOptions:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}`
-    );
+    return `Prompt:\nPlease select the correct answer from the options below.\nProvide only the exact text of the correct option, without adding any extra characters or explanations.\n\nQuestion Description: ${description}\nQuestion Title: ${title}\n\nOptions:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}`;
   }
 
   private getMultipleChoiceWithOtherPrompt(
@@ -157,16 +136,7 @@ export class PromptEngine {
     options: OptionType[],
     otherOption: string,
   ): string {
-    return (
-      'Prompt:\nYou are given a multiple-choice question with a list of options, including an "Other" option. ' +
-      'Please select only one option that best answers the question. If you select "Other," ' +
-      'provide your custom answer on a new line, starting with "Other:".\n' +
-      '\nInstructions:\n- Return only the text of the selected option.\n' +
-      '- If "Other" is selected, ensure that your custom answer follows the format "Other: <Your Answer>" on a new line.\n' +
-      '- Do not include any additional text or explanations.\n' +
-      `\nQuestion:\n${title}\n${description}\n` +
-      `\nOptions:\n${options.map((option) => option.data).join('\n')}\n${otherOption}`
-    );
+    return `Prompt:\nYou are given a multiple-choice question with a list of options, including an "Other" option. Please select only one option that best answers the question. If you select "Other," provide your custom answer on a new line, starting with "Other:".\n\nInstructions:\n- Return only the text of the selected option.\n- If "Other" is selected, ensure that your custom answer follows the format "Other: <Your Answer>" on a new line.\n- Do not include any additional text or explanations.\n\nQuestion:\n${title}\n${description}\n\nOptions:\n${options.map((option) => option.data).join('\n')}\n${otherOption}`;
   }
 
   private getMultiCorrectPrompt(
@@ -174,16 +144,7 @@ export class PromptEngine {
     description: string,
     options: OptionType[],
   ): string {
-    return (
-      'Prompt:\nYou are given a multiple-correct quiz question with several answer choices. ' +
-      'Your task is to identify and return only the correct options from the list below. ' +
-      'Provide the exact text of each correct option, and avoid adding any extra text or explanations.\n' +
-      '\nExample Response:\nOption 1\nOption 3\n' +
-      '\nInstructions:\n- Select all the correct options and return them as separate lines of text.\n' +
-      '- Only include the correct options; do not add any additional text or commentary.\n' +
-      `\nQuestion:\n${title}\n${description}\n` +
-      `\nOptions:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}`
-    );
+    return `Prompt:\nYou are given a multiple-correct quiz question with several answer choices. Your task is to identify and return only the correct options from the list below. Provide the exact text of each correct option, and avoid adding any extra text or explanations.\n\nExample Response:\nOption 1\nOption 3\n\nInstructions:\n- Select all the correct options and return them as separate lines of text.\n- Only include the correct options; do not add any additional text or commentary.\n\nQuestion:\n${title}\n${description}\n\nOptions:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}`;
   }
   private getMultiCorrectWithOtherPrompt(
     title: string,
@@ -191,11 +152,7 @@ export class PromptEngine {
     options: OptionType[],
     otherOption: string,
   ): string {
-    return (
-      "You are tasked with solving a `multiple-correct with other` question. With good precision ,return only the options which are correct. The 'Other' option can be selected alongside one or more of the listed options. If 'Other' is chosen, provide an explanation for what additional correct option(s) should be included." +
-      `\n**Question**: ${title}\n${description}\n` +
-      `\n**Options**:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}\n${options.length + 1}. ${otherOption}\n`
-    );
+    return `You are tasked with solving a \`multiple-correct with other\` question. With good precision ,return only the options which are correct. The 'Other' option can be selected alongside one or more of the listed options. If 'Other' is chosen, provide an explanation for what additional correct option(s) should be included.\n**Question**: ${title}\n${description}\n\n**Options**:\n${options.map((option, index) => `${index + 1}. ${option.data}`).join('\n')}\n${options.length + 1}. ${otherOption}\n`;
   }
 
   private getDropdownPrompt(
@@ -203,12 +160,7 @@ export class PromptEngine {
     description: string,
     options: OptionType[],
   ): string {
-    return (
-      'Select the most appropriate option from the dropdown for the question below:\n' +
-      `Question: ${title}\nDescription: ${description}\n\n` +
-      `Options:\n${options.map((option) => option.data).join('\n')}\n\n` +
-      'Respond with only the correct option. No additional text is needed.'
-    );
+    return `Select the most appropriate option from the dropdown for the question below:\nQuestion: ${title}\nDescription: ${description}\n\nOptions:\n${options.map((option) => option.data).join('\n')}\n\nRespond with only the correct option. No additional text is needed.`;
   }
 
   private getCheckboxGridPrompt(
@@ -217,15 +169,7 @@ export class PromptEngine {
     rowOptions: string,
     columnOptions: string,
   ): string {
-    return (
-      'You are given a checkbox grid question with rows and columns.\n\n' +
-      'Instructions:\n1. For each row, list the columns that apply to it.\n' +
-      '2. Respond with only the correct columns for each row in the format Row: [Columns].\n' +
-      '3. Do not include any extra text, explanations, or the question itself.\n\n' +
-      'Example:\nRows: [Can Fly, Lives in Water, Is a Mammal, Has a Tail]\nColumns: [Lion, Eagle, Dolphin, Kangaroo]\n' +
-      'Expected Answer:\nCan Fly: [Eagle]\nLives in Water: [Dolphin]\nIs a Mammal: [Lion, Dolphin, Kangaroo]\nHas a Tail: [Lion, Eagle, Dolphin, Kangaroo]\n\n' +
-      `Question: ${title}\nDescription: ${description}\nRows: [${rowOptions}]\nColumns: [${columnOptions}]`
-    );
+    return `You are given a checkbox grid question with rows and columns.\n\nInstructions:\n1. For each row, list the columns that apply to it.\n2. Respond with only the correct columns for each row in the format Row: [Columns].\n3. Do not include any extra text, explanations, or the question itself.\n\nExample:\nRows: [Can Fly, Lives in Water, Is a Mammal, Has a Tail]\nColumns: [Lion, Eagle, Dolphin, Kangaroo]\nExpected Answer:\nCan Fly: [Eagle]\nLives in Water: [Dolphin]\nIs a Mammal: [Lion, Dolphin, Kangaroo]\nHas a Tail: [Lion, Eagle, Dolphin, Kangaroo]\n\nQuestion: ${title}\nDescription: ${description}\nRows: [${rowOptions}]\nColumns: [${columnOptions}]`;
   }
 
   private getMultipleChoiceGrid(
@@ -234,16 +178,7 @@ export class PromptEngine {
     rowOptions: string,
     columnOptions: string,
   ): string {
-    return (
-      'Prompt:\nYou are a quiz solver tasked with answering a Multiple Choice Grid question. The question consists of multiple sub-questions, each sharing the same set of answer options.\n' +
-      'Example:\nOptions: [Scientist, Writer, Journalist, Teacher]\nMatch each person with their previous designations:\nCharles Darwin\nLewis Carroll\nAlbert Einstein\nBarkha Dutt\n\n' +
-      'Correct answers for this example would be:\nScientist\nWriter\nScientist, Teacher\nJournalist\n\n' +
-      `Now for the actual question:\nOptions available: [${columnOptions}]\n\n` +
-      `Question Title: ${title}\nDescription: ${description}\nSub-questions are as follows (provide answers from the options for each):\n${rowOptions}\n\n` +
-      'Instructions:\n1. Print only the answers corresponding to each sub-question from the available options.\n' +
-      '2. Do not include any extra text, headings, or question descriptions.\n' +
-      '3. List each answer on a new line, in the same order as the sub-questions.'
-    );
+    return `Prompt:\nYou are a quiz solver tasked with answering a Multiple Choice Grid question. The question consists of multiple sub-questions, each sharing the same set of answer options.\nExample:\nOptions: [Scientist, Writer, Journalist, Teacher]\nMatch each person with their previous designations:\nCharles Darwin\nLewis Carroll\nAlbert Einstein\nBarkha Dutt\n\nCorrect answers for this example would be:\nScientist\nWriter\nScientist, Teacher\nJournalist\n\nNow for the actual question:\nOptions available: [${columnOptions}]\n\nQuestion Title: ${title}\nDescription: ${description}\nSub-questions are as follows (provide answers from the options for each):\n${rowOptions}\n\nInstructions:\n1. Print only the answers corresponding to each sub-question from the available options.\n2. Do not include any extra text, headings, or question descriptions.\n3. List each answer on a new line, in the same order as the sub-questions.`;
   }
 
   // Date Prompt

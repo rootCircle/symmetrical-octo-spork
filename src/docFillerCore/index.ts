@@ -1,20 +1,19 @@
-/* eslint-disable no-console */
 import { DetectBoxType } from '@docFillerCore/detectors/detectBoxType';
+import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
 import { FieldExtractorEngine } from '@docFillerCore/engines/fieldExtractorEngine';
-import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
-import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtractorEngine';
-import { PromptEngine } from '@docFillerCore/engines/promptEngine';
 import { FillerEngine } from '@docFillerCore/engines/fillerEngine';
 import { LLMEngine } from '@docFillerCore/engines/gptEngine';
-import { Settings } from '@utils/settings';
-import { ConsensusEngine } from '@docFillerCore/engines/consensusEngine';
 import { PrefilledChecker } from '@docFillerCore/engines/prefilledChecker';
+import { PromptEngine } from '@docFillerCore/engines/promptEngine';
+import { QuestionExtractorEngine } from '@docFillerCore/engines/questionExtractorEngine';
+import { ValidatorEngine } from '@docFillerCore/engines/validatorEngine';
+import { validateLLMConfiguration } from '@utils/missingApiKey';
+import { Settings } from '@utils/settings';
 import {
-  getSkipMarkedSetting,
   getEnableOpacityOnSkippedQuestions,
+  getSkipMarkedSetting,
 } from '@utils/storage/getProperties';
 import { MetricsManager } from '@utils/storage/metricsManager';
-import { validateLLMConfiguration } from '@utils/missingApiKey';
 import {
   getSelectedProfileKey,
   loadProfiles,
@@ -39,6 +38,7 @@ async function runDocFillerEngine() {
     try {
       llm = new LLMEngine(await Settings.getInstance().getCurrentLLMModel());
     } catch (e) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(e);
       return;
     }
@@ -50,9 +50,11 @@ async function runDocFillerEngine() {
   };
   const validation = (await validateLLMConfiguration()) as ValidationResult;
   if (validation.invalidEngines.length > 0) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.log(
       `Consensus is ${validation.isConsensusEnabled ? 'enabled' : 'disabled'}`,
     );
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error('Invalid engines:', validation.invalidEngines);
     return;
   }
@@ -101,17 +103,25 @@ async function runDocFillerEngine() {
 
       if (fieldType !== null) {
         const fieldValue = fields.getFields(question, fieldType);
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(question);
 
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(`Field Type : ${fieldType}`);
+
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log('Fields ↴');
 
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log('Field Value ↴');
+
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(fieldValue);
 
         const isFilled = isMarked.markedCheck(fieldType, fieldValue);
-
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log('Is Already Filled ↴');
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(isFilled);
         const skipMarkedSettingValue = await getSkipMarkedSetting();
         const enableOpacity = await getEnableOpacityOnSkippedQuestions();
@@ -119,6 +129,7 @@ async function runDocFillerEngine() {
           if (enableOpacity) {
             question.style.opacity = '0.6';
           }
+          // biome-ignore lint/suspicious/noConsole: <explanation>
           console.log('Skipping already marked question:', question);
           continue;
         }
@@ -126,7 +137,9 @@ async function runDocFillerEngine() {
         metricsManager.incrementToBeFilledQuestions();
 
         const promptString = prompts.getPrompt(fieldType, fieldValue);
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log('Prompt ↴');
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(promptString);
 
         let response = null;
@@ -141,10 +154,13 @@ async function runDocFillerEngine() {
           response = await llm.getResponse(promptString, fieldType, llm.engine);
         }
 
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log('LLM Response ↴');
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(response);
 
         if (response === null) {
+          // biome-ignore lint/suspicious/noConsole: <explanation>
           console.log('No response from LLM');
           continue;
         }
@@ -153,6 +169,7 @@ async function runDocFillerEngine() {
           fieldValue,
           response,
         );
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(`Parsed Response : ${parsed_response}`);
 
         if (parsed_response) {
@@ -161,15 +178,18 @@ async function runDocFillerEngine() {
             fieldValue,
             response,
           );
+          // biome-ignore lint/suspicious/noConsole: <explanation>
           console.log(`Filler Status ${fillerStatus}`);
 
           if (fillerStatus) {
             metricsManager.incrementSuccessfulQuestions();
           }
         }
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log();
       }
     } catch (e) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(e);
     }
   }

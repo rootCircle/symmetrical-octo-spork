@@ -1,8 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-
 import { runDocFillerEngine } from '@docFillerCore/index';
-import { isFillFormMessage, MessageResponse } from '@utils/messageTypes';
+import { MessageResponse, isFillFormMessage } from '@utils/messageTypes';
 import { getIsEnabled } from '@utils/storage/getProperties';
 
 chrome.runtime.onMessage.addListener(
@@ -20,6 +17,7 @@ chrome.runtime.onMessage.addListener(
         })
 
         .catch((error: Error) => {
+          // biome-ignore lint/suspicious/noConsole: <explanation>
           console.error('Error running doc filler:', error);
 
           sendResponse({
@@ -41,6 +39,7 @@ getIsEnabled()
     if (isEnabled === true) {
       runDocFillerEngine().catch(console.error);
     } else {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.log('Doc Filler is currently disabled');
     }
     return Promise.resolve();

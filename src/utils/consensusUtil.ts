@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { LLMEngineType } from '@utils/llmEngineTypes';
 
 interface WeightedObject {
@@ -76,6 +72,7 @@ function unflattenObject(obj: FlattenedLLMResponse): LLMResponse {
   const result = {} as LLMResponse;
   for (const [key, value] of Object.entries(obj)) {
     const keys = key.split('.');
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     let current: any = result;
     if (typeof current !== 'object') {
       continue;

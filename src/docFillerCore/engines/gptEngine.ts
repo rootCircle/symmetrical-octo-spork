@@ -1,37 +1,31 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
+import { ChatAnthropic } from '@langchain/anthropic';
+import { ChromeAI } from '@langchain/community/experimental/llms/chrome_ai';
+import {
+  StringOutputParser,
+  StructuredOutputParser,
+} from '@langchain/core/output_parsers';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { RunnableSequence } from '@langchain/core/runnables';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { ChatMistralAI } from '@langchain/mistralai';
 import { Ollama } from '@langchain/ollama';
 import { ChatOpenAI } from '@langchain/openai';
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
-import {
-  StructuredOutputParser,
-  StringOutputParser,
-} from '@langchain/core/output_parsers';
-import { ChromeAI } from '@langchain/community/experimental/llms/chrome_ai';
+import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
 import { LLMEngineType } from '@utils/llmEngineTypes';
-import { RunnableSequence } from '@langchain/core/runnables';
 import { QType } from '@utils/questionTypes';
-import { DatetimeOutputParser } from 'langchain/output_parsers';
+import {
+  getAnthropicApiKey,
+  getChatGptApiKey,
+  getGeminiApiKey,
+  getMistralApiKey,
+} from '@utils/storage/getProperties';
+import { MetricsManager } from '@utils/storage/metricsManager';
 import {
   getSelectedProfileKey,
   loadProfiles,
 } from '@utils/storage/profiles/profileManager';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { DatetimeOutputParser } from 'langchain/output_parsers';
 import { z } from 'zod';
-import { ChatAnthropic } from '@langchain/anthropic';
-import { ChatMistralAI } from '@langchain/mistralai';
-import {
-  getChatGptApiKey,
-  getGeminiApiKey,
-  getMistralApiKey,
-  getAnthropicApiKey,
-} from '@utils/storage/getProperties';
-import { DEFAULT_PROPERTIES } from '@utils/defaultProperties';
-import { MetricsManager } from '@utils/storage/metricsManager';
 
 type LLMInstance =
   | ChatOpenAI
@@ -77,10 +71,12 @@ export class LLMEngine {
         try {
           this.instantiateEngine(this.engine);
         } catch (error) {
+          // biome-ignore lint/suspicious/noConsole: <explanation>
           console.error('Error instantiating engine:', error);
         }
       })
       .catch((error) => {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error('Error fetching API keys:', error);
       });
   }
@@ -159,12 +155,14 @@ export class LLMEngine {
         return response?.value;
       });
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error getting response:', error);
       return null;
     }
   }
   async invokeMagicLLM(questions: string[]): Promise<MagicPromptResponse> {
     try {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.log('Invoking magic LLM with questions:', questions);
       const promptText = `
         Analyze these form questions and generate an optimal system prompt:
@@ -184,6 +182,8 @@ export class LLMEngine {
       if (!response) {
         throw new Error('No response received from LLM');
       }
+
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.log('Magic prompt response:', response);
       return {
         subject_context: response.subject_context,
@@ -191,6 +191,7 @@ export class LLMEngine {
         system_prompt: response.system_prompt,
       };
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error in invokeMagicLLM:', error);
       throw error;
     }
@@ -243,6 +244,7 @@ Count and incorporate ALL question domains to ensure comprehensive expertise.`;
       }
       return null;
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error in getMagicResponse:', error);
       return null;
     }
@@ -292,11 +294,13 @@ Count and incorporate ALL question domains to ensure comprehensive expertise.`;
       }
       return null;
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error getting response:', error);
       return null;
     }
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   private patchResponse(response: any, questionType: QType): LLMResponse {
     switch (questionType) {
       case QType.DATE:
@@ -333,6 +337,7 @@ Count and incorporate ALL question domains to ensure comprehensive expertise.`;
 
   private getParser(
     questionType: QType,
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   ): StructuredOutputParser<any> | DatetimeOutputParser | StringOutputParser {
     switch (questionType) {
       case QType.TEXT:

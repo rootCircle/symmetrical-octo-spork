@@ -1,13 +1,13 @@
 import { LLMEngineType, LLM_REQUIREMENTS } from '@utils/llmEngineTypes';
-import {
-  getEnableConsensus,
-  getLLMWeights,
-  getChatGptApiKey,
-  getGeminiApiKey,
-  getMistralApiKey,
-  getAnthropicApiKey,
-} from '@utils/storage/getProperties';
 import { Settings } from '@utils/settings';
+import {
+  getAnthropicApiKey,
+  getChatGptApiKey,
+  getEnableConsensus,
+  getGeminiApiKey,
+  getLLMWeights,
+  getMistralApiKey,
+} from '@utils/storage/getProperties';
 
 async function getApiKeys(): Promise<
   Record<LLMEngineType, string | undefined>
