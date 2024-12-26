@@ -44,7 +44,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@cfworker/json-schema": "^4.0.3",
     "@langchain/anthropic": "^0.3.8",
     "@langchain/community": "^0.3.17",
     "@langchain/google-genai": "^0.1.5",
@@ -63,9 +62,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.9",
-    "@eslint/compat": "^1.2.4",
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.16.0",
+    "@biomejs/biome": "1.9.4",
     "@types/chrome": "^0.0.287",
     "@types/firefox-webext-browser": "^120.0.4",
     "@types/fs-extra": "^11.0.4",
@@ -75,15 +72,8 @@
     "concurrently": "^9.1.0",
     "cross-env": "^7.0.3",
     "cspell": "^8.16.1",
-    "esbuild": "^0.24.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-async-await": "^0.0.0",
-    "eslint-plugin-import": "^2.31.0",
     "globals": "^15.13.0",
     "husky": "^9.1.7",
-    "prettier": "^3.4.2",
-    "typescript-eslint": "^8.17.0",
     "web-ext": "^8.3.0",
     "webextension-polyfill": "^0.12.0"
   }

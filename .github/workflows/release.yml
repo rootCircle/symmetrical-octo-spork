@@ -18,6 +18,10 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Zip Source Code
+        run: |
+          zip -r docFiller.zip . -x '*.git*' -x '*node_modules*' -x '*build*' -x '*coverage*' -x '*web-ext-artifacts*'
+
       - name: Extract Version from Tag
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
@@ -63,3 +67,26 @@ jobs:
           body_path: release.body.txt
           files: |
             web-ext-artifacts/docfiller-*.zip
+
+      - name: Read Approval Note
+        run: |
+          APPROVAL_NOTE=$(cat docs/FOR_ADDONS_REVIEWERS.md)
+          echo "APPROVAL_NOTE=$APPROVAL_NOTE" >> $GITHUB_ENV
+
+      - uses: browser-actions/public-firefox-addon@latest
+        with:
+          addon-id: "docfiller"
+          addon-path: "web-ext-artifacts/docfiller-*-firefox.zip"
+          source-path: "docFiller.zip"
+          approval-note: ${{ env.APPROVAL_NOTE }}
+          auth-api-issuer: ${{ secrets.AUTH_API_ISSUER }}
+          auth-api-secret: ${{ secrets.AUTH_API_SECRET }}
+          release-note: ${{ steps.create_release.outputs.body }}
+
+      - uses: browser-actions/release-chrome-extension@latest
+        with:
+          extension-id: "goibiampjlgcdjdfakjepniopldpijcd"
+          extension-path: "web-ext-artifacts/docfiller-*-chromium.zip"
+          oauth-client-id: ${{ secrets.OAUTH_CLIENT_ID }}
+          oauth-client-secret: ${{ secrets.OAUTH_CLIENT_SECRET }}
+          oauth-refresh-token: ${{ secrets.OAUTH_REFRESH_TOKEN }}
