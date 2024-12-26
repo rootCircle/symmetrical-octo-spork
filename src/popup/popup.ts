@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let previousState = false;
   chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
     const automaticFillingEnabled =
+      // biome-ignore lint/complexity/useLiteralKeys: <explanation>
       (items['automaticFillingEnabled'] as boolean) ??
       DEFAULT_PROPERTIES.automaticFillingEnabled;
     previousState = automaticFillingEnabled;
@@ -81,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await new Promise<void>((resolve, reject) => {
           chrome.storage.sync.get(['automaticFillingEnabled'], (items) => {
             const newState = !(
+              // biome-ignore lint/complexity/useLiteralKeys: <explanation>
               items['automaticFillingEnabled'] ??
               DEFAULT_PROPERTIES.automaticFillingEnabled
             );

@@ -19,6 +19,7 @@ export async function getManifest() {
   }
 
   const pkg = (await fs.readJSON(r('package.json'))) as typeof PkgType;
+  // biome-ignore lint/complexity/useLiteralKeys: <explanation>
   const targetBrowser = process.env['BROWSER'];
   if (!targetBrowser) {
     throw new Error('BROWSER environment variable must be set');

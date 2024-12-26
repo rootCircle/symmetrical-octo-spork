@@ -82,9 +82,13 @@ export class LLMEngine {
   }
 
   private async fetchApiKeys(): Promise<void> {
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     this.apiKeys['chatGptApiKey'] = await getChatGptApiKey();
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     this.apiKeys['geminiApiKey'] = await getGeminiApiKey();
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     this.apiKeys['mistralApiKey'] = await getMistralApiKey();
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     this.apiKeys['anthropicApiKey'] = await getAnthropicApiKey();
   }
   public instantiateEngine(engine: LLMEngineType): LLMInstance {
@@ -92,6 +96,7 @@ export class LLMEngine {
       case LLMEngineType.ChatGPT:
         this.instances[engine] = new ChatOpenAI({
           model: 'gpt-4o',
+          // biome-ignore lint/complexity/useLiteralKeys: <explanation>
           apiKey: this.apiKeys['chatGptApiKey'] as string,
         });
         break;
@@ -100,6 +105,7 @@ export class LLMEngine {
           model: 'gemini-pro',
           temperature: 0,
           maxRetries: 2,
+          // biome-ignore lint/complexity/useLiteralKeys: <explanation>
           apiKey: this.apiKeys['geminiApiKey'] as string,
         });
         break;
@@ -115,6 +121,7 @@ export class LLMEngine {
           model: 'mistral-large-latest',
           temperature: 0,
           maxRetries: 2,
+          // biome-ignore lint/complexity/useLiteralKeys: <explanation>
           apiKey: this.apiKeys['mistralApiKey'] as string,
         });
         break;
@@ -123,6 +130,7 @@ export class LLMEngine {
           model: 'claude-3-5-sonnet-latest',
           temperature: 0,
           maxRetries: 2,
+          // biome-ignore lint/complexity/useLiteralKeys: <explanation>
           apiKey: this.apiKeys['anthropicApiKey'] as string,
         });
         break;

@@ -28,7 +28,7 @@
         "noUselessThisAlias": "error",
         "noUselessTypeConstraint": "error",
         "noWith": "error",
-        "useLiteralKeys": "off"
+        "useLiteralKeys": "error"
       },
       "correctness": {
         "noConstAssign": "error",

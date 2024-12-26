@@ -211,22 +211,27 @@ document.addEventListener('DOMContentLoaded', () => {
     ],
     (items) => {
       sleepDurationInput.value = String(
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['sleepDuration'] as number) ?? DEFAULT_PROPERTIES.sleep_duration,
       );
       llmModelSelect.value =
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['llmModel'] as string) ?? getModelName(DEFAULT_PROPERTIES.model);
 
       updateApiKeyInputField(singleApiKeyInput, llmModelSelect);
       enableConsensusCheckbox.checked = Boolean(
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['enableConsensus'] as boolean) ??
           DEFAULT_PROPERTIES.enableConsensus,
       );
       enableDarkThemeCheckbox.checked = Boolean(
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['enableDarkTheme'] as boolean) ??
           DEFAULT_PROPERTIES.enableDarkTheme,
       );
 
       const weights =
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['llmWeights'] as Record<LLMEngineType, number>) ??
         DEFAULT_PROPERTIES.llmWeights;
       weightChatGPTInput.value = String(weights[LLMEngineType.ChatGPT]);
@@ -237,12 +242,16 @@ document.addEventListener('DOMContentLoaded', () => {
       weightAnthropicInput.value = String(weights[LLMEngineType.Anthropic]);
 
       chatGptApiKeyInput.value =
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['chatGptApiKey'] as string) ?? EMPTY_STRING;
       geminiApiKeyInput.value =
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['geminiApiKey'] as string) ?? EMPTY_STRING;
       mistralApiKeyInput.value =
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['mistralApiKey'] as string) ?? EMPTY_STRING;
       anthropicApiKeyInput.value =
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         (items['anthropicApiKey'] as string) ?? EMPTY_STRING;
 
       toggleConsensusOptions(enableConsensusCheckbox.checked);
