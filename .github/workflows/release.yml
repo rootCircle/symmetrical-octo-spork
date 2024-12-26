@@ -27,12 +27,10 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Build packages
+      - name: Installtion of Dependencies 
         run: |
           bun install
-          bun run build
-          ls -la
-
+  
       - name: Package extension
         run: |
           bun run package:firefox
