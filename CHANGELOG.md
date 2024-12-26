@@ -1,9 +1,11 @@
 # Changelog
 
-## v1.3.1 [Unreleased] (last updated on 2024-12-23)
+## v1.3.1 (2024-12-26)
 
 - Dark Theme (enabled by default)
 - fix: TIME and TIME_WITH_MERIDIEM fields parsing errors.
+- build: dynamic manifest for different browser
+- ci: release action to trigger automated release
 
 ## v1.3.0 (2024-12-17)
 
