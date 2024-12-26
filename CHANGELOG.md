@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.2 (2024-12-27)
+
+- Change linter, formatter to biome for js,ts files.
+- Automated release for Chrome, Edge and Firefox
+
 ## v1.3.1 (2024-12-26)
 
 - Dark Theme (enabled by default)

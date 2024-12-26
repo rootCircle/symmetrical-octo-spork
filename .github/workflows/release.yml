@@ -25,7 +25,9 @@ jobs:
       - name: Extract Version from Tag
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
+          MINIFIED_VERSION=${VERSION#v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "MINIFIED_VERSION=$MINIFIED_VERSION" >> $GITHUB_ENV
 
       - uses: oven-sh/setup-bun@v1
         with:
@@ -68,25 +70,30 @@ jobs:
           files: |
             web-ext-artifacts/docfiller-*.zip
 
-      - name: Read Approval Note
-        run: |
-          APPROVAL_NOTE=$(cat docs/FOR_ADDONS_REVIEWERS.md)
-          echo "APPROVAL_NOTE=$APPROVAL_NOTE" >> $GITHUB_ENV
-
-      - uses: browser-actions/public-firefox-addon@latest
+      - uses: wdzeng/chrome-extension@v1
         with:
-          addon-id: "docfiller"
-          addon-path: "web-ext-artifacts/docfiller-*-firefox.zip"
-          source-path: "docFiller.zip"
-          approval-note: ${{ env.APPROVAL_NOTE }}
-          auth-api-issuer: ${{ secrets.AUTH_API_ISSUER }}
-          auth-api-secret: ${{ secrets.AUTH_API_SECRET }}
-          release-note: ${{ steps.create_release.outputs.body }}
-
-      - uses: browser-actions/release-chrome-extension@latest
+          extension-id: goibiampjlgcdjdfakjepniopldpijcd
+          zip-path: web-ext-artifacts/docfiller-${{ env.MINIFIED_VERSION }}-chromium.zip
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+        continue-on-error: true
+      
+      - uses: wdzeng/firefox-addon@v1
         with:
-          extension-id: "goibiampjlgcdjdfakjepniopldpijcd"
-          extension-path: "web-ext-artifacts/docfiller-*-chromium.zip"
-          oauth-client-id: ${{ secrets.OAUTH_CLIENT_ID }}
-          oauth-client-secret: ${{ secrets.OAUTH_CLIENT_SECRET }}
-          oauth-refresh-token: ${{ secrets.OAUTH_REFRESH_TOKEN }}
+          addon-guid: "docFiller@rootcircle.github.io"
+          xpi-path: web-ext-artifacts/docfiller-${{ env.MINIFIED_VERSION }}-firefox.zip
+          self-hosted: false
+          jwt-issuer: ${{ secrets.FIREFOX_AUTH_API_ISSUER }}
+          jwt-secret: ${{ secrets.FIREFOX_AUTH_API_SECRET }}
+          approval-notes: "Available at https://github.com/rootCircle/docFiller/blob/dev/docs/FOR_ADDONS_REVIEWERS.md"      
+        continue-on-error: true
+
+      - uses: wdzeng/edge-addon@v2
+        with:
+          product-id: 4dfc1366-555a-431e-91d1-9991bc771fab
+          zip-path: web-ext-artifacts/docfiller-${{ env.MINIFIED_VERSION }}-chromium.zip
+          api-key: ${{ secrets.EDGE_API_KEY }}
+          client-id: ${{ secrets.EDGE_CLIENT_ID }}
+        continue-on-error: true
+
