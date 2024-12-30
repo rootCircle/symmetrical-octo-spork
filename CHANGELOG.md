@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.0 [Unreleased] (as of 2024-12-30)
+
+- fix: leaking storage data in option page when clicked on reset/export metrics button
+- fix: fix watcher script failing on public directory changes after 2~3 changes!
+- chore: add favicons and title on options/popup pages
+
 ## v1.3.2 (2024-12-27)
 
 - Change linter, formatter to biome for js,ts files.

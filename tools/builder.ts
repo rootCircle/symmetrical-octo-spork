@@ -58,7 +58,9 @@ const build = async (watch: boolean) => {
 
 const runBuild = async (watch: boolean) => {
   try {
-    await cleanBuildFolder();
+    if (!watch) {
+      await cleanBuildFolder();
+    }
     await writeManifest();
     await build(watch);
     // biome-ignore lint/suspicious/noConsole: <explanation>

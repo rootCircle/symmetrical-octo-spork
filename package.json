@@ -24,7 +24,7 @@
     "bun": ">=1.0.0"
   },
   "scripts": {
-    "watch": "bun typecheck && bun tools/watcher.ts",
+    "watch": "bun tools/watcher.ts",
     "build:firefox": "BROWSER=firefox bun tools/bundler.ts",
     "build:chromium": "BROWSER=chromium bun tools/bundler.ts",
     "package:firefox": "BROWSER=firefox bun tools/bundler.ts && web-ext build --source-dir=build --overwrite-dest && BROWSER=firefox bun run tools/packageRename.ts",
