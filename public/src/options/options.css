@@ -891,6 +891,10 @@ input[disabled] {
   .metrics-controls {
     flex-direction: column;
   }
+
+  .btn {
+    width: auto !important;
+  }
 }
 .btn {
   width: 100%;
