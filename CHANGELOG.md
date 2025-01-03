@@ -5,6 +5,7 @@
 - fix: leaking storage data in option page when clicked on reset/export metrics button
 - fix: fix watcher script failing on public directory changes after 2~3 changes!
 - chore: add favicons and title on options/popup pages
+- docs: update Privacy policy
 
 ## v1.3.2 (2024-12-27)
 

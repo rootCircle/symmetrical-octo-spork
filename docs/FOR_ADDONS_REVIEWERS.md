@@ -21,7 +21,7 @@
 - **For Firefox:**
 
   ```bash
-  bun dev:Firefox
+  bun dev:firefox
   ```
 
 - **For Chromium-based browsers:**

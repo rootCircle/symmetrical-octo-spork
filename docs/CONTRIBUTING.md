@@ -61,10 +61,11 @@ If you're planning to contribute to the development of this web extension, here 
 
      ```bash
      bun run lint
-     bun run format
+     bun run format:check
+     bun run precommit
      ```
 
-     To fix a set of lint issues simply run `bun run lint:fix`.
+     To fix a set of lint issues simply run `bun run lint:fix`. To fix formatting error, use `bun run format`.
 
   6. **Submit a Pull Request**: Once you've made your changes and tested them, submit a pull request (PR) to the original repository. Make sure to explain the changes you've made in the PR description.
 
