@@ -21,6 +21,8 @@ jobs:
         
           We appreciate your contribution and will review your report soon. In the meantime, feel free to explore our [contribution guidelines](https://github.com/rootCircle/docFiller/blob/dev/docs/CONTRIBUTING.md) and [code of conduct](https://github.com/rootCircle/docFiller/blob/dev/docs/CODE_OF_CONDUCT.md).
         
+          Join us on Discord using the [invite link](https://discord.gg/Sa4JPe4FWT).
+          
           Thank you for helping improve this project!
 
         pr-message: |
@@ -32,6 +34,8 @@ jobs:
           - All tests pass, and you've added new tests if necessary.
         
           We’ll review your PR soon and provide feedback. In the meantime, check out our [contribution guidelines](https://github.com/rootCircle/docFiller/blob/dev/docs/CONTRIBUTING.md) for more tips on making impactful contributions.
-        
+
+          Join us on Discord using the [invite link](https://discord.gg/Sa4JPe4FWT), as a fellow "Contributor".
+          
           Thanks again for contributing to this project!
 
