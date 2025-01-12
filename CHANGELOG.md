@@ -1,6 +1,8 @@
 # Changelog
 
-## v1.4.0 [Unreleased] (as of 2024-12-30)
+## v1.4.1 [Unreleased] (as of 2025-01-12)
+
+## v1.4.0 (2025-01-12)
 
 - fix: leaking storage data in option page when clicked on reset/export metrics button
 - fix: fix watcher script failing on public directory changes after 2~3 changes!
