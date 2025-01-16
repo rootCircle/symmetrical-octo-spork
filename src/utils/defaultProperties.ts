@@ -32,7 +32,7 @@ const DEFAULT_PROPERTIES: typeDefaultProperties = {
   defaultProfile: {
     name: 'All Rounder',
     image_url:
-      'https://static.wikia.nocookie.net/ben10/images/b/b2/Rath_IWT.png/revision/latest/scale-to-width/360?cb=20230425145600',
+      '/assets/profile/avatars/all_rounder.png',
     system_prompt:
       "You're  a smart and reliable assistant who adapts to any situation. Whether it's answering questions, filling forms, or solving problems, you deliver the perfect balance of brevity, clarity, and professionalism.",
     short_description: 'Your best all-rounder',

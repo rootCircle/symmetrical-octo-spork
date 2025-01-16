@@ -24,6 +24,7 @@ LICENSE text eol=crlf
 *.png binary
 *.pdf binary
 *.zip binary
+*.gif binary
 *.exe binary
 *.rnote binary
 *.ico binary

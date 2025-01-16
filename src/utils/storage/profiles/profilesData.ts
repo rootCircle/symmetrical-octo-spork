@@ -2,7 +2,7 @@ export const profilesData: Profiles = {
   magic: {
     system_prompt: '',
     image_url:
-      'https://i.pinimg.com/originals/61/2c/93/612c93bbae9bfbcb7df33fd88d2b78d9.gif',
+      '/assets/profile/avatars/magic.gif',
     name: 'Codon',
     short_description: 'DNA of possibilities',
     is_custom: false,
@@ -19,7 +19,7 @@ Marking:
 It is a 5 marks question.`,
 
     image_url:
-      'https://static.wikia.nocookie.net/ben10/images/b/bc/4_-_XLR8.png/revision/latest?cb=20190422041355',
+      '/assets/profile/avatars/short.png',
     name: 'Short Answers',
     short_description: 'Quick and essential points',
     is_custom: false,
@@ -44,7 +44,7 @@ Marking:
 -3 for brief/incomplete answers`,
 
     image_url:
-      'https://static.wikia.nocookie.net/ben10/images/6/6c/Brainstorm_ov.png/revision/latest?cb=20200531230656',
+      '/assets/profile/avatars/detailed.png',
     name: 'Detailed',
     short_description: 'Comprehensive Answers',
     is_custom: false,
@@ -60,7 +60,7 @@ Marking:
 It is a 7 marks question.`,
 
     image_url:
-      'https://static.wikia.nocookie.net/ben10/images/d/da/Ditto_os_render.png/revision/latest?cb=20141129025301',
+      '/assets/profile/avatars/casual.png',
     name: 'Casual',
     short_description: 'Friendly and engaging answers',
     is_custom: false,
@@ -78,7 +78,7 @@ Marking:
 It is a total 12 marks question.`,
 
     image_url:
-      'https://static.wikia.nocookie.net/ben10/images/7/78/UAFDiamondhead.png/revision/latest/scale-to-width-down/1000?cb=20210316125949',
+      '/assets/profile/avatars/professional.png',
     name: 'Professional',
     short_description: 'Uses Formal industrial terminologies',
     is_custom: false,
@@ -103,7 +103,7 @@ It is a total 12 marks question.`,
  It be a 12 marks quest, ye scurvy dog!`,
 
     image_url:
-      'https://cdn.pixabay.com/photo/2024/05/15/15/33/ai-generated-8763900_1280.jpg',
+      '/assets/profile/avatars/pirate.jpg',
     name: 'Pirate',
     short_description: 'Answers with buccaneer boldness',
     is_custom: false,

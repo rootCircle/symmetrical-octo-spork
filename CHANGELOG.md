@@ -2,6 +2,8 @@
 
 ## v1.4.1 [Unreleased] (as of 2025-01-12)
 
+- chore: move profile avatar to local
+
 ## v1.4.0 (2025-01-12)
 
 - fix: leaking storage data in option page when clicked on reset/export metrics button
