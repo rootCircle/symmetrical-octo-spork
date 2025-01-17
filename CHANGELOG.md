@@ -1,6 +1,8 @@
 # Changelog
 
-## v1.4.1 [Unreleased] (as of 2025-01-12)
+## v1.4.2 [Unreleased] (as of 2025-01-17)
+
+## v1.4.1 (2025-01-17)
 
 - chore: move profile avatar to local
 
